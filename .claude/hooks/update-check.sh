@@ -29,7 +29,7 @@
 # so), which would announce the release you already have. This file is replaced
 # with the rest of .claude/hooks/ on every upgrade, so its number is the
 # framework actually installed.
-UPDATE_CHECK_VERSION="1.4.0"
+UPDATE_CHECK_VERSION="1.4.1"
 UPDATE_CHECK_REPO="Senhorfeudal/Claude-Code-Game-Studios-2"
 
 # This file's absolute path, taken before anything changes directory, so the

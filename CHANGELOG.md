@@ -8,6 +8,51 @@ existing project on the older config files.
 
 ---
 
+## [1.4.1] — 2026-11-26
+
+**`/next-step` no longer just reports what comes next — you choose the action.**
+It maps that choice to a crew, asks for approval, and only then delegates. The
+skill itself stays read-only.
+
+**Added**
+
+- **Step 7b — choose the action.** After the "Where You Are" block, a question
+  widget offers `Next up`, up to three `Also available` actions, and `Nothing
+  right now`. Labels are short; commands, why the step is next and what it
+  touches live in the descriptions. A free-text answer is routed as a custom
+  action. A skipped or dismissed question is re-asked once, then falls back to
+  numbered text with no reasoning dump.
+- **`references/agent-routing.md`.** 24 action → agent routes, at most three
+  agents per crew, first agent owns the result, engine overrides for Godot /
+  Unity / Unreal, and `gamer` / `question-widget-specialist` marked read-only.
+- **Team routes.** The same reference checks nine `team-*` skills first when a
+  slice is cross-discipline: `/team-combat`, `/team-narrative`, `/team-ui`,
+  `/team-audio`, `/team-level`, `/team-live-ops`, `/team-qa`, `/team-polish` and
+  `/team-release`. A team replaces the three-agent crew; no loose agents are
+  attached, and at `workflow: minimal` a team is never presented as required.
+- **Second confirmation.** The crew block shows one line of why per agent (or
+  the team skill) and what it will hand back, then asks: `Start this crew`,
+  `Change the agents` or `Do it myself`. Only `Start this crew` permits
+  delegation.
+- **Coverage.** Spec Cases 11 and 12 plus `tests/test_next_step_routing.py`
+  (14 guardrails for tools, order, routes, team skills and approval).
+
+**How it works now**
+
+1. `/next-step` prints the state report: `✓ Done`, one `→ Next up`, optional
+   `~ Also available`, and `Coming up after that`.
+2. A widget asks which action to take — no reasoning text before the call.
+3. The choice is routed: **Team routes** first for cross-discipline work,
+   otherwise the individual agent table.
+4. A crew block is shown and a second widget asks for approval.
+5. On `Start this crew` the work is delegated; for agents via `Agent`, for a
+   team by starting its `/team-*` skill (Skill tool in Claude Code, or a
+   recommended command in runtimes without it). `/next-step` then stops and
+   reports what was delegated. It writes no files.
+
+`Change the agents` lets you name different agents; `Do it myself` ends after
+the recommendation.
+
 ## [1.4.0] — 2026-11-26
 
 **First release of Senhorfeudal Game Studios.** The repository continues from
