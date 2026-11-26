@@ -34,6 +34,10 @@ has been cut for the changes in this section.
   implementation and fix options for the orchestrator to put to the user.
 - **Failed-widget fallback protocol** — documented in
   `.claude/docs/automation-modes.md`, with guardrails in `tests/`.
+- **Native OpenCode V2 port** — `AGENTS.md`, 80 skill wrappers, 80 slash
+  commands, 51 subagents, translated permissions and the `ccgs-bridge` hook
+  plugin. Mapping, fixes and test evidence:
+  [docs/OPENCODE-PORT-REPORT.md](docs/OPENCODE-PORT-REPORT.md).
 
 ## [1.4.1] — 2026-11-26
 

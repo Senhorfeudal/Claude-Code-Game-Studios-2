@@ -1,0 +1,39 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // Repo guidance in OpenCode-native form. CLAUDE.md stays for Claude Code users.
+  "instructions": [".opencode/OPENCODE-PORT.md"],
+
+  // Local plugins: question delivery fallback + bridge for the studio's bash hooks.
+  // Relative paths resolve from this config file's directory (.opencode/).
+  "plugins": [
+    "../plugins/question-watchdog",
+    "./plugins/ccgs-bridge"
+  ],
+
+  // Safety rules translated from .claude/settings.json. Last matching rule wins.
+  "permissions": [
+    { "action": "shell", "resource": "rm -rf*", "effect": "deny" },
+    { "action": "shell", "resource": "rm -fr*", "effect": "deny" },
+    { "action": "shell", "resource": "rm -r -f*", "effect": "deny" },
+    { "action": "shell", "resource": "rm --recursive*", "effect": "deny" },
+    { "action": "shell", "resource": "sudo *", "effect": "deny" },
+    { "action": "shell", "resource": "chmod 777*", "effect": "deny" },
+    { "action": "shell", "resource": "git push *--force*", "effect": "deny" },
+    { "action": "shell", "resource": "git push * -f*", "effect": "deny" },
+    { "action": "shell", "resource": "git push * +*", "effect": "deny" },
+    { "action": "shell", "resource": "git *reset *--hard*", "effect": "deny" },
+    { "action": "shell", "resource": "git clean* -f*", "effect": "deny" },
+    { "action": "shell", "resource": "bash .claude/scripts/*", "effect": "allow" },
+    { "action": "shell", "resource": "bash .claude/hooks/*", "effect": "allow" },
+    { "action": "shell", "resource": "python -m pytest *", "effect": "allow" },
+    { "action": "read", "resource": "**/.env*", "effect": "deny" },
+    { "action": "edit", "resource": "**/.env*", "effect": "deny" },
+    { "action": "edit", "resource": "**/*.uasset", "effect": "deny" },
+    { "action": "edit", "resource": "**/*.umap", "effect": "deny" }
+  ],
+
+  "watcher": {
+    "ignore": ["**/session-logs/**", "**/qa/evidence/**"]
+  }
+}

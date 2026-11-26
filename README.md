@@ -15,6 +15,19 @@
 
 ---
 
+## OpenCode port
+
+This checkout also includes a native OpenCode V2 layer: `AGENTS.md` replaces the
+root instruction file, `.opencode/skills/` and `.opencode/commands/` expose all
+80 skills as skills and slash commands, `.opencode/agents/` exposes all 51
+specialists as subagents, and `.opencode/plugins/` bridges the studio's bash
+validators. See `.opencode/OPENCODE-PORT.md` for the tool-name mapping and known
+gaps, and [docs/OPENCODE-PORT-REPORT.md](docs/OPENCODE-PORT-REPORT.md) for the
+full change list and test evidence. The original Claude Code template files
+remain in `.claude/`.
+
+---
+
 ## Make me a game
 
 Open Claude Code in a copy of this repository and say what you want:
