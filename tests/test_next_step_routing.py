@@ -1,8 +1,7 @@
 """Guardrails for /next-step action selection and crew routing.
 
 The skill must stay read-only: it reports state, asks which action to take,
-maps that action to a team skill or at most three agents, asks again, and only
-then delegates.
+maps that action to at most three agents, asks again, and only then delegates.
 Run: python3 -m unittest discover -s tests -p test_next_step_routing.py -v
 """
 import pathlib
@@ -27,19 +26,6 @@ def route_rows(text):
         strip = lambda value: re.sub(r'^`(.*)`$', r'\1', value)
         crew = re.findall(r'`([a-z0-9-]+)`', cells[2])
         yield strip(cells[0]), strip(cells[1]), crew, cells[3]
-
-
-def team_rows(text):
-    """Yield (action, skill, preference) from the Team routes table."""
-    section = text.split('## Team routes', 1)[1]
-    for line in section.splitlines():
-        if not line.startswith('| ') or line.startswith('| Action'):
-            continue
-        cells = [cell.strip() for cell in line.strip('|').split('|')]
-        if len(cells) != 3:
-            continue
-        skill = re.sub(r'^`(.*)`$', r'\1', cells[1]).lstrip('/')
-        yield cells[0], skill, cells[2]
 
 
 class NextStepSkillTests(unittest.TestCase):
@@ -73,7 +59,7 @@ class NextStepSkillTests(unittest.TestCase):
         self.assertIn('Start this crew', self.text)
         self.assertIn('Change the agents', self.text)
         self.assertIn('Do it myself', self.text)
-        self.assertIn('Only "Start this crew" authorises delegation', self.text)
+        self.assertIn('Only "Start this crew" authorises `Agent` calls', self.text)
         self.assertIn('Never claim a file was written by this skill', self.flat)
 
     def test_rule_against_auto_running(self):
@@ -126,49 +112,7 @@ class AgentRoutingTests(unittest.TestCase):
         flat = re.sub(r'\s+', ' ', text)
         self.assertIn('.claude/skills/next-step/references/agent-routing.md', text)
         self.assertIn('Read `.claude/skills/next-step/references/agent-routing.md`', text)
-        self.assertIn('**Team routes** table first', flat)
-        self.assertIn('attach no loose agents to it', flat)
-        self.assertIn('a team route is never presented as required', flat)
-
-
-class TeamRoutingTests(unittest.TestCase):
-    EXPECTED = {
-        'team-combat', 'team-narrative', 'team-ui', 'team-audio',
-        'team-level', 'team-live-ops', 'team-qa', 'team-polish',
-        'team-release',
-    }
-
-    @classmethod
-    def setUpClass(cls):
-        cls.text = ROUTES.read_text(encoding='utf-8')
-        cls.flat = re.sub(r'\s+', ' ', cls.text)
-        cls.rows = list(team_rows(cls.text))
-
-    def test_all_nine_team_skills_are_routable(self):
-        self.assertEqual({skill for _, skill, _ in self.rows}, self.EXPECTED,
-                         'the team routing table drifted from the nine team skills')
-
-    def test_each_route_names_a_real_user_invokable_orchestrator(self):
-        for action, skill, preference in self.rows:
-            with self.subTest(skill=skill):
-                self.assertTrue(action and preference)
-                path = ROOT / '.claude/skills' / skill / 'SKILL.md'
-                self.assertTrue(path.is_file(), f'{skill} has no SKILL.md')
-                frontmatter = path.read_text(encoding='utf-8').split('---', 2)[1]
-                self.assertIn('user-invocable: true', frontmatter)
-                tools = frontmatter.split('allowed-tools:', 1)[1].split('\n', 1)[0]
-                self.assertIn('AskUserQuestion', tools)
-                self.assertIn('Agent', tools)
-
-    def test_team_replaces_the_individual_crew(self):
-        for phrase in (
-            'Check **Team routes** first',
-            'A team route replaces the individual crew',
-            'not added to the three-agent count',
-            'never combine a `team-*` skill with loose agents',
-            'At `workflow: minimal`, none of these are required',
-        ):
-            self.assertIn(phrase, self.flat, f'missing team routing rule: {phrase}')
+        self.assertIn('find the row in **Routes**', flat)
 
 
 class NextStepSpecTests(unittest.TestCase):
@@ -180,15 +124,6 @@ class NextStepSpecTests(unittest.TestCase):
         self.assertIn('`gamer` is marked read-only', text)
         self.assertIn('allowed-tools` includes `AskUserQuestion` and `Agent`', text)
 
-    def test_spec_covers_the_team_route_case(self):
-        text = SPEC.read_text(encoding='utf-8')
-        self.assertIn('### Case 12: The user picks a cross-discipline action', text)
-        self.assertIn('Team routes are checked before', text)
-        self.assertIn('The chosen team skill exists in `.claude/skills/`', text)
-        self.assertIn('No individual agent is added to the team brief', text)
-        self.assertIn('team route replaces the three-agent crew', text)
-
-
 class QuestionDeliveryGuardTests(unittest.TestCase):
     """A question drafted in reasoning is not a question; subagents cannot ask."""
 
@@ -199,15 +134,18 @@ class QuestionDeliveryGuardTests(unittest.TestCase):
         cls.routes = ROUTES.read_text(encoding='utf-8')
         cls.modes = (ROOT / '.claude/docs/automation-modes.md').read_text(encoding='utf-8')
 
-    def test_team_route_stays_where_the_widget_is(self):
-        for phrase in (
-            'Start that skill in the current conversation',
-            'never spawn it through `Agent`',
-            'A subagent has no question widget',
-            'For a team route, make no `Agent` call',
-        ):
-            self.assertIn(phrase, self.flat, f'missing next-step rule: {phrase}')
-        self.assertIn('never spawn a team skill through `Agent`', self.routes)
+    def test_next_step_delegation_does_not_ask_from_the_subagent(self):
+        self.assertIn(
+            'delegated subagent must return its questions to this conversation',
+            self.flat,
+        )
+
+    def test_next_step_no_longer_routes_to_teams(self):
+        self.assertNotIn('Team routes', self.routes)
+        self.assertNotIn('/team-', self.routes)
+        self.assertNotIn('team route', self.flat)
+        spec = SPEC.read_text(encoding='utf-8')
+        self.assertNotIn('team route', spec)
 
     def test_shared_mode_says_reasoning_is_not_delivery(self):
         flat = re.sub(r'\s+', ' ', self.modes)
@@ -215,8 +153,10 @@ class QuestionDeliveryGuardTests(unittest.TestCase):
         self.assertIn('return the pending decision to the orchestrating conversation', flat)
 
     def test_all_team_skills_handle_a_missing_question_tool(self):
-        skills = {skill for _, skill, _ in team_rows(ROUTES.read_text(encoding='utf-8'))}
-        self.assertEqual(len(skills), 9)
+        skills = {
+            'team-combat', 'team-narrative', 'team-ui', 'team-audio',
+            'team-level', 'team-live-ops', 'team-qa', 'team-polish', 'team-release',
+        }
         for skill in skills:
             with self.subTest(skill=skill):
                 text = (ROOT / '.claude/skills' / skill / 'SKILL.md').read_text(encoding='utf-8')
@@ -228,11 +168,6 @@ class QuestionDeliveryGuardTests(unittest.TestCase):
                     'A question drafted in reasoning is not a question',
                 ):
                     self.assertIn(phrase, flat, f'{skill} is missing: {phrase}')
-
-    def test_spec_keeps_the_team_route_out_of_agent_calls(self):
-        text = SPEC.read_text(encoding='utf-8')
-        self.assertIn('a team route starts the `/team-*` skill in', text)
-        self.assertIn('A team route uses no `Agent` call at all', text)
 
 
 if __name__ == '__main__':

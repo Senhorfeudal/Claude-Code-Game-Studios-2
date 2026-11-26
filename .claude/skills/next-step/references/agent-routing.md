@@ -1,16 +1,12 @@
 # Agent routing for `/next-step`
 
 Used only **after** the user chooses an action in Step 7b. This maps an action
-to a starting crew — or, for a cross-discipline slice, to a `team-*` orchestrator —
-and is not a task brief. The orchestrator still writes a brief with the chosen
-action, the state report and the crew roles.
+to a starting crew and is not a task brief. The orchestrator still writes a brief
+with the chosen action, the state report and the crew roles.
 
 ## Rules
 
-- Check **Team routes** first when the action spans several agent domains or
-  the phase names a team step. A team route replaces the individual crew; never
-  combine a `team-*` skill with loose agents in the same brief.
-- An individual crew has at most **three agents**. The first owns the result;
+- A crew has at most **three agents**. The first owns the result;
   the others consult. An owner may not delegate the whole task away.
 - Read `project.yaml` first. Use `engine.name` and `modes.rigor` from the
   resolved config; do not route on a guess about the project.
@@ -53,25 +49,3 @@ action, the state report and the crew roles.
 | `cut` | `/cut` | `producer`, `creative-director` | What to cut and the polish list that finishes it |
 | external research | `/next-step` | `gamer`, `creative-director` | Research first, then decide what it means for the project |
 | stuck / unclear | `/next-step` | `producer`, `creative-director` | Re-orient and reduce to one action |
-
-## Team routes (prefer these over a loose crew)
-
-Here the "crew" is one `user-invocable` team skill. It asks at each phase and
-spawns its own subagents, so it is not added to the three-agent count and no
-individual agents are attached to it. Start it in the conversation that owns
-the question widget — never spawn a team skill through `Agent`, because a
-subagent cannot ask the user and its phase gates would stall. It still needs the
-same Step 7b approval before it starts. At `workflow: minimal`, none of these
-are required — the user may still ask for one.
-
-| Action | Team skill | Prefer it when |
-|--------|------------|----------------|
-| Combat feature | `/team-combat` | Design through validation of a combat mechanic: melee, parry, ranged spread, enemies |
-| Narrative content | `/team-narrative` | Story, world lore, cutscenes, faction dialogue or narrative-driven levels |
-| UI screen or HUD | `/team-ui` | A screen needs authoring, visual design, implementation, review and polish together |
-| Audio for a feature or area | `/team-audio` | Direction and implementation of audio need sound design plus engine work |
-| Level or area | `/team-level` | A complete area needs level design, narrative, world building, art and QA |
-| Season or live event | `/team-live-ops` | Post-launch content spans live ops, economy, analytics and community |
-| Sprint or feature QA | `/team-qa` | A full QA cycle is wanted: plan, cases, execution, smoke and sign-off |
-| Polish pass | `/team-polish` | Performance, audio, visual and UX must be hardened across the same area |
-| Release | `/team-release` | A release candidate needs a go/no-go and coordinated release, QA and DevOps |
