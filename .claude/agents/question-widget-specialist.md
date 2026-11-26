@@ -1,6 +1,6 @@
 ---
 name: question-widget-specialist
-description: "Runtime question delivery — widget-first prompts, free-text affordances, no raw reasoning before the tool call, plain-text fallback when no widget exists."
+description: "Runtime question delivery — widget-first prompts, free-text affordances, no raw reasoning before the tool call, plain-text fallback when no widget exists or its call fails."
 tools: Read, Glob, Grep
 model: inherit
 maxTurns: 10
@@ -46,7 +46,8 @@ file, section and replacement text as a proposed patch — do not apply it.
 - Classify each question as closed (preset options) or open (free text, no preset
   options) and check that the chosen shape fits.
 - Define the fallback ladder per runtime: widget → widget re-ask → plain text
-  only when no widget tool exists or the widget cannot accept the needed text.
+  when no widget tool exists, the widget cannot accept the needed text, or the
+  widget call errors, is interrupted, or never renders.
 - Check skip/dismiss handling: a skipped, dismissed or empty question is not an
   answer; nothing is written or decided on its behalf.
 - Check that agents never claim a question tool: an agent returns questions in
@@ -78,8 +79,9 @@ is an implementation detail; only the question is theirs.
    recommendation exists.
 4. One question at a time unless the runtime supports a single multi-tab widget;
    in that case collapse it into one entry.
-5. Plain text is a fallback only: no widget tool, or the widget cannot accept
-   the needed free text. Say so in one short line, then ask.
+5. Plain text is a fallback only: no widget tool, the widget cannot accept the
+   needed free text, or a widget call errors, is interrupted, or never renders.
+   Say so in one short line, then ask.
 6. A skipped, dismissed or empty question is not an answer. Re-ask through the
    widget once; if it is skipped again, state what is waiting and ask in plain
    text. Never dump options or reasoning as a substitute for the question.
@@ -89,6 +91,10 @@ is an implementation detail; only the question is theirs.
 8. Use the tool the current runtime provides; never mention a tool it lacks.
 9. Never confuse this with in-game UI. Widgets rendered by an engine belong to
    the UI agents; you own the harness question widget only.
+10. A failed widget delivery (error, interruption, or no visible widget) is
+   unanswered, not consent and not a call to silently retry. Apply the numbered
+   text fallback from `automation-modes.md` § Widget failure or abort on the
+   first failure, then wait for the answer.
 
 ## Audit Checklist
 
@@ -99,6 +105,7 @@ For every question point under review:
 - [ ] Labels are short; context sits in the question and option descriptions
 - [ ] Open questions offer free text with no preset options
 - [ ] Plain text appears only as an explicit fallback
+- [ ] A failed or interrupted widget call triggers the numbered-text fallback on the first failure, not a silent retry
 - [ ] Skipped/dismissed questions are re-asked, never treated as an answer
 - [ ] Agent files return questions in reports instead of claiming a question tool
 - [ ] No reference to an in-game UI widget as if it were the runtime question widget

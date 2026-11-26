@@ -65,6 +65,14 @@ No gate IDs assigned.
 - Recommends returning the question and the proposed file path in the report for the orchestrator to put to the user
 - Does not recommend adding the question tool to the agent's `tools:` list
 
+### Case 7: Question widget call aborted
+**Input:** "The `question` tool call returns `Tool execution interrupted`; the user never saw a widget."
+**Expected behavior:**
+- Treats the failed delivery as unanswered — not consent, and not a skipped question to retry silently
+- Requires the question to be restated immediately as numbered text in the user-visible reply, with a free-text answer line
+- Requires waiting for that answer before any write, commit or push
+- Cites `automation-modes.md` § Widget failure or abort
+
 ---
 
 ## Protocol Compliance
@@ -75,6 +83,7 @@ No gate IDs assigned.
 - [ ] Proposed patches include exact replacement text and destination path
 - [ ] Open questions stay free-text; closed questions keep short mutually exclusive labels
 - [ ] Plain text is presented only as an explicit fallback
+- [ ] A failed or interrupted widget call uses the numbered-text fallback on the first failure, not a silent retry
 - [ ] Runtime tool names match the runtime in scope; no invented tool names
 - [ ] Questions needing a decision are returned in the report with options and a recommendation
 
@@ -82,6 +91,6 @@ No gate IDs assigned.
 
 ## Coverage Notes
 - Case 1 protects the user-visible symptom: raw reasoning appearing next to a widget.
-- Cases 3 and 4 cover headless runs and skipped widgets — the two ways the widget path fails.
+- Cases 3 and 4 cover headless runs and skipped widgets; case 7 covers a widget call that errors or is interrupted before anything renders.
 - Case 5 keeps the agent's name from pulling in-game UI work into its domain.
 - Case 6 keeps agent files consistent with `agent-check.sh`'s asks-user observations.

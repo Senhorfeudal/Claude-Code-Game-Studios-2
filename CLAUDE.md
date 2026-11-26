@@ -53,8 +53,9 @@ Every task follows: **Question -> Options -> Decision -> Draft -> Approval**
 - **Questions go through the runtime's question widget** (`AskUserQuestion` in Claude Code,
   `question` in OpenCode and other harnesses): no reasoning or draft text before the call,
   context belongs in the question and option descriptions. Plain text is a fallback only when
-  no widget tool exists. A skipped question is re-asked through the widget. See
-  `.claude/docs/automation-modes.md` § Question delivery.
+  no widget tool exists, or when a widget call errors, is interrupted, or never renders —
+  then restate the question as numbered text immediately and wait. A skipped question is
+  re-asked through the widget. See `.claude/docs/automation-modes.md` § Question delivery.
 - Agents MUST show drafts or summaries before requesting approval
 - Multi-file changes require explicit approval for the full changeset
 - No commits without user instruction

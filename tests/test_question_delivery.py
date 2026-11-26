@@ -40,6 +40,20 @@ class QuestionDeliveryTests(unittest.TestCase):
                     offenders.append(f'{path.relative_to(ROOT)}: {phrase}')
         self.assertEqual(offenders, [], '\n'.join(offenders))
 
+    def test_failed_widget_fallback_is_specified(self):
+        modes = (ROOT / '.claude/docs/automation-modes.md').read_text(encoding='utf-8')
+        claude = (ROOT / 'CLAUDE.md').read_text(encoding='utf-8')
+        agent = (ROOT / '.claude/agents/question-widget-specialist.md').read_text(encoding='utf-8')
+        spec = (ROOT / 'studio-tests/agents/specialists/question-widget-specialist.md').read_text(encoding='utf-8')
+        self.assertIn('Widget failure or abort', modes)
+        self.assertIn('failed delivery', modes)
+        self.assertIn('restate the question as plain numbered', modes)
+        self.assertIn('never renders', modes)
+        self.assertIn('never renders', claude)
+        self.assertIn('a widget call errors, is interrupted, or never renders', agent)
+        self.assertIn('Widget failure or abort', agent)
+        self.assertIn('Case 7: Question widget call aborted', spec)
+
 
 class QuestionWidgetAgentTests(unittest.TestCase):
     def test_agent_is_registered(self):

@@ -144,6 +144,25 @@ user question goes through it.
 - Use the tool the current runtime provides. Never mention a question tool the
   runtime does not have, and never narrate the tool choice to the user.
 
+### Widget failure or abort
+
+A question tool call that errors, is interrupted, or never renders a visible
+widget is a **failed delivery**, not an answered question and not a skipped
+question to silently retry.
+
+- On the **first** failure, immediately restate the question as plain numbered
+  text in the user-visible reply: the question, one line per option with its
+  label and context, and a free-text answer line. Never leave it only in
+  reasoning.
+- Wait for that answer before writing, committing, pushing, or picking an option
+  on the user's behalf. A text fallback is still a question; silence is not
+  consent.
+- When the widget works again, the next question goes through the widget first.
+  The fallback applies per failed call; it is not a switch to text mode.
+- A server-side watchdog (for example the `question-watchdog` OpenCode plugin)
+  may publish the same fallback automatically. Do not duplicate it — answer the
+  copy you can see.
+
 `question-widget-specialist` audits this protocol and recommends wording,
 option shapes and fallbacks. It owns the harness question widget only — not
 in-game UI widgets, which belong to the UI agents.
