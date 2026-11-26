@@ -69,6 +69,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (Godot architecture decisions, node/scene patterns, language selection)
 - [ ] Redirects language-specific implementation to godot-gdscript-specialist or godot-csharp-specialist
 - [ ] Returns structured findings (decision trees, pattern recommendations with rationale)

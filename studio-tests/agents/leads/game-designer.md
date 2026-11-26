@@ -76,6 +76,7 @@ Verified by reading the agent's `.claude/agents/game-designer.md` frontmatter:
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Drafts mechanic documents in the Design Document Standard's sections and asks before writing each to `design/gdd/`
 - [ ] Stays within declared game design domain
 - [ ] Escalates design-vs-formula conflicts to creative-director when unresolved

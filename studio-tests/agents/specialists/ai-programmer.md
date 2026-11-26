@@ -63,6 +63,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (NPC behavior, pathfinding, perception, state machines)
 - [ ] Redirects out-of-domain requests to correct agent (tools-programmer for navmesh authoring tools, engine-programmer for core engine systems, game-designer for enemy behavior design)
 - [ ] Returns structured findings (behavior tree specs, state machine diagrams, code scaffolds)

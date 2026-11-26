@@ -66,6 +66,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (Unreal patterns, Blueprint/C++, UE subsystems)
 - [ ] Answers Unity or other-engine requests with the Unreal equivalent, never wrong-engine code
 - [ ] Proposes class structure, data flow and trade-offs before implementing (Implementation Workflow step 3) rather than freeform opinions

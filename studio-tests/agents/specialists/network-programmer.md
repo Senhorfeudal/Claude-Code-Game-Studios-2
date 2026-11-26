@@ -65,6 +65,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (replication, lag compensation, protocol design, matchmaking)
 - [ ] Redirects server deployment to devops-engineer
 - [ ] Returns structured findings (sync strategies, protocol specs, bandwidth estimates)

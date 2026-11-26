@@ -69,6 +69,7 @@ Verified by reading the agent's `.claude/agents/level-designer.md` frontmatter:
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Level documents it drafts contain the Level Document Standard's nine sections
 - [ ] Stays within declared level design domain
 - [ ] Escalates challenge-density vs. pacing conflicts to creative-director

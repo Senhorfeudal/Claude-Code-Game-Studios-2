@@ -77,6 +77,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (event taxonomy, funnels, A/B test design, dashboards, privacy)
 - [ ] Redirects implementation requests to programmers with an integration spec, not code
 - [ ] Produces A/B test designs covering hypothesis, segmentation, variant assignment, success metrics, minimum sample size and minimum run duration — never partial

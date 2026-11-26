@@ -65,6 +65,7 @@ No gate IDs assigned. Escalates critical vulnerabilities to technical-director.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (anti-cheat, save security, network security, vulnerability assessment, data privacy)
 - [ ] Redirects matchmaking / game logic requests to the owning agent (`network-programmer` for matchmaking)
 - [ ] Returns structured findings with severity classification (CRITICAL / HIGH / MEDIUM / LOW)

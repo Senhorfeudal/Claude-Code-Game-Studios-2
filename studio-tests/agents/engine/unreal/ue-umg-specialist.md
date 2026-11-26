@@ -63,6 +63,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (UMG structure, data binding, CommonUI, widget performance)
 - [ ] Redirects UX flow and navigation design requests to ux-designer, making no binding UX decisions itself
 - [ ] Returns structured findings (widget hierarchy + binding pattern) rather than freeform opinions

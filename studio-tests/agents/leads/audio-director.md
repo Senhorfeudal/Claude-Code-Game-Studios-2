@@ -69,6 +69,7 @@ Verified by reading the agent's `.claude/agents/audio-director.md` frontmatter:
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Names every audio asset it specifies with `[category]_[context]_[name]_[variant].[ext]`
 - [ ] Stays within declared audio domain
 - [ ] Defers implementation approach decisions to technical leads

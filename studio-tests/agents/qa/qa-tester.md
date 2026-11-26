@@ -72,6 +72,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (test case authoring, bug reports, test execution documentation, regression checklists)
 - [ ] Declines bug fix requests — reports the bug for assignment through qa-lead and offers a bug report plus regression tests, without writing the fix
 - [ ] Flags ambiguous acceptance criteria to qa-lead rather than inventing a testable interpretation

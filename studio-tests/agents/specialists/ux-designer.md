@@ -65,6 +65,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (UX flows, interaction design, IA, onboarding)
 - [ ] Redirects code implementation to ui-programmer, visual style to art-director
 - [ ] Presents 2-4 options with pros/cons and a recommendation before drafting, and defers the decision to the user

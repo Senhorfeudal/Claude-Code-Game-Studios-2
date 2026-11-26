@@ -65,6 +65,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (factions, world history, geography, ecology, world rules, cosmology)
 - [ ] Redirects dialogue writing requests to writer with contextual faction notes
 - [ ] Flags lore contradictions with both versions stated and resolution options offered — does not silently overwrite established lore

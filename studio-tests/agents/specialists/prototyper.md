@@ -72,6 +72,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (prototypes/ directory only; throwaway code for concept validation)
 - [ ] Declines production implementation requests, stating production is written from scratch and pointing to the prototype's REPORT.md as the hand-off
 - [ ] Produces a structured REPORT.md with a PROCEED / PIVOT / KILL recommendation, backed by evidence, after prototype evaluation

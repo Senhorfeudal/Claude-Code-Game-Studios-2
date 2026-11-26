@@ -66,6 +66,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (GAS: abilities, effects, attributes, tags, ability tasks)
 - [ ] Keeps GAS state replication inside the ASC (no double-replication); routes ability UI to ue-umg-specialist and multiplayer prediction concerns to ue-replication-specialist
 - [ ] Returns structured findings (ability outline + GameplayEffect definition) rather than vague descriptions

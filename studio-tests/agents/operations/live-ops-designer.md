@@ -65,6 +65,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (event structure, content cadence, retention design, battle pass design)
 - [ ] Redirects reward value and economy math requests to economy-designer
 - [ ] Flags predatory monetization patterns, offers a compliant option, and escalates to creative-director rather than implementing them silently

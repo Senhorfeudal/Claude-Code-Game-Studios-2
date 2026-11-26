@@ -65,6 +65,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (profiling, analysis, recommendations — not implementation)
 - [ ] Redirects optimization implementation to the owner of the system (technical-artist for rendering optimizations such as batching, engine-programmer for engine systems) rather than implementing it
 - [ ] Returns structured findings in its Performance Report Format (budget/actual/status tables, top bottlenecks with impact and recommendation, regressions)

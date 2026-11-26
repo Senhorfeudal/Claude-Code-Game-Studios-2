@@ -76,6 +76,7 @@ Verified by reading the agent's `.claude/agents/narrative-director.md` frontmatt
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Returns ND-CONSISTENCY verdicts using APPROVE / CONCERNS / REJECT only — or NOT ASSESSED, naming the input, when an input the gate names is missing and no inconsistency was found
 - [ ] Asks "May I create [filepath] with the section skeleton?" before creating a narrative document, and "May I write this section to [filepath]?" before writing each section
 - [ ] Stays within declared narrative domain

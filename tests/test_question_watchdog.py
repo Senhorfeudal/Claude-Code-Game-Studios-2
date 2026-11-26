@@ -19,8 +19,19 @@ class QuestionWatchdogTests(unittest.TestCase):
         self.assertIn("ctx.tool.hook('execute.before'", text)
         self.assertIn("ctx.tool.hook('execute.after'", text)
         self.assertIn('ctx.event.subscribe', text)
-        self.assertIn("types: ['form.created']", text)
+        self.assertIn("types: ['form.created', 'session.idle']", text)
         self.assertIn('ctx.session.synthetic', text)
+        self.assertIn('ctx.agent.transform', text)
+        self.assertIn("action: 'question', resource: '*', effect: 'deny'", text)
+
+    def test_aborted_call_is_recovered_from_the_transcript(self):
+        text = PLUGIN.read_text(encoding='utf-8')
+        self.assertIn('const scanSession', text)
+        self.assertIn('ctx.session.context({ sessionID })', text)
+        self.assertIn("state.status !== 'error'", text)
+        self.assertIn("error.type === 'aborted'", text)
+        self.assertIn('seenErrors', text)
+        self.assertIn('event?.properties?.sessionID', text)
 
     def test_fallback_is_visible_and_answerable(self):
         text = PLUGIN.read_text(encoding='utf-8')

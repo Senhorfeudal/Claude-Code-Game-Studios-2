@@ -76,6 +76,7 @@ Verified by reading the agent's `.claude/agents/creative-director.md` frontmatte
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Returns the verdict vocabulary the invoked gate's definition file lists — APPROVE / CONCERNS / REJECT for CD-PILLARS, CD-GDD-ALIGN, CD-SYSTEMS, CD-NARRATIVE and CD-PLAYTEST; READY / CONCERNS / NOT READY for CD-PHASE-GATE; `NOT ASSESSED`, naming the input, at any gate when an input the gate names is missing
 - [ ] Stays within declared creative domain
 - [ ] Escalates conflicts by presenting trade-offs to user rather than unilateral override

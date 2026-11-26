@@ -66,6 +66,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (pipeline, extraction, string quality, locale formats, i18n architecture)
 - [ ] Does not produce translations — redirects translation work to human translators/vendors
 - [ ] Flags locale-specific gaps (plural forms, RTL) as quality bugs requiring pipeline changes

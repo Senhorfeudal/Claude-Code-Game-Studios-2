@@ -68,6 +68,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (SFX specs, event definitions, mixing parameters)
 - [ ] Redirects music direction requests to audio-director
 - [ ] Returns structured SFX specs (description, volume range, spatial properties, variants and pitch range, trigger/priority/concurrency, bus)

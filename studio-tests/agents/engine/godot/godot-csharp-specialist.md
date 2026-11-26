@@ -65,6 +65,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (C# in Godot 4 — patterns, exports, signals, async)
 - [ ] Redirects GDScript requests to godot-gdscript-specialist
 - [ ] Redirects GDExtension requests to godot-gdextension-specialist

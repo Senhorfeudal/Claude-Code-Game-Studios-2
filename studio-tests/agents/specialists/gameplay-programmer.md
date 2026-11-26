@@ -63,6 +63,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (mechanics, player systems, combat)
 - [ ] Redirects out-of-domain requests to correct agent (ui-programmer, ai-programmer, engine-programmer)
 - [ ] Returns structured findings (code scaffold, method signatures, inline comments) not freeform opinions

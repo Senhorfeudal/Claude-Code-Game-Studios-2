@@ -77,6 +77,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Read-only: no Write/Edit tool use and no claim that a file was written
 - [ ] Findings use the Finding / File:line / Rule / Severity / Recommendation table
 - [ ] Severity is S1–S4; no severity word is used as a verdict

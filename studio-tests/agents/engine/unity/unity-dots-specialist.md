@@ -70,6 +70,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (ECS, Jobs, Burst, DOTS gameplay systems)
 - [ ] Redirects MonoBehaviour-only gameplay to gameplay-programmer
 - [ ] Returns structured output (IComponentData structs, ISystem implementations, `Baker<T>` authoring classes)

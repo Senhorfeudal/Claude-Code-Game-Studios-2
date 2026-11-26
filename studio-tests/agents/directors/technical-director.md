@@ -86,6 +86,7 @@ Verified by reading the agent's `.claude/agents/technical-director.md` frontmatt
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Returns the verdict vocabulary the invoked gate's definition file lists — APPROVE / CONCERNS / REJECT for TD-ARCHITECTURE, TD-ADR, TD-SYSTEM-BOUNDARY, TD-ENGINE-RISK, TD-MANIFEST and TD-CHANGE-IMPACT; VIABLE / CONCERNS / HIGH RISK for TD-FEASIBILITY; READY / CONCERNS / NOT READY for TD-PHASE-GATE; `NOT ASSESSED`, naming the input, at any gate when an input the gate names is missing
 - [ ] Stays within declared technical domain
 - [ ] Defers design priority conflicts to creative-director

@@ -8,6 +8,33 @@ existing project on the older config files.
 
 ---
 
+## [Unreleased]
+
+Changes made after the `v1.4.1` tag (`758ecf7`). The `1.4.1` entry below stays
+as released: the team routes it describes were true at that tag. No version tag
+has been cut for the changes in this section.
+
+**Changed**
+
+- **`/next-step` no longer routes to team skills.** The team path in `1.4.1`
+  was removed in `37ea5ed`; action routing now uses individual agents only.
+- **Question delivery belongs to the orchestrating conversation.** Subagents
+  return 2–4 options with a recommendation instead of calling a question tool.
+  All 51 agents declare the same clause and the runtime denies `question` to
+  each registered studio agent.
+- **`question-watchdog` also covers aborted calls.** A call interrupted before
+  execution never reaches the tool hooks, so the plugin scans the session
+  transcript at `session.idle` and still publishes the numbered-text fallback.
+
+**Added**
+
+- **`/filesdelete`** — scoped, irreversible cleanup of one selected item inside
+  the current project, gated by a typed confirmation of the exact name.
+- **`/gamer`** — read-only external scout that returns sourced improvement,
+  implementation and fix options for the orchestrator to put to the user.
+- **Failed-widget fallback protocol** — documented in
+  `.claude/docs/automation-modes.md`, with guardrails in `tests/`.
+
 ## [1.4.1] — 2026-11-26
 
 **`/next-step` no longer just reports what comes next — you choose the action.**

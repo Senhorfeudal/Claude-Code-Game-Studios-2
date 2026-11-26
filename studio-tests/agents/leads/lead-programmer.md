@@ -77,6 +77,7 @@ Verified by reading the agent's `.claude/agents/lead-programmer.md` frontmatter:
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Returns LP-CODE-REVIEW verdicts using APPROVE / CONCERNS / REJECT vocabulary only — or `NOT ASSESSED`, naming the input, when an input the gate names was not given or could not be read; an artifact the calling skill reports absent is a finding, in the gate's own words
 - [ ] Returns LP-FEASIBILITY verdicts using FEASIBLE / CONCERNS / INFEASIBLE vocabulary only — or `NOT ASSESSED`, naming the input, when an input the gate names was not given or could not be read; an artifact the calling skill reports absent is a finding, in the gate's own words
 - [ ] Stays within declared code architecture domain

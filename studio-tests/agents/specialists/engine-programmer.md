@@ -63,6 +63,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (rendering, physics, memory, resource loading, core framework)
 - [ ] Redirects gameplay feature requests to gameplay-programmer and build infrastructure changes to devops-engineer
 - [ ] Returns structured findings (implementation code, diagnosis steps, migration plans)

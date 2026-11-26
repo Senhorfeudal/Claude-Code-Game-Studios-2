@@ -67,6 +67,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (CI/CD, build scripts, version control, artifacts, environments)
 - [ ] Declines game code and networking requests and names who takes them (`lead-programmer` / `technical-director`, or the owning programmer)
 - [ ] Recommends trunk-based development when branching strategy is contested, citing `CLAUDE.md`'s Version Control line

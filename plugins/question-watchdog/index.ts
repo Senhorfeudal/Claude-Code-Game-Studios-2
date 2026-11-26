@@ -17,6 +17,7 @@ export default {
     const prefix = String(ctx.options?.prefix ?? 'Pergunta (widget não exibido)')
     const pending = new Map<string, Pending>()
     const lastPublished = new Map<string, { text: string; at: number }>()
+    const seenErrors = new Set<string>()
 
     const clear = (key: string) => {
       const entry = pending.get(key)
@@ -60,19 +61,58 @@ export default {
       return [prefix, '', ...blocks].join('\n').trim()
     }
 
+    // A question aborted before execution never reaches execute.before/after,
+    // so also recover it from the persisted transcript at a step boundary.
+    const scanSession = async (sessionID: string) => {
+      try {
+        const messages = await ctx.session.context({ sessionID })
+        const list = Array.isArray(messages) ? messages : []
+        for (const message of list.slice(-3)) {
+          const parts = (message as any)?.content ?? (message as any)?.parts ?? []
+          for (const part of parts) {
+            if (part?.type !== 'tool' || part?.name !== 'question') continue
+            const state = part.state ?? {}
+            if (state.status !== 'error') continue
+            const error = state.error ?? {}
+            const aborted = error.type === 'aborted' || /interrupt/i.test(String(error.message ?? ''))
+            if (!aborted) continue
+            const callID = part.id ?? part.callID ?? state.callID ?? 'question'
+            const key = `${sessionID}:${callID}`
+            if (seenErrors.has(key)) continue
+            seenErrors.add(key)
+            pending.set(key, {
+              sessionID,
+              text: format(state.input),
+              timer: setTimeout(() => void publish(key), 0),
+            })
+            void publish(key)
+          }
+        }
+      } catch (error) {
+        console.warn('[question-watchdog] could not scan session transcript', error)
+      }
+    }
+
     const sessionIDOf = (event: any): string | undefined =>
-      event?.sessionID ?? event?.context?.sessionID ?? event?.metadata?.sessionID
+      event?.sessionID ?? event?.context?.sessionID ?? event?.metadata?.sessionID ??
+      event?.properties?.sessionID
 
     // A form created by the built-in question tool means the widget was delivered.
     const controller = new AbortController()
     void (async () => {
       try {
         for await (const event of ctx.event.subscribe({
-          types: ['form.created'],
+          types: ['form.created', 'session.idle'],
           signal: controller.signal,
         })) {
-          const sessionID = (event as any)?.data?.form?.sessionID
-          if (sessionID) clearSession(sessionID)
+          const typed = event as any
+          if (typed.type === 'form.created') {
+            const sessionID = typed?.data?.form?.sessionID
+            if (sessionID) clearSession(sessionID)
+            continue
+          }
+          const sessionID = sessionIDOf(typed)
+          if (sessionID) void scanSession(sessionID)
         }
       } catch (error) {
         if (!controller.signal.aborted) console.warn('[question-watchdog] event stream ended', error)
@@ -116,8 +156,31 @@ export default {
       }
     })
 
+    // Agent rules are appended after global rules, so the last matching rule
+    // wins. Add the deny at runtime: the generated opencode.jsonc is rebuilt
+    // from the repo agents and drops frontmatter it does not map.
+    const agentRegistration = await ctx.agent.transform((editor: any) => {
+      for (const agent of editor.list()) {
+        const info = agent as any
+        const systemValue = info.system
+        const system = Array.isArray(systemValue)
+          ? systemValue.map((part: any) => (typeof part === 'string' ? part : part?.text ?? '')).join('\n')
+          : String(systemValue ?? '')
+        if (!system.includes('### Question Delivery (all runtimes)')) continue
+        const rules = Array.isArray(info.permissions) ? [...info.permissions] : []
+        if (rules.some((rule: any) => rule?.action === 'question' && rule?.effect === 'deny')) continue
+        editor.update(String(info.id), (target: any) => {
+          target.permissions = [
+            ...(Array.isArray(target.permissions) ? target.permissions : []),
+            { action: 'question', resource: '*', effect: 'deny' },
+          ]
+        })
+      }
+    })
+
     return () => {
       controller.abort()
+      void agentRegistration.dispose()
       for (const key of [...pending.keys()]) clear(key)
     }
   },

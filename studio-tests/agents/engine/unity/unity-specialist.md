@@ -70,6 +70,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (Unity architecture decisions, pattern selection, subsystem routing)
 - [ ] Treats Godot patterns as wrong-engine: checks `engine.name`, answers with the Unity equivalent, never emits Godot code
 - [ ] Redirects DOTS implementation to unity-dots-specialist

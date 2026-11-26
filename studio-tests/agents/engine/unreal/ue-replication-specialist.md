@@ -67,6 +67,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (property replication, RPCs, client prediction, bandwidth)
 - [ ] Routes server infrastructure and matchmaking requests to network-programmer without producing infrastructure design
 - [ ] Flags unvalidated server RPCs as security issues and recommends security-engineer review

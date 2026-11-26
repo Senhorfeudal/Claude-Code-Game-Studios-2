@@ -63,6 +63,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (editor tools, pipeline scripts, debug utilities)
 - [ ] Redirects game code requests to appropriate programmer agents
 - [ ] Returns structured findings (tool specs, editor extension code, pipeline scripts)

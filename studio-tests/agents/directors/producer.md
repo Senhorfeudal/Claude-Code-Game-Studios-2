@@ -86,6 +86,7 @@ Verified by reading the agent's `.claude/agents/producer.md` frontmatter:
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Returns the verdict vocabulary the invoked gate's definition file lists — REALISTIC / CONCERNS / UNREALISTIC for PR-SPRINT and PR-EPIC; REALISTIC / OPTIMISTIC / UNREALISTIC for PR-SCOPE; ON TRACK / AT RISK / OFF TRACK for PR-MILESTONE; READY / CONCERNS / NOT READY for PR-PHASE-GATE; `NOT ASSESSED`, naming the input, at any gate when an input the gate names is missing
 - [ ] Stays within declared production domain
 - [ ] Escalates design/technical conflicts by quantifying scope impact and presenting to user

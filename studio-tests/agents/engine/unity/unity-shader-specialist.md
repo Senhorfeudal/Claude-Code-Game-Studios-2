@@ -64,6 +64,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (Shader Graph, HLSL, VFX Graph, URP/HDRP customization)
 - [ ] Redirects gameplay and UI code to appropriate agents
 - [ ] Returns structured output (node graph descriptions, HLSL code, CustomPass patterns)

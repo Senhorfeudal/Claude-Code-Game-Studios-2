@@ -68,6 +68,7 @@ Verified by reading the agent's `.claude/agents/systems-designer.md` frontmatter
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Every formula it produces carries the four mandatory parts: named expression, variable table, output range, worked example
 - [ ] Stays within declared systems and formula domain
 - [ ] Escalates player-experience complexity trade-offs to creative-director

@@ -65,6 +65,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (shaders, VFX, rendering optimization, art pipeline)
 - [ ] Redirects art style decisions to art-director
 - [ ] Returns structured findings (shader code, optimization specs with metrics, node graphs)

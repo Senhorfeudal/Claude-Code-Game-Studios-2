@@ -21,11 +21,17 @@ question.
    visible synthetic message in the session, with numbered options and a
    free-text answer line.
 3. Clears the watchdog when the built-in tool completes, and publishes it
-   immediately on a tool error. Duplicate fallbacks for the same question are
-   suppressed for 60 seconds.
+   immediately on a tool error. A call aborted before execution never reaches
+   the tool hooks, so `session.idle` also scans the transcript for a failed
+   `question` part and publishes the same fallback. Duplicate fallbacks for the
+   same question are suppressed for 60 seconds.
+4. Adds a runtime `question` deny to every agent whose instructions carry the
+   `### Question Delivery (all runtimes)` clause. Agent rules are appended after
+   global rules, and the generated `opencode.jsonc` does not preserve this
+   frontmatter, so the transform is reapplied whenever the plugin loads.
 
-The plugin does not create or cancel forms and does not modify session state.
-It only enforces delivery.
+The plugin does not create or cancel forms and does not modify session state
+beyond publishing the fallback. It only enforces delivery.
 
 ## Load
 
@@ -60,5 +66,8 @@ Restart the OpenCode service after changing the plugin list.
 - Trigger a `question` call: the widget should appear. To exercise the
   fallback, block the form event and confirm a numbered-text message reaches
   the session within `waitMs`.
+- Interrupt the call before execution (`Tool execution interrupted`) and
+  confirm the numbered text still appears at the next `session.idle`.
+- Check `/api/agent`: every studio agent should carry a `question` deny rule.
 - Check the server log for `[question-watchdog]` warnings; a warning means a
   hook could not arm or publish, not that the question was delivered.

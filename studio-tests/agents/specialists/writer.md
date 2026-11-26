@@ -66,6 +66,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (dialogue, lore entries, item descriptions, in-game text)
 - [ ] Redirects world history and world rule requests to world-builder without producing unauthorized lore
 - [ ] Flags lore contradictions to narrative-director rather than silently writing inconsistent content

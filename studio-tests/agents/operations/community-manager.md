@@ -69,6 +69,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (player-facing communication, patch note text, crisis response, feedback triage)
 - [ ] Strips internal IDs, class names, and technical jargon from all player-facing output
 - [ ] Routes bug-fix requests to the team (qa-lead or a programmer) rather than attempting technical solutions

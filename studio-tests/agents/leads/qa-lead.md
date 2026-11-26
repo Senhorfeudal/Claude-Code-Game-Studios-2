@@ -84,6 +84,7 @@ Verified by reading the agent's `.claude/agents/qa-lead.md` frontmatter:
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Returns QL-STORY-READY verdicts using ADEQUATE / GAPS / INADEQUATE only — or NOT ASSESSED, naming the input, when an input the gate names is missing and no problem was found
 - [ ] Returns QL-TEST-COVERAGE verdicts using ADEQUATE / GAPS / INADEQUATE only — or NOT ASSESSED, naming the input, when an input the gate names is missing and no problem was found
 - [ ] Stays within declared QA and test strategy domain

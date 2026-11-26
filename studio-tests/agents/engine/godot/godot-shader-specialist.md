@@ -70,6 +70,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (Godot shading language, materials, VFX shaders, post-processing)
 - [ ] Redirects gameplay code requests to gameplay-programmer
 - [ ] Writes material and post-process shaders as `.gdshader` (Godot shading language) — never HLSL

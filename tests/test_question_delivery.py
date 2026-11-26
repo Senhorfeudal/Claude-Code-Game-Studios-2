@@ -2,6 +2,7 @@
 
 Run: python3 -m unittest discover -s tests -p test_question_delivery.py -v
 """
+import json
 import pathlib
 import unittest
 
@@ -73,3 +74,68 @@ class QuestionWidgetAgentTests(unittest.TestCase):
         self.assertEqual(count, 51, 'agent count drifted from the docs')
         claude = (ROOT / 'CLAUDE.md').read_text(encoding='utf-8')
         self.assertIn('51 coordinated Claude Code subagents', claude)
+
+
+class SubagentQuestionBoundaryTests(unittest.TestCase):
+    CANON_HEADING = '### Question Delivery (all runtimes)'
+    CANON_MARKERS = (
+        'Never use the runtime question tool (`question` / `AskUserQuestion`): it belongs',
+        'own window waiting for an answer',
+        '2-4',
+        'independent options',
+        '"(Recommended)"',
+        'This section overrides any softer wording',
+    )
+    SPEC_BULLET = (
+        '- [ ] Returns every pending question to the orchestrator with 2-4 options '
+        'and a recommendation; never calls the question tool or asks in its own window'
+    )
+
+    def test_every_agent_declares_the_unified_question_clause(self):
+        paths = sorted((ROOT / '.claude/agents').glob('*.md'))
+        self.assertEqual(len(paths), 51, 'agent count drifted from the docs')
+        offenders = []
+        for path in paths:
+            text = path.read_text(encoding='utf-8')
+            if self.CANON_HEADING not in text:
+                offenders.append(f'{path.name}: missing canonical heading')
+                continue
+            for marker in self.CANON_MARKERS:
+                if marker not in text:
+                    offenders.append(f'{path.name}: missing {marker!r}')
+        self.assertEqual(offenders, [], '\n'.join(offenders))
+
+    def test_every_agent_spec_requires_the_subagent_boundary(self):
+        paths = sorted((ROOT / 'studio-tests/agents').rglob('*.md'))
+        self.assertEqual(len(paths), 51, 'agent spec count drifted from the catalog')
+        offenders = []
+        for path in paths:
+            text = path.read_text(encoding='utf-8')
+            if self.SPEC_BULLET not in text:
+                offenders.append(str(path.relative_to(ROOT)))
+        self.assertEqual(offenders, [], '\n'.join(offenders))
+
+
+class RuntimeAgentConfigTests(unittest.TestCase):
+    CONFIG = pathlib.Path('/root/.oc-opencode2/config/opencode/opencode.jsonc')
+    MARKER = '### Question Delivery (all runtimes)'
+
+    @unittest.skipUnless(CONFIG.is_file(), 'runtime config not present on this machine')
+    def test_registered_studio_agents_deny_question(self):
+        data = json.loads(self.CONFIG.read_text(encoding='utf-8'))
+        agents = data.get('agents', {})
+        offenders = []
+        for name, agent in agents.items():
+            system = agent.get('system', '')
+            if isinstance(system, list):
+                system = '\n'.join(
+                    part if isinstance(part, str) else str(part.get('text', ''))
+                    for part in system
+                )
+            if self.MARKER not in system:
+                continue
+            rules = agent.get('permissions', [])
+            if not any(rule.get('action') == 'question' and rule.get('effect') == 'deny'
+                       for rule in rules):
+                offenders.append(name)
+        self.assertEqual(offenders, [], 'studio agents without question deny: ' + ', '.join(offenders))

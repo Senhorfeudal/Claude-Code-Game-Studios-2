@@ -68,6 +68,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (remapping, text scaling, colorblind modes, screen reader, standards compliance)
 - [ ] Redirects overall flow design to ux-designer and art palette decisions to art-director — the partners its Coordination section names for those areas
 - [ ] Returns structured findings with specific element names, contrast ratios, and criterion references

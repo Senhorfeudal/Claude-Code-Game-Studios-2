@@ -68,6 +68,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Read-only: no Write/Edit tool use and no claim that a file was written
 - [ ] Every source has a URL, recency and licence/evidence label; no invented citations
 - [ ] Suggestions are typed `IMPROVEMENT` / `IMPLEMENTATION` / `FIX` with a confidence level

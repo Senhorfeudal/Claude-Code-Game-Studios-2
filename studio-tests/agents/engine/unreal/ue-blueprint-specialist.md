@@ -65,6 +65,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (Blueprint architecture, performance, graph quality)
 - [ ] Routes C++ implementation requests to gameplay-programmer and boundary rulings to unreal-specialist
 - [ ] Grounds findings in its own Performance Rules and Blueprint Review Checklist, naming the rule each finding breaks, rather than freeform opinions

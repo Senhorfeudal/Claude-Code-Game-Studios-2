@@ -67,6 +67,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (release pipeline, certification checklists, version numbering, store submission)
 - [ ] Routes test case design requests to qa-lead without producing test specs
 - [ ] Returns NOT READY for a certification or rating failure and halts the pipeline — does not downgrade to advisory

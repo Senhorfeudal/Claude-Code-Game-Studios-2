@@ -66,6 +66,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (UI Toolkit, UGUI, data binding, UI performance)
 - [ ] Redirects UX flow design to ux-designer
 - [ ] Returns structured output (UXML, USS, C# binding code)

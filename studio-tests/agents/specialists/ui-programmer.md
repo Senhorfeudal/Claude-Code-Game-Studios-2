@@ -63,6 +63,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (menus, HUDs, UI framework, data binding)
 - [ ] Redirects UX flow design to ux-designer
 - [ ] Takes animation timing and easing from ux-designer / art-director specs rather than inventing them, and makes every animation skippable and motion-preference aware

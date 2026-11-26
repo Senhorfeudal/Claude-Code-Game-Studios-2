@@ -73,6 +73,7 @@ No gate IDs assigned.
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (Addressables loading, handle lifecycle, memory, catalogs, remote delivery)
 - [ ] Redirects rendering and gameplay asset-use code to engine-programmer and gameplay-programmer
 - [ ] Returns structured output (loading patterns, handle lifecycle code, streaming zone designs)

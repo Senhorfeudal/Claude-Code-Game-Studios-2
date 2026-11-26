@@ -65,6 +65,7 @@
 
 ## Protocol Compliance
 
+- [ ] Returns every pending question to the orchestrator with 2-4 options and a recommendation; never calls the question tool or asks in its own window
 - [ ] Stays within declared domain (loot tables, progression curves, resource economy, inflation/deflation analysis)
 - [ ] Redirects live ops scheduling requests to live-ops-designer without producing schedules
 - [ ] Flags inflation/deflation risks proactively with quantified sink/faucet analysis
