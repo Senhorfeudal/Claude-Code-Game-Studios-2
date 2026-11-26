@@ -1,4 +1,4 @@
-# Contributing to Claude Code Game Studios
+# Contributing to Senhorfeudal Game Studios
 
 CCGS is a coordination framework for indie game development using Claude Code.
 Contributions are welcome — bug fixes, new skills that fill a real gap, agent
