@@ -28,7 +28,7 @@ faz a ponte dos validators bash existentes. O `CLAUDE.md` original foi mantido;
 | Hooks | `.opencode/plugins/ccgs-bridge/index.js` | Encaminha `validate-commit.sh`, `validate-push.sh`, `validate-write.sh`, `validate-registry.sh`, `validate-assets.sh` e `validate-skill-change.sh` para os hooks de ferramenta do OpenCode, com fail-open. |
 | Question fallback | `plugins/question-watchdog/index.ts` | Plugin já existente no upstream, agora ativado pela config do projeto. |
 | Ferramentas | `.opencode/scripts/generate-opencode-layer.py`, `.opencode/scripts/verify-port.py` | Regeneração determinística da camada e verificação de arquivos + API + ativação de skill. |
-| Documentação | `README.md`, `CHANGELOG.md`, este relatório | Aviso de que o checkout também funciona no OpenCode e link para os detalhes. |
+| Documentação | `README.md`, `CHANGELOG.md`, este relatório | README apresenta o repositório como port para OpenCode V2 (com Claude Code como compatibilidade) e linka os detalhes. |
 
 Os 80 `SKILL.md` upstream não foram alterados: o wrapper apenas delega para
 eles. Assim, correções no template Claude Code continuam valendo para os dois
@@ -144,3 +144,5 @@ O histórico Git upstream foi preservado a partir de `43e1952`; o remote
 `origin` aponta para `https://github.com/Senhorfeudal/Claude-Code-Game-Studios-2.git`.
 As mudanças deste port foram adicionadas como um commit único sobre esse
 histórico, mantendo `CLAUDE.md`, `.claude/` e os testes originais intactos.
+A descrição e os topics do GitHub também foram atualizados para destacar o port
+(`opencode`, `opencode-v2`), mantendo `claude-code` como compatibilidade.

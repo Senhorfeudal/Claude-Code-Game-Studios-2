@@ -1,36 +1,42 @@
 <p align="center">
   <h1 align="center">Senhorfeudal Game Studios</h1>
+  <p align="center"><strong>Port para OpenCode V2</strong></p>
   <p align="center">
-    Describe a game. Claude Code asks a few questions, writes a one-page brief,
+    Describe a game. OpenCode asks a few questions, writes a one-page brief,
     and builds a playable browser game from it.
     <br />
     Then you change it, grow it and finish it, one step at a time.
+    <br />
+    <small>Template Claude Code original mantido como compatibilidade em <code>.claude/</code>.</small>
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <a href="https://code.claude.com/docs"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
+  <a href="https://opencode.ai/docs"><img src="https://img.shields.io/badge/port-OpenCode%20V2-7C3AED" alt="Port for OpenCode V2"></a>
+  <a href="https://code.claude.com/docs"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Original template: Claude Code"></a>
 </p>
 
 ---
 
-## OpenCode port
+## OpenCode V2 port
 
-This checkout also includes a native OpenCode V2 layer: `AGENTS.md` replaces the
-root instruction file, `.opencode/skills/` and `.opencode/commands/` expose all
-80 skills as skills and slash commands, `.opencode/agents/` exposes all 51
-specialists as subagents, and `.opencode/plugins/` bridges the studio's bash
-validators. See `.opencode/OPENCODE-PORT.md` for the tool-name mapping and known
-gaps, and [docs/OPENCODE-PORT-REPORT.md](docs/OPENCODE-PORT-REPORT.md) for the
-full change list and test evidence. The original Claude Code template files
-remain in `.claude/`.
+This repository is the OpenCode V2 port of Senhorfeudal Game Studios.
+`AGENTS.md` replaces the root instruction file, `.opencode/skills/` and
+`.opencode/commands/` expose all 80 skills as skills and slash commands,
+`.opencode/agents/` exposes all 51 specialists as subagents, and
+`.opencode/plugins/` bridges the studio's bash validators. See
+`.opencode/OPENCODE-PORT.md` for the tool-name mapping and known gaps, and
+[docs/OPENCODE-PORT-REPORT.md](docs/OPENCODE-PORT-REPORT.md) for the full change
+list and test evidence. The original Claude Code template files remain in
+`.claude/` and `CLAUDE.md` for compatibility.
 
 ---
 
 ## Make me a game
 
-Open Claude Code in a copy of this repository and say what you want:
+Open OpenCode in a copy of this repository and say what you want (Claude Code
+users can run the same command — see `CLAUDE.md`):
 
 ```
 /prototype a fishing game where the rare fish only bite at dusk
@@ -117,7 +123,8 @@ clutter, not evidence.
 ### Prerequisites
 
 - [Git](https://git-scm.com/)
-- [Claude Code](https://code.claude.com/docs/en/setup) — the native installer is recommended (`npm install -g @anthropic-ai/claude-code` also works, on Node.js 22+)
+- [OpenCode](https://opencode.ai/docs/) — primary runtime for this port (`opencode`; some installs use `opencode2`)
+- [Claude Code](https://code.claude.com/docs/en/setup) — optional, for the original template flow (`npm install -g @anthropic-ai/claude-code` on Node.js 22+)
 - [Python 3](https://www.python.org/) — reads `project.yaml` for every skill and hook; without it every setting silently falls back to its default
 - Bash — runs every hook; built into macOS and Linux, and on Windows it comes with [Git for Windows](https://git-scm.com/downloads/win). Without it on Windows the hooks skip themselves, and session start says their checks are off
 - **Chrome, Edge or Chromium** — `/prototype` plays and screenshots each game in it; without one, those checks say they were not assessed
@@ -133,13 +140,14 @@ Hooks fail gracefully if optional tools are missing — you just lose validation
    cd my-game
    ```
 
-2. **Open Claude Code in the project's root folder** (the one holding
+2. **Open OpenCode in the project's root folder** (the one holding `AGENTS.md`,
    `CLAUDE.md` and `project.yaml`) and start a session:
    ```bash
-   claude
+   opencode
    ```
-   Starting it in a subfolder such as `src/` skips the project's hooks, deny
-   rules and ask-first permission mode.
+   Claude Code users can keep using `claude`; both runtimes are supported.
+   Starting in a subfolder such as `src/` skips the project's hooks, deny rules
+   and ask-first permission mode.
 
 3. **Type `/prototype` and your idea**, or **run `/start`**, which asks where
    you are (make me a game, an idea or none yet, clear design, existing work)
@@ -389,7 +397,7 @@ matches your project (a web project uses the general programmers):
 
 ### Slash Commands
 
-Type `/` in Claude Code to access all 77 skills (plus three old names that point to their new ones):
+Type `/` in OpenCode (or Claude Code) to access all 80 skills (plus three old names that point to their new ones):
 
 **Make a Game**
 `/prototype` `/cut`
@@ -523,7 +531,7 @@ This repository began as a rebranded fork of [Claude Code Game Studios](https://
 
 ---
 
-*Built for Claude Code. Maintained and extended — contributions welcome via [GitHub Discussions](https://github.com/Senhorfeudal/Claude-Code-Game-Studios-2/discussions).*
+*OpenCode V2 port of the Claude Code template. Maintained and extended — contributions welcome via [GitHub Discussions](https://github.com/Senhorfeudal/Claude-Code-Game-Studios-2/discussions).*
 
 ## License
 
