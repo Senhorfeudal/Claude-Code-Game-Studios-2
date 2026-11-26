@@ -25,10 +25,11 @@ Output is a short "Where You Are" block with `✓ Done`, exactly one `→ Next u
 optional `~ Also available`, and `Coming up after that`. The verdict line is
 `Verdict: **COMPLETE** — next steps identified.` Step 7b then asks, in the
 runtime question widget, which action to take; maps the choice to a crew using
-`.claude/skills/next-step/references/agent-routing.md`; asks a second time
-before spawning it; and only then delegates through `Agent`. The skill stays
-read-only: no files are written by it, no director gates are invoked, and no
-crew runs without explicit approval.
+`.claude/skills/next-step/references/agent-routing.md`, checking the **Team
+routes** table first for cross-discipline work; asks a second time before
+spawning it; and only then delegates through `Agent`. The skill stays read-only:
+no files are written by it, no director gates are invoked, and no crew or team
+runs without explicit approval.
 
 ---
 
@@ -43,8 +44,9 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] Does NOT contain "May I write" language, and `allowed-tools` has no Write or Edit (skill is read-only)
 - [ ] Has a next-step handoff (one `→ Next up` recommendation plus escalation paths)
 - [ ] `allowed-tools` includes `AskUserQuestion` and `Agent`, but no `Write` or `Edit`
-- [ ] Has a Step 7b that asks which action to take, routes it through `references/agent-routing.md`, and requires "Start this crew" before any `Agent` call
+- [ ] Has a Step 7b that asks which action to take, checks `references/agent-routing.md` Team routes before individual crews, and requires "Start this crew" before any `Agent` call
 - [ ] States that a skipped question is not an answer and that the skill writes no files
+- [ ] States that a team route replaces the three-agent crew and attaches no loose agents
 
 ---
 
@@ -404,6 +406,40 @@ Fixture defaults.
 - [ ] The crew has at most three agents, first owns the result, and every name exists in `.claude/agents/`
 - [ ] No `Agent` call before the second question is answered "Start this crew"
 - [ ] `gamer` is marked read-only and cannot implement the brief
+- [ ] No files written by the skill
+
+---
+
+### Case 12: The user picks a cross-discipline action from the widget
+
+**Fixture:**
+- `project.yaml` sets `modes.rigor: standard`, `engine.name: Web`; a combat
+  feature is in scope
+- The runtime has a question widget
+
+**Input:** `/next-step`, then the user picks `Combat feature (/team-combat)` from the widget
+
+**Expected behavior:**
+1. Step 7 prints the state block, then Step 7b calls the question tool directly
+2. Before choosing individual agents, the orchestrator checks the **Team
+   routes** table of `references/agent-routing.md`; `/team-combat` is the route
+   because the action spans design, implementation, audio and QA
+3. The crew block names one team skill, not individual agents; it says the
+   skill asks at each phase and spawns its own subagents
+4. The second question asks for approval with the same three options:
+   `Start this crew`, `Change the agents`, `Do it myself`
+5. Only `Start this crew` delegates; the brief carries the chosen action and
+   the Step 7 state. The skill writes no files and attaches no loose agents
+6. At `workflow: minimal` the same team route may be offered but is never
+   labeled required
+7. Verdict is `COMPLETE — action chosen, crew [approved | not approved | not requested].`
+
+**Assertions:**
+- [ ] Team routes are checked before the individual `Routes` table
+- [ ] The chosen team skill exists in `.claude/skills/` and is `user-invocable`
+- [ ] No individual agent is added to the team brief
+- [ ] No `Agent` call before the second question is answered "Start this crew"
+- [ ] The minimal-path fixture never presents a team skill as required
 - [ ] No files written by the skill
 
 ---

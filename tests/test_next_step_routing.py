@@ -1,7 +1,8 @@
 """Guardrails for /next-step action selection and crew routing.
 
 The skill must stay read-only: it reports state, asks which action to take,
-maps that action to at most three agents, asks again, and only then delegates.
+maps that action to a team skill or at most three agents, asks again, and only
+then delegates.
 Run: python3 -m unittest discover -s tests -p test_next_step_routing.py -v
 """
 import pathlib
@@ -26,6 +27,19 @@ def route_rows(text):
         strip = lambda value: re.sub(r'^`(.*)`$', r'\1', value)
         crew = re.findall(r'`([a-z0-9-]+)`', cells[2])
         yield strip(cells[0]), strip(cells[1]), crew, cells[3]
+
+
+def team_rows(text):
+    """Yield (action, skill, preference) from the Team routes table."""
+    section = text.split('## Team routes', 1)[1]
+    for line in section.splitlines():
+        if not line.startswith('| ') or line.startswith('| Action'):
+            continue
+        cells = [cell.strip() for cell in line.strip('|').split('|')]
+        if len(cells) != 3:
+            continue
+        skill = re.sub(r'^`(.*)`$', r'\1', cells[1]).lstrip('/')
+        yield cells[0], skill, cells[2]
 
 
 class NextStepSkillTests(unittest.TestCase):
@@ -109,8 +123,52 @@ class AgentRoutingTests(unittest.TestCase):
 
     def test_skill_points_to_the_routing_reference(self):
         text = SKILL.read_text(encoding='utf-8')
+        flat = re.sub(r'\s+', ' ', text)
         self.assertIn('.claude/skills/next-step/references/agent-routing.md', text)
         self.assertIn('Read `.claude/skills/next-step/references/agent-routing.md`', text)
+        self.assertIn('**Team routes** table first', flat)
+        self.assertIn('attach no loose agents to it', flat)
+        self.assertIn('a team route is never presented as required', flat)
+
+
+class TeamRoutingTests(unittest.TestCase):
+    EXPECTED = {
+        'team-combat', 'team-narrative', 'team-ui', 'team-audio',
+        'team-level', 'team-live-ops', 'team-qa', 'team-polish',
+        'team-release',
+    }
+
+    @classmethod
+    def setUpClass(cls):
+        cls.text = ROUTES.read_text(encoding='utf-8')
+        cls.flat = re.sub(r'\s+', ' ', cls.text)
+        cls.rows = list(team_rows(cls.text))
+
+    def test_all_nine_team_skills_are_routable(self):
+        self.assertEqual({skill for _, skill, _ in self.rows}, self.EXPECTED,
+                         'the team routing table drifted from the nine team skills')
+
+    def test_each_route_names_a_real_user_invokable_orchestrator(self):
+        for action, skill, preference in self.rows:
+            with self.subTest(skill=skill):
+                self.assertTrue(action and preference)
+                path = ROOT / '.claude/skills' / skill / 'SKILL.md'
+                self.assertTrue(path.is_file(), f'{skill} has no SKILL.md')
+                frontmatter = path.read_text(encoding='utf-8').split('---', 2)[1]
+                self.assertIn('user-invocable: true', frontmatter)
+                tools = frontmatter.split('allowed-tools:', 1)[1].split('\n', 1)[0]
+                self.assertIn('AskUserQuestion', tools)
+                self.assertIn('Agent', tools)
+
+    def test_team_replaces_the_individual_crew(self):
+        for phrase in (
+            'Check **Team routes** first',
+            'A team route replaces the individual crew',
+            'not added to the three-agent count',
+            'never combine a `team-*` skill with loose agents',
+            'At `workflow: minimal`, none of these are required',
+        ):
+            self.assertIn(phrase, self.flat, f'missing team routing rule: {phrase}')
 
 
 class NextStepSpecTests(unittest.TestCase):
@@ -121,6 +179,14 @@ class NextStepSpecTests(unittest.TestCase):
         self.assertIn('No `Agent` call before the second question', text)
         self.assertIn('`gamer` is marked read-only', text)
         self.assertIn('allowed-tools` includes `AskUserQuestion` and `Agent`', text)
+
+    def test_spec_covers_the_team_route_case(self):
+        text = SPEC.read_text(encoding='utf-8')
+        self.assertIn('### Case 12: The user picks a cross-discipline action', text)
+        self.assertIn('Team routes are checked before', text)
+        self.assertIn('The chosen team skill exists in `.claude/skills/`', text)
+        self.assertIn('No individual agent is added to the team brief', text)
+        self.assertIn('team route replaces the three-agent crew', text)
 
 
 if __name__ == '__main__':

@@ -463,15 +463,22 @@ an actual choice proceeds.
 
 ### Route the choice to a crew
 
-Read `.claude/skills/next-step/references/agent-routing.md`. Find the row whose
-step id or command matches the chosen action. For a custom action, match the
-closest step id; if none fits, say `NOT ASSESSED — NO ROUTE` and ask the user to
-name the agents instead of guessing.
+Read `.claude/skills/next-step/references/agent-routing.md`. Check its
+**Team routes** table first when the action spans several agent domains or the
+phase names a team step (a combat feature, a screen or HUD, audio, a level, a
+season/event, a full QA cycle, a polish pass or a release). In that case the
+"crew" is one `/team-*` skill: it asks at each phase and spawns its own agents,
+so attach no loose agents to it. Otherwise find the row in **Routes** whose step
+id or command matches the chosen action. For a custom action, match the closest
+step id; if none fits, say `NOT ASSESSED — NO ROUTE` and ask the user to name the
+agents instead of guessing.
 
-A crew is at most three agents. The first owns the result; the others consult.
-Apply the engine override from `project.yaml` and skip an agent whose domain
-clearly does not apply. `gamer` and `question-widget-specialist` are read-only:
-they may research or review question wording, never implement the action.
+An individual crew is at most three agents. The first owns the result; the
+others consult. Apply the engine override from `project.yaml` and skip an agent
+whose domain clearly does not apply. `gamer` and `question-widget-specialist`
+are read-only: they may research or review question wording, never implement
+the action. At `workflow: minimal`, a team route is never presented as required
+— offer it only if the user asks for it.
 
 Present the crew in one short block — the action, each agent with one line of
 why, and what the first agent will hand back. Then call the question tool a
