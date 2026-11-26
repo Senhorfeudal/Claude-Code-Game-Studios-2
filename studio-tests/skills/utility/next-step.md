@@ -23,8 +23,12 @@ in it adds an escalation footer. It is not a topic filter.
 
 Output is a short "Where You Are" block with `✓ Done`, exactly one `→ Next up`,
 optional `~ Also available`, and `Coming up after that`. The verdict line is
-`Verdict: **COMPLETE** — next steps identified.` No files are written and no
-director gates are invoked.
+`Verdict: **COMPLETE** — next steps identified.` Step 7b then asks, in the
+runtime question widget, which action to take; maps the choice to a crew using
+`.claude/skills/next-step/references/agent-routing.md`; asks a second time
+before spawning it; and only then delegates through `Agent`. The skill stays
+read-only: no files are written by it, no director gates are invoked, and no
+crew runs without explicit approval.
 
 ---
 
@@ -38,6 +42,9 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] Contains verdict keyword: COMPLETE
 - [ ] Does NOT contain "May I write" language, and `allowed-tools` has no Write or Edit (skill is read-only)
 - [ ] Has a next-step handoff (one `→ Next up` recommendation plus escalation paths)
+- [ ] `allowed-tools` includes `AskUserQuestion` and `Agent`, but no `Write` or `Edit`
+- [ ] Has a Step 7b that asks which action to take, routes it through `references/agent-routing.md`, and requires "Start this crew" before any `Agent` call
+- [ ] States that a skipped question is not an answer and that the skill writes no files
 
 ---
 
@@ -364,6 +371,40 @@ Fixture defaults.
 - [ ] Run B's `→ Next up` is `/brainstorm` (a made prototype is not sent back to `/prototype`)
 - [ ] Variant — `src/` holds 12 source files: `→ Next up` is `/reverse-document design src`, as in Case 8
 - [ ] Verdict is COMPLETE, and no file is written
+
+---
+
+### Case 11: The user picks an action from the widget
+
+**Fixture:**
+- `project.yaml` sets `modes.rigor: minimal`, `engine.name: Web`; no brief; no stories
+- The runtime has a question widget
+
+**Input:** `/next-step`, then the user picks `Game Brief (/brainstorm)` from the widget
+
+**Expected behavior:**
+1. Step 7 prints the short "Where You Are" block, then Step 7b calls the question
+   tool directly: `Next up`, at most three optional actions, and `Nothing right now`
+2. The question has short labels; commands, why the step is next and what part
+   of the project it touches are in the option descriptions
+3. No agent is spawned while the first question is open; a skipped or dismissed
+   question is re-asked once, then asked in plain text
+4. The action is routed through `references/agent-routing.md` to
+   `creative-director` (owner), `game-designer` and `gamer` (read-only, only if
+   references are wanted)
+5. The crew is shown with one line of why per agent, then a second question asks
+   for approval, with `Start this crew`, `Change the agents` and `Do it myself`
+6. Only `Start this crew` leads to `Agent` calls; `Do it myself` stops after the
+   recommendation. The skill writes no files and claims no writes by itself
+7. Verdict is `COMPLETE — action chosen, crew [approved | not approved | not requested].`
+
+**Assertions:**
+- [ ] Two question-tool calls, never before the state report and the crew block
+- [ ] The chosen action, not the default first blocker, drives the route
+- [ ] The crew has at most three agents, first owns the result, and every name exists in `.claude/agents/`
+- [ ] No `Agent` call before the second question is answered "Start this crew"
+- [ ] `gamer` is marked read-only and cannot implement the brief
+- [ ] No files written by the skill
 
 ---
 

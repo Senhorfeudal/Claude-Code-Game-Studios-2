@@ -3,7 +3,7 @@ name: next-step
 description: "Names the one next step: make a game, change it after play, grow it, or the next studio-mode step. Use when asked what to do next, or stuck."
 argument-hint: "[optional: what you just finished, e.g. 'finished design-review' or 'stuck on ADRs']"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Agent, Bash(bash "*/.claude/skills/next-step/../../hooks/yaml-helper.sh" resolve_config *), Bash(bash "*/.claude/skills/next-step/../../scripts/story-status.sh"), Bash(bash .claude/scripts/story-status.sh*), Bash(bash .claude/scripts/artifact-check.sh *), Bash(bash ".claude/scripts/artifact-check.sh" *), Bash(bash ./.claude/scripts/artifact-check.sh *), Bash(git log *)
+allowed-tools: Read, Glob, Grep, Agent, AskUserQuestion, Bash(bash "*/.claude/skills/next-step/../../hooks/yaml-helper.sh" resolve_config *), Bash(bash "*/.claude/skills/next-step/../../scripts/story-status.sh"), Bash(bash .claude/scripts/story-status.sh*), Bash(bash .claude/scripts/artifact-check.sh *), Bash(bash ".claude/scripts/artifact-check.sh" *), Bash(bash ./.claude/scripts/artifact-check.sh *), Bash(git log *)
 model: haiku
 ---
 
@@ -340,15 +340,18 @@ Glob finds no `prototypes/*/index.html`, check `engine.name` in `project.yaml`:
 ### External research (`gamer`)
 
 When the user asks what similar projects do, or the next step depends on
-benchmarking a mechanic or structure, spawn `gamer` once with a narrow brief:
-the engine and stage from `project.yaml`, the feature in scope, and the decision
-to inform. Keep the one next step first — research is an optional input, not a
-new compulsory phase.
+benchmarking a mechanic or structure, offer external research under
+`~ Also available` in Step 7. The user may pick it in Step 7b; only an approved
+crew may then spawn `gamer`, once, with a narrow brief: the engine and stage
+from `project.yaml`, the feature in scope, and the decision to inform. Keep the
+one next step first — research is an optional input, not a new compulsory
+phase.
 
-Return contract: "Return only (1) the sourced research brief, (2) 3-6 bullets of
-local comparison, (3) typed suggestions with owner skills/agents, and (4) one
-question with 2-4 options and a recommendation. Write no files." Offer its
-question under "Also available", widget-first. If it returns
+Return contract for the crew brief: "Return only (1) the sourced research
+brief, (2) 3-6 bullets of local comparison, (3) typed suggestions with owner
+skills/agents, and (4) one question with 2-4 options and a recommendation.
+Write no files." This skill asks that question through the question widget, not
+the agent, after the user approves the crew. If the research returns
 `NOT ASSESSED — NO DATA`, keep the step from the catalog and say no external
 reference was found.
 
@@ -434,6 +437,62 @@ Verdict: **COMPLETE** — next steps identified.
 
 ---
 
+## Step 7b: Choose the Action and Its Crew
+
+The report above answers "what's next?". Now let the user pick the action
+instead of assuming the first blocker is the one they want.
+
+Call the question tool directly, with no reasoning or draft text immediately
+before it. Build the options from Step 5 (or Step 4m at `minimal`):
+
+1. **`→ Next up`** — short label = the step name; description = the command, why
+   it is the blocker, and what part of the project it touches
+2. Each `~ Also available` step — one option each, at most three
+3. **Nothing right now** — description: keep the report and stop
+
+Keep labels short and put context in the descriptions. A free-text answer is
+already available through the runtime's own affordance: if the user types a
+different action, treat it as a custom action and route it with the rules
+below. With no question tool, use the plain-text fallback in
+`.claude/docs/automation-modes.md` (numbered options, no reasoning dump) and
+wait for the answer.
+
+**Do not spawn an agent yet.** A skipped or dismissed question is not an
+answer: re-ask once through the widget, then use the plain-text fallback. Only
+an actual choice proceeds.
+
+### Route the choice to a crew
+
+Read `.claude/skills/next-step/references/agent-routing.md`. Find the row whose
+step id or command matches the chosen action. For a custom action, match the
+closest step id; if none fits, say `NOT ASSESSED — NO ROUTE` and ask the user to
+name the agents instead of guessing.
+
+A crew is at most three agents. The first owns the result; the others consult.
+Apply the engine override from `project.yaml` and skip an agent whose domain
+clearly does not apply. `gamer` and `question-widget-specialist` are read-only:
+they may research or review question wording, never implement the action.
+
+Present the crew in one short block — the action, each agent with one line of
+why, and what the first agent will hand back. Then call the question tool a
+second time:
+
+- **Start this crew** — description: names the agents and notes they follow the
+  ask-before-write protocol
+- **Change the agents** — description: the user names different agents in free text
+- **Do it myself** — description: stop after the recommendation
+
+**Only "Start this crew" authorises `Agent` calls.** Until then this skill has
+written nothing and spawned nothing. On approval, spawn the crew with a brief
+that includes the chosen action, the project state from Step 7 and the crew
+roles; then stop and report what was delegated. Never claim a file was written
+by this skill — the agents own their work and their own approval questions.
+
+**Verdict after the choice:** `Verdict: **COMPLETE** — action chosen, crew
+[approved | not approved | not requested].`
+
+---
+
 ## Step 8: Gate Warning (if close)
 
 Skip this step at `minimal` — the minimal path has no stage gates.
@@ -474,7 +533,9 @@ out the `/gate-check` line: the minimal path has no stage gates (Step 4m).
 
 ## Collaborative Protocol
 
-- **Never auto-run the next skill.** Recommend it, let the user invoke it.
+- **Never auto-run the next skill or spawn a crew unasked.** Ask which action
+  to take through the widget, then ask again before delegating. A "Start this
+  crew" answer is the only permission to call `Agent`.
 - **Ask about MANUAL steps** rather than assuming complete or incomplete.
 - **Match the user's tone** — if they sound stressed ("I'm totally lost"), be
   reassuring and give one action, not a list of six.
