@@ -25,6 +25,12 @@ in `autonomous` mode it runs end to end, recording each phase outcome via
 (`is_always_ask_category` helper) always prompt regardless of mode. See
 `.claude/docs/automation-modes.md`.
 
+**No question tool:** if this pipeline is running inside a subagent or any other
+context without a question widget, never write the question or its options in
+chat or in reasoning — nobody there can answer. Return the pending decision to
+the orchestrating conversation as a 2–4 option question with a recommendation,
+and stop that phase. A question drafted in reasoning is not a question.
+
 ## Phase 0: Resolve Config
 
 !`bash "${CLAUDE_SKILL_DIR}/../../hooks/yaml-helper.sh" resolve_config --keys review_mode,automation,team.size,workflow,project.stage`

@@ -468,10 +468,13 @@ Read `.claude/skills/next-step/references/agent-routing.md`. Check its
 phase names a team step (a combat feature, a screen or HUD, audio, a level, a
 season/event, a full QA cycle, a polish pass or a release). In that case the
 "crew" is one `/team-*` skill: it asks at each phase and spawns its own agents,
-so attach no loose agents to it. Otherwise find the row in **Routes** whose step
-id or command matches the chosen action. For a custom action, match the closest
-step id; if none fits, say `NOT ASSESSED — NO ROUTE` and ask the user to name the
-agents instead of guessing.
+so attach no loose agents to it. Start that skill in the current conversation —
+never spawn it through `Agent`. A subagent has no question widget, so a team
+delegated that way cannot put its phase decisions to the user. Where the runtime
+has no Skill tool, recommend the `/team-*` command to the user and stop.
+Otherwise find the row in **Routes** whose step id or command matches the chosen
+action. For a custom action, match the closest step id; if none fits, say
+`NOT ASSESSED — NO ROUTE` and ask the user to name the agents instead of guessing.
 
 An individual crew is at most three agents. The first owns the result; the
 others consult. Apply the engine override from `project.yaml` and skip an agent
@@ -489,11 +492,14 @@ second time:
 - **Change the agents** — description: the user names different agents in free text
 - **Do it myself** — description: stop after the recommendation
 
-**Only "Start this crew" authorises `Agent` calls.** Until then this skill has
-written nothing and spawned nothing. On approval, spawn the crew with a brief
-that includes the chosen action, the project state from Step 7 and the crew
-roles; then stop and report what was delegated. Never claim a file was written
-by this skill — the agents own their work and their own approval questions.
+**Only "Start this crew" authorises delegation.** Until then this skill has
+written nothing and spawned nothing. For an individual crew, `Agent` calls carry
+a brief with the chosen action, the project state from Step 7 and the crew
+roles. For a team route, make no `Agent` call: start the `/team-*` skill in this
+conversation so its phase questions reach the widget. Then stop and report what
+was delegated. Never claim a file was written by this skill — the agents own
+their work and their own approval questions; a delegated subagent must return
+its questions to this conversation instead of asking in its own output.
 
 **Verdict after the choice:** `Verdict: **COMPLETE** — action chosen, crew
 [approved | not approved | not requested].`

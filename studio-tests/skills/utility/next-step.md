@@ -428,8 +428,10 @@ Fixture defaults.
    skill asks at each phase and spawns its own subagents
 4. The second question asks for approval with the same three options:
    `Start this crew`, `Change the agents`, `Do it myself`
-5. Only `Start this crew` delegates; the brief carries the chosen action and
-   the Step 7 state. The skill writes no files and attaches no loose agents
+5. Only `Start this crew` delegates; a team route starts the `/team-*` skill in
+   this conversation, never through `Agent`, so its phase questions reach the
+   widget. The brief carries the chosen action and the Step 7 state. The skill
+   writes no files and attaches no loose agents
 6. At `workflow: minimal` the same team route may be offered but is never
    labeled required
 7. Verdict is `COMPLETE — action chosen, crew [approved | not approved | not requested].`
@@ -439,6 +441,7 @@ Fixture defaults.
 - [ ] The chosen team skill exists in `.claude/skills/` and is `user-invocable`
 - [ ] No individual agent is added to the team brief
 - [ ] No `Agent` call before the second question is answered "Start this crew"
+- [ ] A team route uses no `Agent` call at all; the team skill runs where the widget lives
 - [ ] The minimal-path fixture never presents a team skill as required
 - [ ] No files written by the skill
 

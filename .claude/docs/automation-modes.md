@@ -135,6 +135,12 @@ user question goes through it.
   § Every mode: a question with no answer): re-ask through the widget once. If
   the widget is again skipped, or the runtime has no widget, state briefly what
   is waiting and ask in plain text — do not dump a reasoning draft as the question.
+- A question drafted in reasoning or printed as chat text is **not a question**
+  when a widget is available — the widget is the delivery channel, and a timer
+  running under that text is not a running prompt. If you are a subagent or are
+  otherwise in a context with no question tool, return the pending decision to
+  the orchestrating conversation with 2–4 options and a recommendation, then
+  stop; do not ask in your own output, where nobody can answer.
 - Use the tool the current runtime provides. Never mention a question tool the
   runtime does not have, and never narrate the tool choice to the user.
 

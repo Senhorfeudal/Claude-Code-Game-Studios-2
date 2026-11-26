@@ -58,9 +58,11 @@ action, the state report and the crew roles.
 
 Here the "crew" is one `user-invocable` team skill. It asks at each phase and
 spawns its own subagents, so it is not added to the three-agent count and no
-individual agents are attached to it. It still needs the same Step 7b approval
-before it starts. At `workflow: minimal`, none of these are required — the user
-may still ask for one.
+individual agents are attached to it. Start it in the conversation that owns
+the question widget — never spawn a team skill through `Agent`, because a
+subagent cannot ask the user and its phase gates would stall. It still needs the
+same Step 7b approval before it starts. At `workflow: minimal`, none of these
+are required — the user may still ask for one.
 
 | Action | Team skill | Prefer it when |
 |--------|------------|----------------|

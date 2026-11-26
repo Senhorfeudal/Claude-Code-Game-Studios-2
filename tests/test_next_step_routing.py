@@ -73,7 +73,7 @@ class NextStepSkillTests(unittest.TestCase):
         self.assertIn('Start this crew', self.text)
         self.assertIn('Change the agents', self.text)
         self.assertIn('Do it myself', self.text)
-        self.assertIn('Only "Start this crew" authorises `Agent` calls', self.text)
+        self.assertIn('Only "Start this crew" authorises delegation', self.text)
         self.assertIn('Never claim a file was written by this skill', self.flat)
 
     def test_rule_against_auto_running(self):
@@ -187,6 +187,52 @@ class NextStepSpecTests(unittest.TestCase):
         self.assertIn('The chosen team skill exists in `.claude/skills/`', text)
         self.assertIn('No individual agent is added to the team brief', text)
         self.assertIn('team route replaces the three-agent crew', text)
+
+
+class QuestionDeliveryGuardTests(unittest.TestCase):
+    """A question drafted in reasoning is not a question; subagents cannot ask."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.skill = SKILL.read_text(encoding='utf-8')
+        cls.flat = re.sub(r'\s+', ' ', cls.skill)
+        cls.routes = ROUTES.read_text(encoding='utf-8')
+        cls.modes = (ROOT / '.claude/docs/automation-modes.md').read_text(encoding='utf-8')
+
+    def test_team_route_stays_where_the_widget_is(self):
+        for phrase in (
+            'Start that skill in the current conversation',
+            'never spawn it through `Agent`',
+            'A subagent has no question widget',
+            'For a team route, make no `Agent` call',
+        ):
+            self.assertIn(phrase, self.flat, f'missing next-step rule: {phrase}')
+        self.assertIn('never spawn a team skill through `Agent`', self.routes)
+
+    def test_shared_mode_says_reasoning_is_not_delivery(self):
+        flat = re.sub(r'\s+', ' ', self.modes)
+        self.assertIn('is **not a question**', flat)
+        self.assertIn('return the pending decision to the orchestrating conversation', flat)
+
+    def test_all_team_skills_handle_a_missing_question_tool(self):
+        skills = {skill for _, skill, _ in team_rows(ROUTES.read_text(encoding='utf-8'))}
+        self.assertEqual(len(skills), 9)
+        for skill in skills:
+            with self.subTest(skill=skill):
+                text = (ROOT / '.claude/skills' / skill / 'SKILL.md').read_text(encoding='utf-8')
+                flat = re.sub(r'\s+', ' ', text)
+                for phrase in (
+                    '**No question tool:**',
+                    'never write the question or its options in chat or in reasoning',
+                    'Return the pending decision to the orchestrating conversation',
+                    'A question drafted in reasoning is not a question',
+                ):
+                    self.assertIn(phrase, flat, f'{skill} is missing: {phrase}')
+
+    def test_spec_keeps_the_team_route_out_of_agent_calls(self):
+        text = SPEC.read_text(encoding='utf-8')
+        self.assertIn('a team route starts the `/team-*` skill in', text)
+        self.assertIn('A team route uses no `Agent` call at all', text)
 
 
 if __name__ == '__main__':
