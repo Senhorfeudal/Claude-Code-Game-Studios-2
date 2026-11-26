@@ -312,7 +312,7 @@ project.yaml                       -- Machine-readable project config (engine, m
 .claude/
   settings.json                    -- Claude Code hooks and project settings
   agents/                          -- 51 agent definitions (YAML frontmatter)
-  skills/                          -- 79 SKILL.md files: 76 slash commands + 3 legacy aliases
+  skills/                          -- 80 SKILL.md files: 77 slash commands + 3 legacy aliases
   hooks/                           -- 15 hook commands across 8 events (.sh, wired by settings.json)
                                       + yaml-helper.sh, update-check.sh
   rules/                           -- 14 path-specific rule files

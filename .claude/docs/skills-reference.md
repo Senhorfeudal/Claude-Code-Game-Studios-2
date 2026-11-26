@@ -1,6 +1,6 @@
 # Available Skills (Slash Commands)
 
-76 slash commands organized by phase. Type `/` in Claude Code to access any of them.
+77 slash commands organized by phase. Type `/` in Claude Code to access any of them.
 
 > **Renamed in 1.3.0:** `/help` is now `/next-step`, `/settings` is now
 > `/project-settings` and `/changelog` is now `/write-changelog`, because other
@@ -128,6 +128,7 @@
 | `/vertical-slice` | Pre-Production validation — production-quality end-to-end build before committing to Production (Phase 4) |
 | `/onboard` | Generate contextual onboarding document for a new contributor or agent |
 | `/localize` | Localization workflow: string extraction, validation, translation readiness |
+| `/gamer` | Read-only external scout: researches similar games/repos and returns sourced options for a decision |
 
 ## Team Orchestration
 

@@ -248,7 +248,7 @@ not be read or parsed, or its checks could not run — name the reason).
 
 For `static all`, produce a summary table then list any non-compliant skills:
 ```
-=== Skill Static Check: All 76 Skills ===
+=== Skill Static Check: All 77 Skills ===
 
 Skill                  | Result       | Issues
 -----------------------|--------------|-------
@@ -278,7 +278,7 @@ whose frontmatter does not parse is a different case: Check 1 fails on it (see
 above), so it is reported **NON-COMPLIANT**, not NOT ASSESSED — the defect is in
 the skill, not in the linter's access to it.
 
-**And state the denominator.** `All 76 Skills` in the header must be the number
+**And state the denominator.** `All 77 Skills` in the header must be the number
 actually examined, not the number that exist: report `[N] of [M] skills checked`
 whenever they differ. A summary whose counts silently sum to less than its own
 title is the failure this skill is supposed to catch in others.
@@ -566,8 +566,8 @@ For each agent in catalog's `agents:` section:
 === Skill Test Coverage Audit ===
 Date: [date]
 
-SKILLS (76 total)
-Specs written: 76 (100%) | Never static tested: 76 | Never category tested: 76
+SKILLS (77 total)
+Specs written: 77 (100%) | Never static tested: 77 | Never category tested: 77
 
 Skill                  | Cat      | Has Spec | Last Static | S.Result | Last Cat | C.Result | Priority
 -----------------------|----------|----------|-------------|----------|----------|----------|----------
@@ -587,7 +587,7 @@ technical-director     | director   | YES      | never       | —      | never 
 Top 5 Priority Gaps (skills with no spec, critical/high priority):
 (none if all specs are written)
 
-Skill coverage:  76/76 specs (100%)
+Skill coverage:  77/77 specs (100%)
 Agent coverage:  51/51 specs (100%)
 ```
 
