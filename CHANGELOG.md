@@ -1,12 +1,41 @@
 # Changelog
 
-What's new in Claude Code Game Studios, written for the people using it.
+What's new in Senhorfeudal Game Studios, written for the people using it.
 
 See [UPGRADING.md](UPGRADING.md) for step-by-step upgrade instructions, and
 [docs/migration-guide-v1.1.md](docs/migration-guide-v1.1.md) if you have an
 existing project on the older config files.
 
 ---
+
+## [1.4.0] — 2026-11-26
+
+**First release of Senhorfeudal Game Studios.** The repository continues from
+Claude Code Game Studios v1.3.0 as an independent project under the same MIT
+license. The upstream copyright and credit remain in `LICENSE` and `README.md`.
+
+**Added**
+
+- `question-widget-specialist`, a read-only auditor of runtime question delivery.
+- `gamer`, a read-only scout that researches similar games, forums and
+  repositories on the web and returns sourced improvement / implementation /
+  fix suggestions with a question for the orchestrator. It is wired into
+  `/brainstorm`, `/prototype`, `/start` and `/next-step`.
+- CI running the regression suite and shell syntax checks on every push and PR.
+- Guardrails for branding and inventory counts, so upstream identity and
+  documented numbers cannot drift silently.
+
+**Fixed**
+
+- Six observation-helper bugs from upstream PRs #167, #168, #170, #171, #175
+  and #176, with regression tests.
+- Question delivery is now widget-first: no reasoning or draft text before the
+  tool call, plain text only as a fallback when no widget exists.
+- `agent-check.sh` no longer reports tool-name mentions, table rows and
+  negations as real asks to the user.
+- Clarified the inventory counts: 62 top-level templates (74 files with guides
+  and scaffold/config), 78 SKILL.md files (75 skills plus 3 legacy aliases),
+  and 15 hook commands across 8 events.
 
 ## [1.3.0] — 2026-11-09
 
