@@ -1,6 +1,6 @@
 # Available Skills (Slash Commands)
 
-75 slash commands organized by phase. Type `/` in Claude Code to access any of them.
+76 slash commands organized by phase. Type `/` in Claude Code to access any of them.
 
 > **Renamed in 1.3.0:** `/help` is now `/next-step`, `/settings` is now
 > `/project-settings` and `/changelog` is now `/write-changelog`, because other
@@ -17,6 +17,7 @@
 | `/setup-engine` | Configure engine + version, detect knowledge gaps, populate version-aware reference docs |
 | `/adopt` | Brownfield format audit — checks internal structure of existing GDDs/ADRs/stories, produces migration plan |
 | `/project-settings` | View or change project config — the effective merged values, or a local override in `project.local.yaml` |
+| `/filesdelete` | **Irreversible:** show the project's folder size and permanently delete ONE selected item inside the current project; asks twice, including the typed project name |
 
 ## Game Design
 

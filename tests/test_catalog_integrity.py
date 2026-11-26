@@ -1,7 +1,7 @@
 """Guardrails for the inventory counts published in README.md and quick-start.md.
 
-The repository has several different totals that are easy to confuse: 75 current
-skills plus 3 legacy aliases, 62 top-level templates plus 12 support files, and
+The repository has several different totals that are easy to confuse: current
+skills plus 3 legacy aliases, top-level templates plus support files, and
 15 hook commands across 8 event types. These tests pin the documented scope so
 the numbers cannot drift silently again.
 
@@ -89,14 +89,18 @@ class InventoryIntegrityTests(unittest.TestCase):
             f'{self.hook_commands} hook commands across {events} events', self.readme
         )
         self.assertIn(
-            f'78 SKILL.md files: 75 current skills + 3 legacy aliases', self.readme
+            f'{len(self.skill_dirs)} SKILL.md files: '
+            f'{len(self.catalog["skills"])} current skills + 3 legacy aliases',
+            self.readme,
         )
         self.assertIn(
             f'{len(self.top_templates)} top-level document templates; '
             f'{total_templates} files in total', self.readme
         )
         self.assertIn(f'{self.hook_commands} hook commands across {events} events', self.quick)
-        self.assertIn('75 slash commands + 3 legacy aliases', self.quick)
+        self.assertIn(
+            f'{len(self.catalog["skills"])} slash commands + 3 legacy aliases', self.quick
+        )
         self.assertIn(
             f'{len(self.top_templates)} top-level document templates '
             f'({total_templates} files: +{len(self.guidance)} guides, '

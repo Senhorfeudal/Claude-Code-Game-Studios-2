@@ -217,7 +217,7 @@ project.yaml                        # Project settings: engine, modes, goal
 .claude/
   settings.json                     # Hooks, permissions, safety rules
   agents/                           # 51 agent definitions (markdown + YAML frontmatter)
-  skills/                           # 78 SKILL.md files: 75 current skills + 3 legacy aliases
+  skills/                           # 79 SKILL.md files: 76 current skills + 3 legacy aliases
                                     #   (changelog, help, settings)
   hooks/                            # 18 scripts (bash) — 15 hook commands across 8 events, two
                                     #   helpers they source (yaml-helper.sh, update-check.sh),
@@ -250,7 +250,7 @@ studio-tests/                       # QA for the skills and agents themselves �
 
 Senhorfeudal Game Studios is a template you are meant to edit. `studio-tests/` is how
 you check that an edited or newly written skill still holds up — a catalog of all
-75 skills and 51 agents, per-category quality rubrics, behavioral specs, and
+76 skills and 51 agents, per-category quality rubrics, behavioral specs, and
 templates for writing specs of your own.
 
 ```
@@ -328,7 +328,7 @@ nine stories or features).
 | Category | Count | Description |
 |----------|-------|-------------|
 | **Agents** | 51 | Specialized subagents across design, programming, art, audio, narrative, QA, and production |
-| **Skills** | 75 | Slash commands for every workflow phase (`/prototype`, `/start`, `/design-system`, `/create-epics`, `/create-stories`, `/dev-story`, `/story-done`, etc.) |
+| **Skills** | 76 | Slash commands for every workflow phase (`/prototype`, `/start`, `/design-system`, `/create-epics`, `/create-stories`, `/dev-story`, `/story-done`, `/filesdelete`, etc.) |
 | **Hooks** | 15 | Automated validation on commits, pushes, asset changes, design-doc reads, writes and registries, session lifecycle, agent audit trail, and gap detection |
 | **Rules** | 14 | Path-scoped coding standards enforced when editing gameplay, engine, AI, UI, network code, scene and asset files, and more |
 | **Templates** | 62 | Document templates for GDDs, UX specs, ADRs, sprint plans, HUD design, accessibility, and more |
@@ -376,7 +376,7 @@ matches your project (a web project uses the general programmers):
 
 ### Slash Commands
 
-Type `/` in Claude Code to access all 75 skills (plus three old names that point to their new ones):
+Type `/` in Claude Code to access all 76 skills (plus three old names that point to their new ones):
 
 **Make a Game**
 `/prototype` `/cut`

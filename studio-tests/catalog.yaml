@@ -346,6 +346,17 @@ skills:
     priority: low
     category: utility
 
+  - name: filesdelete
+    spec: studio-tests/skills/utility/filesdelete.md
+    last_static: ""
+    last_static_result: ""
+    last_spec: ""
+    last_spec_result: ""
+    last_category: ""
+    last_category_result: ""
+    priority: medium
+    category: utility
+
   - name: brainstorm
     spec: studio-tests/skills/utility/brainstorm.md
     last_static: ""
