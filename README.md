@@ -28,8 +28,9 @@ This repository is the OpenCode V2 port of Senhorfeudal Game Studios.
 `.opencode/plugins/` bridges the studio's bash validators. See
 `.opencode/OPENCODE-PORT.md` for the tool-name mapping and known gaps, and
 [docs/OPENCODE-PORT-REPORT.md](docs/OPENCODE-PORT-REPORT.md) for the full change
-list and test evidence. The original Claude Code template files remain in
-`.claude/` and `CLAUDE.md` for compatibility.
+list and test evidence. The same layer is also installed globally in
+`$OPENCODE_CONFIG_DIR`, so it works in every project. The original Claude Code
+template files remain in `.claude/` and `CLAUDE.md` for compatibility.
 
 ---
 

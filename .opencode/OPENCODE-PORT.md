@@ -64,6 +64,28 @@ Advisory output goes to the server log. The bridge fails open: a missing bash,
 timeout or script error never blocks work. Hard safety remains in the OpenCode
 permission rules.
 
+## Global installation
+
+The same layer is also copied into the OpenCode user config directory, so it is
+available in every project, not only in this repository. On this device the
+effective directory is `$OPENCODE_CONFIG_DIR`
+(`/root/.oc-opencode2/config/opencode/`):
+
+```text
+/root/.oc-opencode2/config/opencode/
+├── opencode.jsonc          # permissions, instructions, plugins, watcher
+├── skills/                 # 80 upstream skills, including references/
+├── commands/               # 80 slash commands
+├── agents/                 # 51 subagents
+├── plugins/                # ccgs-bridge + question-watchdog
+├── instructions/           # copies of this note and the full report
+└── .claude/                # validators and helper scripts used by the bridge
+```
+
+It is a copy, not a symlink: the project layer in `/root/projects/Home` still
+wins inside this repo, while other projects use the global copy. Re-copy after
+changing upstream skills or agents.
+
 ## Known gaps (not silently ignored)
 
 1. Claude Code session lifecycle hooks (`session-start`, `detect-gaps`,

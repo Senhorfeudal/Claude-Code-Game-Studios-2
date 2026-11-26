@@ -146,3 +146,18 @@ As mudanças deste port foram adicionadas como um commit único sobre esse
 histórico, mantendo `CLAUDE.md`, `.claude/` e os testes originais intactos.
 A descrição e os topics do GitHub também foram atualizados para destacar o port
 (`opencode`, `opencode-v2`), mantendo `claude-code` como compatibilidade.
+
+A camada também foi instalada globalmente em `$OPENCODE_CONFIG_DIR`
+(`/root/.oc-opencode2/config/opencode/`): 80 skills completas (com `references/`),
+80 commands, 51 agents, plugins, instruções e permissões, todos copiados do
+repositório (sem symlink). A verificação em `/tmp/opencode/global-check`
+confirmou 80/80 skills, 80/80 commands, 51/51 agents, 2/2 plugins ativos e
+ativação de `skill-test` com HTTP 204. Dentro deste repositório, a camada local
+`.opencode/` continua tendo precedência sobre a cópia global.
+
+A camada também foi instalada de forma global em `$OPENCODE_CONFIG_DIR`
+(`/root/.oc-opencode2/config/opencode/`): 80 skills completas (com `references/`),
+80 commands, 51 agents, plugins, instruções e permissões. A verificação em um
+diretório neutro (`/tmp/opencode/global-check`) confirmou 80/80 skills, 80/80
+commands, 51/51 agents, 2/2 plugins ativos e ativação de `skill-test` com HTTP
+204. O projeto continua tendo precedência dentro de `/root/projects/Home`.
