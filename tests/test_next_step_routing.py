@@ -63,7 +63,7 @@ class NextStepSkillTests(unittest.TestCase):
         self.assertIn('Never claim a file was written by this skill', self.flat)
 
     def test_rule_against_auto_running(self):
-        self.assertIn('Never auto-run the next skill or spawn a crew unasked', self.text)
+        self.assertIn('Never auto-run the next skill, load a team or spawn a crew unasked', self.text)
 
 
 class AgentRoutingTests(unittest.TestCase):
@@ -110,8 +110,7 @@ class AgentRoutingTests(unittest.TestCase):
     def test_skill_points_to_the_routing_reference(self):
         text = SKILL.read_text(encoding='utf-8')
         flat = re.sub(r'\s+', ' ', text)
-        self.assertIn('.claude/skills/next-step/references/agent-routing.md', text)
-        self.assertIn('Read `.claude/skills/next-step/references/agent-routing.md`', text)
+        self.assertIn('For every **non-team** action, read\n`.claude/skills/next-step/references/agent-routing.md`', text)
         self.assertIn('find the row in **Routes**', flat)
 
 
@@ -130,8 +129,10 @@ class QuestionDeliveryGuardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.skill = SKILL.read_text(encoding='utf-8')
+        cls.text = cls.skill
         cls.flat = re.sub(r'\s+', ' ', cls.skill)
         cls.routes = ROUTES.read_text(encoding='utf-8')
+        cls.rows = list(route_rows(cls.routes))
         cls.modes = (ROOT / '.claude/docs/automation-modes.md').read_text(encoding='utf-8')
 
     def test_next_step_delegation_does_not_ask_from_the_subagent(self):
@@ -140,19 +141,27 @@ class QuestionDeliveryGuardTests(unittest.TestCase):
             self.flat,
         )
 
-    def test_next_step_no_longer_routes_to_teams(self):
-        self.assertNotIn('Team routes', self.routes)
-        self.assertNotIn('/team-', self.routes)
-        self.assertNotIn('team route', self.flat)
-        spec = SPEC.read_text(encoding='utf-8')
-        self.assertNotIn('team route', spec)
+    def test_teams_are_loaded_in_chat_not_routed_to_a_crew(self):
+        self.assertIn('`/team-*` actions are **not routed here**', self.routes)
+        self.assertIn('.claude/docs/in-chat-teams.md', self.routes)
+        for action, command, crew, rationale in self.rows:
+            with self.subTest(command=command):
+                self.assertNotIn('team-', command)
+                self.assertTrue(all('team-' not in agent for agent in crew))
+        team_branch = self.text[self.text.index('### Team actions run in this chat'):
+                                self.text.index('### Route the choice to a crew')]
+        self.assertIn('no crew and no\n`Agent` call', team_branch)
+        self.assertIn('Run it here', team_branch)
+        self.assertIn('the `Skill` tool', team_branch)
+        self.assertIn('Never put a team id in an `Agent` / `subagent` call', team_branch)
+        self.assertIn('Run `/team-X` here, in this chat?', team_branch)
 
     def test_shared_mode_says_reasoning_is_not_delivery(self):
         flat = re.sub(r'\s+', ' ', self.modes)
         self.assertIn('is **not a question**', flat)
         self.assertIn('return the pending decision to the orchestrating conversation', flat)
 
-    def test_all_team_skills_handle_a_missing_question_tool(self):
+    def test_all_team_skills_run_inline_in_the_users_chat(self):
         skills = {
             'team-combat', 'team-narrative', 'team-ui', 'team-audio',
             'team-level', 'team-live-ops', 'team-qa', 'team-polish', 'team-release',
@@ -161,13 +170,12 @@ class QuestionDeliveryGuardTests(unittest.TestCase):
             with self.subTest(skill=skill):
                 text = (ROOT / '.claude/skills' / skill / 'SKILL.md').read_text(encoding='utf-8')
                 flat = re.sub(r'\s+', ' ', text)
-                for phrase in (
-                    '**No question tool:**',
-                    'never write the question or its options in chat or in reasoning',
-                    'Return the pending decision to the orchestrating conversation',
-                    'A question drafted in reasoning is not a question',
-                ):
-                    self.assertIn(phrase, flat, f'{skill} is missing: {phrase}')
+                self.assertIn('**In-chat orchestration:**', text)
+                self.assertIn('never as a subagent and never inside a subagent conversation', flat)
+                self.assertIn('Every decision and write approval\nis asked here with `AskUserQuestion`', text)
+                self.assertNotIn('**No question tool:**', text)
+                self.assertNotIn('## How to Delegate', text)
+                self.assertIn('There is no subagent exception', text)
 
 
 if __name__ == '__main__':

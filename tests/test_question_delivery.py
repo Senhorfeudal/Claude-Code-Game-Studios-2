@@ -4,6 +4,7 @@ Run: python3 -m unittest discover -s tests -p test_question_delivery.py -v
 """
 import json
 import pathlib
+import re
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -122,7 +123,9 @@ class RuntimeAgentConfigTests(unittest.TestCase):
 
     @unittest.skipUnless(CONFIG.is_file(), 'runtime config not present on this machine')
     def test_registered_studio_agents_deny_question(self):
-        data = json.loads(self.CONFIG.read_text(encoding='utf-8'))
+        # The runtime config is JSONC: strip full-line comments before parsing.
+        text = re.sub(r'^\s*//.*$', '', self.CONFIG.read_text(encoding='utf-8'), flags=re.M)
+        data = json.loads(text)
         agents = data.get('agents', {})
         offenders = []
         for name, agent in agents.items():

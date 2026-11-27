@@ -16,7 +16,8 @@ Expected arguments: [feature or area to polish] [--review full|lean|solo]
 - `AskUserQuestion` → OpenCode `question` tool. Call it **before** explaining or
   drafting; a failed or invisible widget must immediately become numbered text.
 - `Agent` / `Task` → OpenCode `subagent` tool. Agent IDs are the file names in
-  `.opencode/agents/` (same names as the original studio agents).
+  `.opencode/agents/` (same names as the original studio agents). Team skills
+  are the exception: they stay in this chat and never use it.
 - `Bash` → `shell` tool. `Write` / `Edit` → `write` / `edit`.
 - `WebSearch` / `WebFetch` → `websearch` / `webfetch`.
 - `TaskCreate` / `TaskUpdate` → `todowrite` when available, otherwise plain text.
@@ -33,3 +34,7 @@ Expected arguments: [feature or area to polish] [--review full|lean|solo]
 
 - Keep the ask-first protocol: show options, get a decision, draft, then ask “May I write this to [path]?” before writing.
 - The framework never runs a skill for you: after loading it, carry out its phases in this session and report the verdicts it specifies.
+
+## In-chat orchestration (mandatory for teams)
+
+This is an in-chat orchestrator: perform every phase inline in the conversation the user opened and never use the `subagent` tool for the team or for any specialist role. Read the role's rules from `.claude/agents/<id>.md` instead. Ask every decision and write approval with the `question` tool in this chat; if the widget is invisible, immediately use numbered text and wait. See `.claude/docs/in-chat-teams.md`.

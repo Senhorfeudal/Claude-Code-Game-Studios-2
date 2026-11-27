@@ -1,3 +1,9 @@
+> **In-chat orchestration:** this spec describes a team skill, which is an
+> orchestrator running in the user's current conversation. Specialist phases are
+> run inline by reading `.claude/agents/<id>.md`; no `Agent` / `subagent`
+> tool is used for the team or its specialists. Every decision and write approval
+> is asked in this chat. See `.claude/docs/in-chat-teams.md`.
+
 # Skill Test Spec: /team-qa
 
 ## Skill Summary
@@ -12,13 +18,13 @@ with a warning and rule out APPROVED; FAIL stops the cycle); at `qa.level:
 minimal`, where tests are waived, a Logic, Integration or Config/Data story
 without a test is WAIVED and its evidence is the acceptance-criteria walk in
 manual QA; Phase 3 writes the QA plan after
-asking; Phase 4 spawns qa-tester with a named output path per manual-QA story —
-one spawn per story in parallel at `team.size: studio`, one for the whole group
+asking; Phase 4 runs qa-tester with a named output path per manual-QA story —
+one perform per story as consecutive inline passes at `team.size: studio`, one for the whole group
 below it; Phase 5 walks manual QA, files bugs, has the tester retain screenshots
 and writes evidence artifacts after asking; Phase 6 produces a sign-off report,
 with a row for every story in scope, and a NOT ASSESSED / APPROVED / APPROVED WITH
 CONDITIONS / NOT APPROVED verdict. Phase 0 resolves `team.size` and the skill announces the
-active set before Phase 1. The orchestrator-level verdict is COMPLETE or BLOCKED.
+active roles before Phase 1. The orchestrator-level verdict is COMPLETE or BLOCKED.
 
 ---
 
@@ -36,12 +42,12 @@ active set before Phase 1. The orchestrator-level verdict is COMPLETE or BLOCKED
 - [ ] Bug reports are written to `production/qa/bugs/` with `BUG-[NNNN].md` naming — `/bug-report`'s numbering, so `/bug-report verify` finds them
 - [ ] Visual/Feel and UI stories that pass get a retained screenshot of each screen or effect touched under `production/qa/evidence/[story-slug]/`, confirmed on disk, and an evidence artifact at `production/qa/evidence/[story-slug]-evidence.md` that references it — the screenshot closes a UI story; a Visual/Feel story also needs the lead sign-off
 - [ ] Next-step guidance differs by verdict (NOT ASSESSED / APPROVED / APPROVED WITH CONDITIONS / NOT APPROVED)
-- [ ] Phase 0 resolves `team.size`, and the skill requires a one-line active-set announcement before Phase 1
+- [ ] Phase 0 resolves `team.size`, and the skill requires a one-line active roles announcement before Phase 1
 - [ ] Phase 0 resolves `qa.level`; at `minimal` a Logic, Integration or Config/Data story without a test gets its acceptance criteria walked in Phase 4–5 — tests WAIVED, never counted as missing evidence
 - [ ] The Phase 2 smoke verdict list includes NOT ASSESSED, which continues with a warning like UNKNOWN and makes the sign-off NOT ASSESSED
 - [ ] Phase 1 reads the Open bugs in scope from `production/qa/bugs/` (open unless `Closed` or `Verified Fixed`) and passes them into the Phase 2 and Phase 6 briefs
 - [ ] The Phase 6 brief carries the evidence and the verdict rules and names no verdict; the orchestrator checks the qa-lead's verdict against the rules before writing
-- [ ] Phase 4 spawns one qa-tester per story, in parallel, at `team.size: studio`; at `small` and `individual` one qa-tester spawn covers the whole group
+- [ ] Phase 4 runs one qa-tester per story, as consecutive inline passes, at `team.size: studio`; at `small` and `individual` one qa-tester perform covers the whole group
 - [ ] The Phase 6 sign-off gives every story in scope a Test Coverage Summary row — BLOCKED and unexecuted stories included — and its template shows a BLOCKED row
 
 ---
@@ -70,22 +76,22 @@ Fixture defaults.
 **Input:** `/team-qa sprint-03`
 
 **Expected behavior:**
-1. Before any spawn, one line announces the active set for `team.size: small`
+1. Before any pass, one line announces the active roles for `team.size: small`
 2. Phase 1: Globs `production/sprints/sprint-*.md`, matches sprint number 3 (`sprint-03.md`) and reads it; reads `project.stage` from `project.yaml` (fallback `production/stage.txt`); reads the open bugs in scope (none on file); reports "QA cycle starting for sprint-03. Found 4 stories. Open bugs in scope: none on file. Current stage: [stage]. Ready to begin QA strategy?"
-3. Phase 2: Spawns `qa-lead` via Agent; classifies all 4 stories in the strategy table; reads the smoke report and records `Smoke Check: PASS — source: production/qa/smoke-[date].md` without re-interviewing the user; presents the strategy; `AskUserQuestion` "QA Strategy Review": user selects "Looks good — proceed to test plan"
+3. Phase 2: Performs `qa-lead` via Pass; classifies all 4 stories in the strategy table; reads the smoke report and records `Smoke Check: PASS — source: production/qa/smoke-[date].md` without re-interviewing the user; presents the strategy; `AskUserQuestion` "QA Strategy Review": user selects "Looks good — proceed to test plan"
 4. Phase 3: Produces QA plan (scope, classification table, automated/manual scope, entry and exit criteria); asks "May I write the QA plan to `production/qa/qa-plan-sprint-03-[date].md`?"; writes after approval
-5. Phase 4: Spawns one `qa-tester` via Agent for the Integration and both Visual/Feel stories (per-story parallel spawns are the `studio` shape), its prompt naming `production/qa/test-cases/[story-slug]-cases.md` for each story; test cases presented grouped by story; `AskUserQuestion` per group; user approves
+5. Phase 4: Performs one `qa-tester` via Pass for the Integration and both Visual/Feel stories (per-story inline sequence runs are the `studio` shape), its prompt naming `production/qa/test-cases/[story-slug]-cases.md` for each story; test cases presented grouped by story; `AskUserQuestion` per group; user approves
 6. Phase 5: `AskUserQuestion` per story (PASS / PASS WITH NOTES / FAIL / BLOCKED); user marks all as PASS; for each Visual/Feel story the tester saves a screenshot under `production/qa/evidence/[story-slug]/` and the orchestrator confirms it is on disk; after "May I write the evidence for [story titles] to `production/qa/evidence/`?" it writes `production/qa/evidence/[story-slug]-evidence.md`, referencing the screenshots, with sign-off rows left unchecked unless signed off in this session; result summary: "Stories PASS: 4, PASS WITH NOTES: 0, FAIL: 0, BLOCKED: 0"
-7. Phase 6: Spawns `qa-lead` via Agent to produce sign-off report; every story has executed evidence; no bugs filed; Verdict: APPROVED; asks "May I write this QA sign-off report to `production/qa/qa-signoff-sprint-03-[date].md`?"; writes after approval
+7. Phase 6: Performs `qa-lead` via Pass to produce sign-off report; every story has executed evidence; no bugs filed; Verdict: APPROVED; asks "May I write this QA sign-off report to `production/qa/qa-signoff-sprint-03-[date].md`?"; writes after approval
 8. Verdict: COMPLETE — QA cycle finished
 
 **Assertions:**
-- [ ] Active-set line naming `team.size: small` appears before the first agent is spawned
+- [ ] Active roles line naming `team.size: small` appears before the first pass runs
 - [ ] Phase 1 correctly counts and reports 4 stories with current stage
 - [ ] Strategy table in Phase 2 classifies all 4 stories with correct types
 - [ ] Smoke check verdict is taken from the existing `production/qa/smoke-*.md` report and its source is shown
 - [ ] QA plan written only after "May I write?" approval
-- [ ] Phase 4 spawns a single qa-tester at `team.size: small`, and its prompt names each story's `production/qa/test-cases/` path
+- [ ] Phase 4 runs a single qa-tester at `team.size: small`, and its prompt names each story's `production/qa/test-cases/` path
 - [ ] Each passing Visual/Feel story has a retained screenshot on disk under `production/qa/evidence/[story-slug]/`, and its evidence artifact references it and is written only after the "May I write" ask
 - [ ] Sign-off report includes Test Coverage Summary table and Verdict: APPROVED
 - [ ] Sign-off report written only after "May I write?" approval
@@ -105,7 +111,7 @@ Fixture defaults.
 
 **Expected behavior:**
 1. Phase 1 completes normally
-2. Phase 2: Spawns `qa-lead` via Agent; qa-lead reads the smoke report and records `Smoke Check: FAIL` with both failures listed prominently
+2. Phase 2: Performs `qa-lead` via Pass; qa-lead reads the smoke report and records `Smoke Check: FAIL` with both failures listed prominently
 3. `AskUserQuestion` "QA Strategy Review" is presented, including the option "Smoke check failed — fix issues and re-run /team-qa"
 4. Skill does not proceed to Phase 3: it surfaces the failures from the smoke report and stops — the user must fix them, re-run `/smoke-check sprint`, and then re-run `/team-qa`
 5. No QA plan, test cases, manual QA or sign-off report is produced; a partial report is given
@@ -135,15 +141,15 @@ Fixture defaults.
 **Expected behavior:**
 1. Phases 1–4 complete normally; test cases are written for the Visual/Feel story
 2. Phase 5: User marks Visual/Feel story as FAIL; `AskUserQuestion` collects failure description: "Animation plays at 2x speed — jitter visible on every loop"
-3. Phase 5: Spawns `qa-tester` via Agent to write a formal bug report at `production/qa/bugs/BUG-0003.md`; report includes severity field
+3. Phase 5: Performs `qa-tester` via Pass to write a formal bug report at `production/qa/bugs/BUG-0003.md`; report includes severity field
 4. Result summary: "Stories PASS: 1, PASS WITH NOTES: 0, FAIL: 1 — bugs filed: BUG-0003, BLOCKED: 0"
-5. Phase 6: Spawns `qa-lead` to produce sign-off report; every story has executed evidence; Bugs Found table lists BUG-0003 with story, severity and status Open; Verdict: NOT APPROVED (a story FAILed without documented workaround)
+5. Phase 6: Performs `qa-lead` to produce sign-off report; every story has executed evidence; Bugs Found table lists BUG-0003 with story, severity and status Open; Verdict: NOT APPROVED (a story FAILed without documented workaround)
 6. Sign-off report write is offered; writes after approval
 7. Next step: "Resolve S1/S2 bugs and re-run `/team-qa` or targeted manual QA before advancing."
 
 **Assertions:**
 - [ ] FAIL result in Phase 5 triggers `AskUserQuestion` to collect the failure description before the bug report is written
-- [ ] `qa-tester` is spawned via Agent to write the bug report — orchestrator does not write it directly
+- [ ] `qa-tester` is run via Pass to write the bug report — orchestrator does not write it directly
 - [ ] Bug report follows `/bug-report`'s naming: `BUG-[NNNN].md` in `production/qa/bugs/`
 - [ ] The ID is one past the highest existing bug, zero-padded to four digits (BUG-0003)
 - [ ] Phase 6 sign-off report Bugs Found table includes the bug ID, story name, severity, and status
@@ -203,7 +209,7 @@ Fixture defaults.
 1. Phases 1–4 proceed; Phase 4 test cases cover stories B, C, D
 2. Phase 5: Story A is PASS from its automated test; user marks Story B: PASS WITH NOTES; Story C: FAIL; Story D: BLOCKED
 3. Story B (UI) gets a retained screenshot of each screen it touched, saved by the tester under `production/qa/evidence/[story-slug]/` and confirmed on disk; its evidence artifact at `production/qa/evidence/[story-slug]-evidence.md` references them and is written only after the "May I write" ask
-4. After Story C FAIL: failure description collected; qa-tester spawned to write bug report `BUG-0001.md` with S1 severity
+4. After Story C FAIL: failure description collected; qa-tester pass runs to write bug report `BUG-0001.md` with S1 severity
 5. Result summary presented: "Stories PASS: 1, PASS WITH NOTES: 1, FAIL: 1 — bugs filed: BUG-0001, BLOCKED: 1"
 6. Phase 6: qa-lead produces sign-off report covering all 4 stories; BUG-0001 listed as S1/Open; Story D listed as BLOCKED with no executed evidence; Verdict: NOT APPROVED — the open S1 is a known failure and is reported as such, not demoted to NOT ASSESSED by the unexecuted Story D
 7. Sign-off report written after "May I write?" approval
@@ -309,17 +315,17 @@ Fixture defaults.
   The tester marks both stories PASS in each run
 
 **Expected behavior:**
-1. Every run opens with the same active-set line
-2. Every run spawns `qa-lead` for the strategy (Phase 2) and the sign-off (Phase 6),
+1. Every run opens with the same active roles line
+2. Every run runs `qa-lead` for the strategy (Phase 2) and the sign-off (Phase 6),
    and `qa-tester` for test cases (Phase 4) — team members, not director gates
-3. No run spawns a CD-, TD-, PR- or AD-PHASE-GATE at any phase: "no phase below
-   spawns CD-, TD-, PR- or AD-PHASE-GATE, at any `review_mode`"
+3. No run runs a CD-, TD-, PR- or AD-PHASE-GATE at any phase: "no phase below
+   runs CD-, TD-, PR- or AD-PHASE-GATE, at any `review_mode`"
 4. The strategy ask, the QA plan ask, the evidence ask and the sign-off ask, and the
    APPROVED verdict, are the same in all three runs
 
 **Assertions:**
-- [ ] No director gate is spawned in Run A (`full`), Run B (`lean`) or Run C (`solo`)
-- [ ] The agents spawned, the phases run and the asks made are identical across the three runs
+- [ ] No director gate is run in Run A (`full`), Run B (`lean`) or Run C (`solo`)
+- [ ] The roles run, the phases run and the asks made are identical across the three runs
 - [ ] The sign-off verdict is decided by the evidence and the verdict rules alone — the same APPROVED in all three runs; `--review full` does not add a reviewer and `--review solo` does not drop one
 - [ ] The Phase 6 brief to qa-lead is the same in all three runs and names no verdict
 
@@ -330,17 +336,17 @@ Fixture defaults.
 - [ ] A manual-QA result is recorded only as the tester gave it — never filled in for them; an unanswered story stays unexecuted
 - [ ] In Phase 6 the qa-lead returns the sign-off text and writes no file; the orchestrator writes it after the ask
 - [ ] A bug filed in Phase 5 uses `/bug-report`'s Severity and Priority labels exactly
-- [ ] At the default `team.size: individual`, the run opens with an active-set line naming qa-tester as the always-active agent and stating that qa-lead is spawned only at phase gates (the decision points the pipeline lists, whatever the `automation` mode) — before any agent is spawned
+- [ ] At the default `team.size: individual`, the run opens with an active roles line naming qa-tester as the always-active role and stating that qa-lead is run only at phase gates (the decision points the pipeline lists, whatever the `automation` mode) — before any pass runs
 - [ ] `AskUserQuestion` used at Phase 2 (strategy review), Phase 4 (test case approval per group), and Phase 5 (per-story manual QA result and failure description)
 - [ ] Phase 2 smoke check is a hard gate: FAIL halts the pipeline before Phase 3
 - [ ] When no `production/qa/smoke-*.md` report exists, the smoke status is UNKNOWN, the warning "No smoke check report found. Recommend running `/smoke-check sprint` before QA. Proceeding with caution." is shown, and the cycle continues
 - [ ] A smoke report whose verdict is NOT ASSESSED is surfaced with what did not run, and the cycle continues as for UNKNOWN
 - [ ] With no smoke report (UNKNOWN), or one that is NOT ASSESSED, the sign-off verdict is NOT ASSESSED even when every story passes — never APPROVED or APPROVED WITH CONDITIONS — unless an open S1/S2 bug, or a FAIL without a documented workaround, makes it NOT APPROVED
 - [ ] "May I write?" is asked before every orchestrator write: the QA plan (Phase 3), each group's evidence artifacts (Phase 5) and the sign-off report (Phase 6)
-- [ ] Bug reports are always written by `qa-tester` via Agent — orchestrator does not write them directly
-- [ ] Every Phase 4 qa-tester prompt names each story's output path; per-story parallel spawns happen only at `team.size: studio`
+- [ ] Bug reports are always written by `qa-tester` via Pass — orchestrator does not write them directly
+- [ ] Every Phase 4 qa-tester prompt names each story's output path; per-story inline sequence runs happen only at `team.size: studio`
 - [ ] Evidence artifacts never carry pre-ticked sign-off rows for a sign-off that did not happen in the session
-- [ ] Error recovery: any BLOCKED agent is surfaced immediately with AskUserQuestion options
+- [ ] Error recovery: any BLOCKED role is surfaced immediately with AskUserQuestion options
 - [ ] Partial report always produced — no work is discarded because one story failed or blocked
 - [ ] Open bugs already on file are read in Phase 1 and reach both qa-lead briefs; no brief to qa-lead names the sign-off verdict
 - [ ] Sign-off verdict rules are strictly applied: any S1/S2 bug open = NOT APPROVED; APPROVED and APPROVED WITH CONDITIONS require executed evidence for every story in scope
@@ -352,7 +358,7 @@ Fixture defaults.
 
 - The "APPROVED WITH CONDITIONS" verdict path (S3/S4 bugs, PASS WITH NOTES with every story executed) is not given a dedicated case; Case 5's Story B would produce it if no S1/S2 bug were open and Story D had been executed.
 - The NOT ASSESSED verdict with no known failure is covered for a NOT ASSESSED smoke report (Case 7); one story BLOCKED with the rest PASS, or no smoke report at all, is not given a dedicated case — the smoke-UNKNOWN rule is asserted in Protocol Compliance.
-- The `studio` shape (one qa-tester per story, in parallel) is asserted structurally but not given a case; Cases 1, 3 and 5 run at `small`.
+- The `studio` shape (one qa-tester per story, as consecutive inline passes) is asserted structurally but not given a case; Cases 1, 3 and 5 run at `small`.
 - The `feature: [system-name]` argument form is exercised by Case 6 — it follows the same Phase 1 logic as the sprint form, using glob instead of the sprint file. Case 4 variant B exercises the epic fallback.
 - Logic stories with passing automated tests do not need manual QA — this is validated implicitly by Case 5 (Story A) where the Logic story receives no manual QA phase.
 - The session-state append to `production/session-state/active.md` after the final phase is not asserted.

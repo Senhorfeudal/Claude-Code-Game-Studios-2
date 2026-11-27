@@ -90,11 +90,41 @@ desenho do framework e nenhuma com falha nos checks automáticos:
 
 - `phases<2` / `no-verdict`: aliases de uma linha (`help`, `settings`, `changelog`,
   `next-step`, `project-stage-detect`, `project-settings`) e os 9 orquestradores
-  `team-*`, que delegam em vez de terem fases próprias.
+  `team-*`, que executam papéis em fases inline em vez de terem fases próprias
+  (ver § 5b).
 - `write-without-ask`: `balance-check` e `consistency-check` pedem confirmação
   com `AskUserQuestion` em linguagem diferente do literal `May I write`.
 
 Elas estão registradas aqui para não serem confundidas com regressões do port.
+
+### 5b. Teams no mesmo chat
+
+Os nove skills `team-*` deixaram de encaminhar especialistas para conversas de
+subagentes e passaram a ser orquestradores executados na conversa do usuário.
+Isso corrige o loop observado no mobile: um team dentro de um subagent não tem
+widget de pergunta e só consegue devolver a decisão pendente ao pai, que precisa
+reabrir a conversa — o usuário vê a sessão "em execução" sem nenhuma pergunta.
+
+Regras aplicadas (`.claude/docs/in-chat-teams.md`):
+
+- `Agent` / `subagent` removido de `allowed-tools` dos 9 teams; nenhum time ou
+  papel é spawnado.
+- Cada fase lê `.claude/agents/<id>.md` e é executada inline; fases marcadas como
+  paralelas viram passes consecutivos com saídas distintas.
+- Toda decisão e toda autorização de escrita usam `AskUserQuestion` no chat
+  atual; se o skill rodar dentro de um subagent, ele para e pede para ser
+  carregado no chat principal.
+- Não há mais "bounded exception" de escrita para subagentes: o orquestrador
+  mostra o rascunho/conjunto de arquivos, pergunta "May I write this to [path]?"
+  e só escreve após o sim.
+
+`/next-step` recebeu um branch explícito para ações `/team-*`: pergunta "Run
+`/team-X` here, in this chat?", carrega o skill no chat atual com `skill` e só
+usa crews para ações não-team. O gerador emite essa regra nos 9 wrappers.
+
+Evidências: `tests/test_in_chat_teams.py` (novo), atualizações em
+`tests/test_next_step_routing.py`, specs em `studio-tests/skills/team/` e
+`studio-tests/skills/utility/next-step.md`; suíte Python 105 testes OK.
 
 ## 6. Lacunas conhecidas
 

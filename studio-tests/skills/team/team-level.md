@@ -1,3 +1,9 @@
+> **In-chat orchestration:** this spec describes a team skill, which is an
+> orchestrator running in the user's current conversation. Specialist phases are
+> run inline by reading `.claude/agents/<id>.md`; no `Agent` / `subagent`
+> tool is used for the team or its specialists. Every decision and write approval
+> is asked in this chat. See `.claude/docs/in-chat-teams.md`.
+
 # Skill Test Spec: /team-level
 
 ## Skill Summary
@@ -5,15 +11,15 @@
 Orchestrates the full level design team for a single level or area. Coordinates
 narrative-director, world-builder, level-designer, systems-designer, art-director,
 accessibility-specialist, and qa-tester through five steps: narrative + visual
-direction in parallel (Step 1), layout (Step 2), systems (Step 3), production
-concepts + accessibility in parallel (Step 4), and QA planning (Step 5). Phase 0
+direction as consecutive inline passes (Step 1), layout (Step 2), systems (Step 3), production
+concepts + accessibility as consecutive inline passes (Step 4), and QA planning (Step 5). Phase 0
 resolves `review_mode`, `automation` and `team.size` and the skill announces the
-active set before Step 1 — `individual` spawns level-designer alone, `small` adds
+active roles before Step 1 — `individual` runs level-designer alone, `small` adds
 systems-designer + art-director + qa-tester, `studio` adds narrative-director,
 world-builder and accessibility-specialist. The orchestrator compiles all team
 outputs itself and writes `design/levels/[level-name].md` only after asking "May I
-write…?" via `AskUserQuestion`; per-agent artifacts are written by sub-agents under
-the bounded write exception. Uses `AskUserQuestion` at each step gate. Produces a
+write…?" via `AskUserQuestion`; per-role artifacts are written by the orchestrator under
+the "May I write" ask. Uses `AskUserQuestion` at each step gate. Produces a
 summary report with verdict COMPLETE / BLOCKED and handoffs to `/design-review`,
 `/dev-story`, `/qa-plan`.
 
@@ -24,17 +30,17 @@ summary report with verdict COMPLETE / BLOCKED and handoffs to `/design-review`,
 - [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
 - [ ] Has ≥2 phase/step headings (Step 1 through Step 5 are all present)
 - [ ] Contains verdict keywords: COMPLETE, BLOCKED
-- [ ] File Write Protocol: per-agent artifacts are written by sub-agents under the bounded exception (named path, new artifact under `production/`, `docs/` or `tests/`, gated step); the one exception is the compiled level doc, which the orchestrator writes itself after its own "May I write …?" prompt
-- [ ] Names a destination per agent under `production/levels/[level-name]/` — `narrative.md`, `lore.md`, `visual-direction.md`, `layout.md`, `systems.md`, `production-concepts.md`, `accessibility.md` — and qa-tester's at `production/qa/test-cases/[level-name]-cases.md`
-- [ ] Defines a phase gate as a decision point the pipeline itself lists, whatever the `automation` mode, and claims no director spawn at phase gates
+- [ ] File Write Protocol: per-role artifacts are written by the orchestrator after a "May I write" ask naming the path; the one exception is the compiled level doc, which the orchestrator writes itself after its own "May I write …?" prompt
+- [ ] Names a destination per role under `production/levels/[level-name]/` — `narrative.md`, `lore.md`, `visual-direction.md`, `layout.md`, `systems.md`, `production-concepts.md`, `accessibility.md` — and qa-tester's at `production/qa/test-cases/[level-name]-cases.md`
+- [ ] Defines a phase gate as a decision point the pipeline itself lists, whatever the `automation` mode, and claims no director pass at phase gates
 - [ ] Has a next-step handoff at the end (references `/design-review`, `/dev-story`, `/qa-plan`)
 - [ ] Error Recovery Protocol section is present: verify a named artifact is on disk before treating a step as done, surface BLOCKED immediately, always produce a partial report, full procedure (surface → assess → options → partial report) in `.claude/docs/error-recovery-protocol.md`
 - [ ] Uses `AskUserQuestion` at step transitions for user approval before proceeding (`collaborative` mode)
-- [ ] Phase 0 resolves `team.size`, and the skill requires a one-line active-set announcement before Step 1
-- [ ] Step 1 explicitly spawns narrative-director, world-builder and art-director in parallel
-- [ ] Step 4 is explicitly marked as parallel (art-director and accessibility-specialist run simultaneously) and waits for both
+- [ ] Phase 0 resolves `team.size`, and the skill requires a one-line active roles announcement before Step 1
+- [ ] Step 1 explicitly runs narrative-director, world-builder and art-director as consecutive inline passes
+- [ ] Step 4 is explicitly marked as inline sequence (art-director and accessibility-specialist run simultaneously) and waits for both
 - [ ] Context gathering reads: `design/gdd/game-concept.md` (or `design/game-brief.md`), `design/gdd/game-pillars.md`, `design/levels/`, `design/narrative/`, and relevant world-building docs
-- [ ] `## How to Delegate` lists all seven roles (narrative-director, world-builder, level-designer, systems-designer, art-director, accessibility-specialist, qa-tester)
+- [ ] `## How to Run Inline` lists all seven roles (narrative-director, world-builder, level-designer, systems-designer, art-director, accessibility-specialist, qa-tester)
 - [ ] accessibility-specialist output includes severity ratings (BLOCKING / RECOMMENDED / NICE TO HAVE)
 - [ ] Final level design document saved to `design/levels/[level-name].md`, where `[level-name]` is the argument slugged — lowercase, spaces → hyphens — and adjacent-area paths use the same rule
 
@@ -64,25 +70,25 @@ Fixture defaults.
 **Input:** `/team-level forest dungeon`
 
 **Expected behavior:**
-1. Before any spawn, one line announces the active set for `team.size: studio`
+1. Before any pass, one line announces the active roles for `team.size: studio`
 2. Context gathering — orchestrator reads game-concept.md, game-pillars.md, existing level docs in `design/levels/`, narrative docs in `design/narrative/`, and world-building docs for the forest region
-3. Step 1 — narrative-director, world-builder and art-director are spawned together (all three Agent calls issued before any result is awaited): narrative purpose and emotional arc; lore context and world rules; visual theme targets, lighting mood, shape language and landmarks; `AskUserQuestion` presents all three outputs before Step 2
-4. Step 2 — level-designer spawned with the Step 1 outputs, including the art-director's visual targets as explicit constraints; designs spatial layout, pacing curve, encounters, puzzles, entry/exit points; orchestrator checks `design/levels/` for every adjacent area referenced; `AskUserQuestion` confirms layout before Step 3
-5. Step 3 — systems-designer spawned: enemy compositions, loot tables, difficulty balance, area-specific mechanics, resource distribution; `AskUserQuestion` confirms systems before Step 4
-6. Step 4 — art-director (location-specific production concepts) and accessibility-specialist spawned in parallel; each accessibility concern rated BLOCKING / RECOMMENDED / NICE TO HAVE; orchestrator waits for both; `AskUserQuestion` presents both outputs before Step 5
-7. Step 5 — qa-tester spawned: test cases for critical path, boundary/edge cases (sequence breaks, softlocks), playtest checklist, acceptance criteria
-8. Orchestrator compiles all team outputs into the level design template itself — it does not re-spawn level-designer to do it — then asks via `AskUserQuestion`: "May I write the compiled level design to `design/levels/forest-dungeon.md`?" and writes on approval
+3. Step 1 — narrative-director, world-builder and art-director are run together (all three inline passes run one after another): narrative purpose and emotional arc; lore context and world rules; visual theme targets, lighting mood, shape language and landmarks; `AskUserQuestion` presents all three outputs before Step 2
+4. Step 2 — level-designer run with the Step 1 outputs, including the art-director's visual targets as explicit constraints; designs spatial layout, pacing curve, encounters, puzzles, entry/exit points; orchestrator checks `design/levels/` for every adjacent area referenced; `AskUserQuestion` confirms layout before Step 3
+5. Step 3 — systems-designer run: enemy compositions, loot tables, difficulty balance, area-specific mechanics, resource distribution; `AskUserQuestion` confirms systems before Step 4
+6. Step 4 — art-director (location-specific production concepts) and accessibility-specialist run as consecutive inline passes; each accessibility concern rated BLOCKING / RECOMMENDED / NICE TO HAVE; orchestrator waits for both; `AskUserQuestion` presents both outputs before Step 5
+7. Step 5 — qa-tester pass runs: test cases for critical path, boundary/edge cases (sequence breaks, softlocks), playtest checklist, acceptance criteria
+8. Orchestrator compiles all team outputs into the level design template itself — it does not re-perform level-designer to do it — then asks via `AskUserQuestion`: "May I write the compiled level design to `design/levels/forest-dungeon.md`?" and writes on approval
 9. Summary report: area overview, encounter count, estimated asset list, narrative beats, cross-team dependencies, open cross-level dependencies, accessibility concerns with resolution status; verdict: COMPLETE
 10. Next steps listed: `/design-review design/levels/forest-dungeon.md`, `/dev-story`, `/qa-plan`
 
 **Assertions:**
-- [ ] Active-set line naming `team.size: studio` appears before the first agent is spawned
-- [ ] All five sources read during context gathering before any agent is spawned
-- [ ] narrative-director, world-builder and art-director Agent calls are issued in parallel in Step 1, and all three complete before Step 2
+- [ ] Active roles line naming `team.size: studio` appears before the first pass runs
+- [ ] All five sources read during context gathering before any pass runs
+- [ ] narrative-director, world-builder and art-director inline passes are issued as consecutive inline passes in Step 1, and all three complete before Step 2
 - [ ] The level-designer brief carries the art-director's Step 1 visual targets as constraints
 - [ ] `AskUserQuestion` called at each step gate (minimum: after Step 1, Step 2, Step 3, Step 4)
-- [ ] Step 4 agents (art-director, accessibility-specialist) launched simultaneously
-- [ ] The compiled level doc is written by the orchestrator, not a re-spawned agent, and only after its own "May I write" approval
+- [ ] Step 4 roles (art-director, accessibility-specialist) run in order
+- [ ] The compiled level doc is written by the orchestrator, not a re-run role, and only after its own "May I write" approval
 - [ ] Level doc saved to `design/levels/forest-dungeon.md` (slugified from argument)
 - [ ] Verdict COMPLETE in final summary report
 - [ ] Next steps include `/design-review`, `/dev-story`, `/qa-plan`
@@ -90,13 +96,13 @@ Fixture defaults.
 
 ---
 
-### Case 2: Blocked Agent (world-builder) — Partial report produced with gap noted
+### Case 2: Blocked Pass (world-builder) — Partial report produced with gap noted
 
 **Fixture:**
 - Resolved config block: `team.size: studio`, `automation: collaborative`
 - `design/gdd/game-concept.md` exists
 - World-building docs for the forest region do NOT exist
-- world-builder agent returns BLOCKED: "No world-building docs found for the forest region — cannot provide lore context"
+- world-builder role returns BLOCKED: "No world-building docs found for the forest region — cannot provide lore context"
 
 **Input:** `/team-level forest dungeon`
 
@@ -117,7 +123,7 @@ Fixture defaults.
 - [ ] Partial report produced — narrative-director's and art-director's completed work is not discarded
 - [ ] The missing world-building context is named as a gap in the final report
 - [ ] Overall verdict is BLOCKED (not COMPLETE) when world-builder remains unresolved
-- [ ] Nothing is written in world-builder's place — the protocol's option is "skip this agent and note the gap" (`.claude/docs/error-recovery-protocol.md`), not substitute lore
+- [ ] Nothing is written in world-builder's place — the protocol's option is "skip this role and note the gap" (`.claude/docs/error-recovery-protocol.md`), not substitute lore
 
 ---
 
@@ -132,10 +138,10 @@ Fixture defaults.
 1. Skill detects no argument provided
 2. Outputs usage message explaining the required argument (level name or area to design)
 3. Shows the invocation format `/team-level [level name or area to design] [--review full|lean|solo]` with examples (`forest temple`, `tutorial village`, `final boss arena`)
-4. Skill exits without reading any project files or spawning any subagents
+4. Skill exits without reading any project files or starting passes any inline passes
 
 **Assertions:**
-- [ ] Skill does NOT spawn any subagents when no argument is given
+- [ ] Skill does NOT perform any inline passes when no argument is given
 - [ ] Usage message shows the full argument-hint: `/team-level [level name or area to design] [--review full|lean|solo]`
 - [ ] At least one example of a valid invocation is shown
 - [ ] No GDD or level files read before failing
@@ -149,12 +155,12 @@ Fixture defaults.
 - Resolved config block: `team.size: studio`, `automation: collaborative`
 - Steps 1–3 complete successfully
 - `design/accessibility-requirements.md` committed tier: Standard
-- accessibility-specialist (Step 4, parallel) flags a BLOCKING concern: the critical path through the forest dungeon requires players to distinguish between two environmental hazards (toxic pools vs. shallow water) using color alone — no shape, icon, or audio cue differentiates them
+- accessibility-specialist (Step 4, inline sequence) flags a BLOCKING concern: the critical path through the forest dungeon requires players to distinguish between two environmental hazards (toxic pools vs. shallow water) using color alone — no shape, icon, or audio cue differentiates them
 
 **Input:** `/team-level forest dungeon`
 
 **Expected behavior:**
-1. Steps 1–3 complete; Step 4 parallel phase begins
+1. Steps 1–3 complete; Step 4 inline sequence phase begins
 2. accessibility-specialist returns: BLOCKING concern — "Critical path hazard distinction relies on color only (toxic pools vs. shallow water). Shape, icon, or audio cue required per Standard accessibility tier."
 3. art-director returns Step 4 output (complete)
 4. Skill presents both Step 4 results via `AskUserQuestion` — BLOCKING concern highlighted prominently
@@ -207,13 +213,13 @@ Fixture defaults.
 
 ## Protocol Compliance
 
-- [ ] At the default `team.size: individual`, the run opens with an `Active set (team.size: individual): level-designer` line and a `Not spawned this run:` line naming every other agent the pipeline names — before any agent is spawned
+- [ ] At the default `team.size: individual`, the run opens with an `Active roles (team.size: individual): level-designer` line and a `Not run this run:` line naming every other role the pipeline names — before any pass runs
 - [ ] In `collaborative` mode, `AskUserQuestion` used at each step transition — user approves before pipeline advances
-- [ ] Per-agent artifacts are written by sub-agents to paths the orchestrator named; only the compiled level doc is written by the orchestrator, after its own `AskUserQuestion` approval
+- [ ] Per-role artifacts are written by the orchestrator to paths the orchestrator named; only the compiled level doc is written by the orchestrator, after its own `AskUserQuestion` approval
 - [ ] A step whose named artifact is missing on disk is treated as failed, not done
 - [ ] Error Recovery Protocol followed: surface → assess → offer options → partial report
-- [ ] Step 1 (narrative-director, world-builder, art-director) and Step 4 (art-director, accessibility-specialist) launched in parallel per skill spec
-- [ ] Partial report always produced even when agents are BLOCKED
+- [ ] Step 1 (narrative-director, world-builder, art-director) and Step 4 (art-director, accessibility-specialist) launched as consecutive inline passes per skill spec
+- [ ] Partial report always produced even when roles are BLOCKED
 - [ ] Accessibility BLOCKING concerns surface before Step 5 and require explicit user acknowledgment
 - [ ] Verdict is one of COMPLETE / BLOCKED
 - [ ] Next steps present at end: `/design-review`, `/dev-story`, `/qa-plan`
@@ -223,13 +229,13 @@ Fixture defaults.
 ## Coverage Notes
 
 - The "Retry with narrower scope" option in the blocked world-builder case (Case 2) — the
-  retry behavior itself is not tested in depth; its full path is analogous to the blocked agent
+  retry behavior itself is not tested in depth; its full path is analogous to the blocked role
   pattern covered in Case 2 and in other team-* specs.
 - systems-designer (Step 3) block scenarios are not separately tested; the same Error Recovery
   Protocol applies and the pattern is validated by Case 2.
-- Step 4 parallel ordering (art-director completing before or after accessibility-specialist)
+- Step 4 inline sequence ordering (art-director completing before or after accessibility-specialist)
   does not affect outcomes — both must return before Step 5 regardless of order.
 - The level doc slug rule (lowercase, spaces → hyphens) is exercised by Case 1
   (`forest dungeon` → `forest-dungeon.md`) and Case 5 (`crystal caves` →
   `crystal-caves.md`); special characters and very long names are not covered.
-- The `small` active set (systems-designer + art-director added) is not given its own case.
+- The `small` active roles (systems-designer + art-director added) is not given its own case.

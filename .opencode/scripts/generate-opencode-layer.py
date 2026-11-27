@@ -64,7 +64,8 @@ TOOL_MAPPING = """## Tool-name mapping (Claude Code → OpenCode)
 - `AskUserQuestion` → OpenCode `question` tool. Call it **before** explaining or
   drafting; a failed or invisible widget must immediately become numbered text.
 - `Agent` / `Task` → OpenCode `subagent` tool. Agent IDs are the file names in
-  `.opencode/agents/` (same names as the original studio agents).
+  `.opencode/agents/` (same names as the original studio agents). Team skills
+  are the exception: they stay in this chat and never use it.
 - `Bash` → `shell` tool. `Write` / `Edit` → `write` / `edit`.
 - `WebSearch` / `WebFetch` → `websearch` / `webfetch`.
 - `TaskCreate` / `TaskUpdate` → `todowrite` when available, otherwise plain text.
@@ -115,6 +116,19 @@ def generate_skills() -> list[str]:
             "phases in this session and report the verdicts it specifies.",
             "",
         ]
+        if skill_id.startswith("team-"):
+            lines += [
+                "## In-chat orchestration (mandatory for teams)",
+                "",
+                f"This is an in-chat orchestrator: perform every phase inline in the "
+                "conversation the user opened and never use the `subagent` tool for the "
+                "team or for any specialist role. Read the role's rules from "
+                "`.claude/agents/<id>.md` instead. Ask every decision and write approval "
+                "with the `question` tool in this chat; if the widget is invisible, "
+                "immediately use numbered text and wait. See "
+                "`.claude/docs/in-chat-teams.md`.",
+                "",
+            ]
         target = OUT_SKILLS / skill_id / "SKILL.md"
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text("\n".join(lines), encoding="utf-8")

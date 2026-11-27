@@ -24,9 +24,11 @@ in it adds an escalation footer. It is not a topic filter.
 Output is a short "Where You Are" block with `✓ Done`, exactly one `→ Next up`,
 optional `~ Also available`, and `Coming up after that`. The verdict line is
 `Verdict: **COMPLETE** — next steps identified.` Step 7b then asks, in the
-runtime question widget, which action to take; maps the choice to a crew using
-`.claude/skills/next-step/references/agent-routing.md`; asks a second time before
-spawning it; and only then delegates through `Agent`. The skill stays read-only:
+runtime question widget, which action to take; for a `/team-*` choice it loads
+that team in the current chat (no crew, no `Agent` call), and for every other
+choice it maps the action to a crew using
+`.claude/skills/next-step/references/agent-routing.md`, asks a second time before
+spawning it, and only then delegates through `Agent`. The skill stays read-only:
 no files are written by it, no director gates are invoked, and no crew runs
 without explicit approval.
 
@@ -43,7 +45,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] Does NOT contain "May I write" language, and `allowed-tools` has no Write or Edit (skill is read-only)
 - [ ] Has a next-step handoff (one `→ Next up` recommendation plus escalation paths)
 - [ ] `allowed-tools` includes `AskUserQuestion` and `Agent`, but no `Write` or `Edit`
-- [ ] Has a Step 7b that asks which action to take, routes it through `references/agent-routing.md`, and requires "Start this crew" before any `Agent` call
+- [ ] Has a Step 7b that asks which action to take: `/team-*` actions load the team in this chat with no `Agent` call; other actions route through `references/agent-routing.md` and require "Start this crew" before any `Agent` call
 - [ ] States that a skipped question is not an answer and that the skill writes no files
 - [ ] States that a delegated subagent returns its questions to this conversation instead of asking in its own output
 
@@ -397,7 +399,7 @@ Fixture defaults.
    for approval, with `Start this crew`, `Change the agents` and `Do it myself`
 6. Only `Start this crew` leads to `Agent` calls; `Do it myself` stops after the
    recommendation. The skill writes no files and claims no writes by itself
-7. Verdict is `COMPLETE — action chosen, crew [approved | not approved | not requested].`
+7. Verdict is `COMPLETE — action chosen, [team loaded here | crew approved | crew not approved | no delegation requested].`
 
 **Assertions:**
 - [ ] Two question-tool calls, never before the state report and the crew block
@@ -406,6 +408,31 @@ Fixture defaults.
 - [ ] No `Agent` call before the second question is answered "Start this crew"
 - [ ] `gamer` is marked read-only and cannot implement the brief
 - [ ] No files written by the skill
+
+### Case 12: The user picks a team action from the widget
+
+**Fixture:**
+- `project.yaml` sets `modes.rigor: studio`; a `/team-qa` action is available
+- The runtime has a question widget
+
+**Input:** `/next-step`, then the user picks `Team QA (/team-qa)` from the widget
+
+**Expected behavior:**
+1. Step 7b recognises the `/team-*` command and does **not** open
+   `references/agent-routing.md` or form a crew
+2. The question tool asks: "Run `/team-qa` here, in this chat?" with options
+   **Run it here** and **Just the recommendation**
+3. On **Run it here**, the skill loads `/team-qa` in the current conversation;
+   the team asks its own phase questions and write approvals in that chat
+4. No `Agent` / `subagent` call is made for the team or any of its roles
+5. On **Just the recommendation** the skill stops without delegating
+6. Verdict names `team loaded here` or `no delegation requested`
+
+**Assertions:**
+- [ ] The team branch appears before the crew branch in Step 7b
+- [ ] No crew block and no "Start this crew" question for a team action
+- [ ] `Agent` appears in no call made for a team action
+- [ ] `.claude/docs/in-chat-teams.md` is cited as the governing rule
 
 ## Protocol Compliance
 

@@ -341,9 +341,10 @@ Everything above is the light path: one brief, a game you play, one feature a
 sitting as it grows. For a team, a long project, or a person who wants the paperwork, the
 same project also has **studio mode**: 51 specialized agents in a studio
 hierarchy, a design document per system, architecture decisions, epics and
-sprints, phase gates, and `team-*` pipelines that coordinate several agents on
-one feature. `/next-step` suggests it once when a grown game gets big (about
-nine stories or features).
+sprints, phase gates, and `team-*` pipelines that perform specialist roles
+inline in your current chat — no subagent hand-off and no lost question widget.
+`/next-step` suggests it once when a grown game gets big (about nine stories or
+features).
 
 ### What's Included
 
@@ -436,7 +437,7 @@ Type `/` in OpenCode (or Claude Code) to access all 80 skills (plus three old na
 **Creative & Content**
 `/vertical-slice` `/onboard` `/localize`
 
-**Team Orchestration** (coordinate multiple agents on a single feature)
+**Team Orchestration** (roles performed inline in this chat on a single feature)
 `/team-combat` `/team-narrative` `/team-ui` `/team-release` `/team-polish` `/team-audio` `/team-level` `/team-live-ops` `/team-qa`
 
 ### Does studio mode produce games, or documents?

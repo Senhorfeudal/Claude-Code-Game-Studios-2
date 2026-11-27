@@ -461,9 +461,22 @@ wait for the answer.
 answer: re-ask once through the widget, then use the plain-text fallback. Only
 an actual choice proceeds.
 
+### Team actions run in this chat
+
+If the chosen action's command is a `/team-*` skill, there is **no crew and no
+`Agent` call**. A team is an orchestrator that must stay in the conversation the
+user opened — see `.claude/docs/in-chat-teams.md`. Ask once through the question
+tool: "Run `/team-X` here, in this chat?" with options **Run it here** and **Just
+the recommendation**. On approval, load the team skill in the current chat with
+the `Skill` tool (OpenCode: `skill`) and let it ask its own phase questions and
+write approvals here. Never put a team id in an `Agent` / `subagent` call: a team
+forwarded into a subagent conversation loses the question widget and leaves the
+user in a running session with no visible question.
+
 ### Route the choice to a crew
 
-Read `.claude/skills/next-step/references/agent-routing.md` and find the row in
+For every **non-team** action, read
+`.claude/skills/next-step/references/agent-routing.md` and find the row in
 **Routes** whose step id or command matches the chosen action. For a custom
 action, match the closest step id; if none fits, say `NOT ASSESSED — NO ROUTE`
 and ask the user to name the agents instead of guessing.
@@ -490,8 +503,8 @@ by this skill — the agents own their work and their own approval questions. A
 delegated subagent must return its questions to this conversation instead of
 asking in its own output, where nobody can answer.
 
-**Verdict after the choice:** `Verdict: **COMPLETE** — action chosen, crew
-[approved | not approved | not requested].`
+**Verdict after the choice:** `Verdict: **COMPLETE** — action chosen,
+[team loaded here | crew approved | crew not approved | no delegation requested].`
 
 ---
 
@@ -535,9 +548,10 @@ out the `/gate-check` line: the minimal path has no stage gates (Step 4m).
 
 ## Collaborative Protocol
 
-- **Never auto-run the next skill or spawn a crew unasked.** Ask which action
-  to take through the widget, then ask again before delegating. A "Start this
-  crew" answer is the only permission to call `Agent`.
+- **Never auto-run the next skill, load a team or spawn a crew unasked.** Ask
+  which action to take through the widget, then ask again before delegating.
+  "Run it here" loads a `/team-*` skill in this chat; "Start this crew" is the
+  only permission to call `Agent`, and it is never used for teams.
 - **Ask about MANUAL steps** rather than assuming complete or incomplete.
 - **Match the user's tone** — if they sound stressed ("I'm totally lost"), be
   reassuring and give one action, not a list of six.

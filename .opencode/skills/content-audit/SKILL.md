@@ -16,7 +16,8 @@ Expected arguments: [system-name | --summary | (no arg = full audit)]
 - `AskUserQuestion` → OpenCode `question` tool. Call it **before** explaining or
   drafting; a failed or invisible widget must immediately become numbered text.
 - `Agent` / `Task` → OpenCode `subagent` tool. Agent IDs are the file names in
-  `.opencode/agents/` (same names as the original studio agents).
+  `.opencode/agents/` (same names as the original studio agents). Team skills
+  are the exception: they stay in this chat and never use it.
 - `Bash` → `shell` tool. `Write` / `Edit` → `write` / `edit`.
 - `WebSearch` / `WebFetch` → `websearch` / `webfetch`.
 - `TaskCreate` / `TaskUpdate` → `todowrite` when available, otherwise plain text.

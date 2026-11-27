@@ -41,6 +41,13 @@ python3 .opencode/scripts/generate-opencode-layer.py
   `metadata.opencode/autoinvoke`, command arguments and `steps`. Eight skills
   that set `disable-model-invocation: true` keep that behaviour through
   `opencode/autoinvoke: false` while remaining available as slash commands.
+- **In-chat teams.** All nine `/team-*` skills are orchestrators that run in the
+  user's current conversation. They never use `Agent`/`subagent` for themselves
+  or for a specialist: each phase is an inline pass reading
+  `.claude/agents/<id>.md`, and every decision/write approval uses the `question`
+  tool in that same chat. `/next-step` loads a chosen team here; it only routes
+  non-team actions to a crew. See `.claude/docs/in-chat-teams.md`. Generated team
+  wrappers repeat this rule.
 - **Agents.** All 51 are subagents with permissions derived from their original
   `tools`/`disallowedTools`. Agents with the “Question Delivery (all runtimes)”
   clause also get a `question` deny rule. `model: opus|sonnet|haiku` becomes an

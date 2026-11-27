@@ -3,7 +3,7 @@ name: team-qa
 description: "Orchestrate the QA team through a full testing cycle — qa-lead strategy and test plan, qa-tester case writing, execution, sign-off."
 argument-hint: "[sprint | feature: system-name] [--review full|lean|solo]"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Write, Edit, Agent, AskUserQuestion, Bash(bash "*/.claude/skills/team-qa/../../hooks/yaml-helper.sh" resolve_config *)
+allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Bash(bash "*/.claude/skills/team-qa/../../hooks/yaml-helper.sh" resolve_config *)
 model: sonnet
 ---
 
@@ -12,7 +12,7 @@ model: sonnet
 When this skill is invoked, orchestrate the QA team through a structured testing cycle.
 
 **Decision Points:** At each phase transition, use `AskUserQuestion` to present
-the user with the subagent's proposals as selectable options. Write the agent's
+the user with the specialist pass's proposals as selectable options. Write the pass's
 full analysis in conversation, then capture the decision with concise labels.
 In `collaborative` mode, the user must approve before moving to the next phase.
 In `guided` mode the pipeline advances automatically unless a phase is BLOCKED;
@@ -21,11 +21,13 @@ in `autonomous` mode it runs end to end, recording each phase outcome via
 (`is_always_ask_category` helper) always prompt regardless of mode. See
 `.claude/docs/automation-modes.md`.
 
-**No question tool:** if this pipeline is running inside a subagent or any other
-context without a question widget, never write the question or its options in
-chat or in reasoning — nobody there can answer. Return the pending decision to
-the orchestrating conversation as a 2–4 option question with a recommendation,
-and stop that phase. A question drafted in reasoning is not a question.
+**In-chat orchestration:** this team runs in the conversation the user opened —
+never as a subagent and never inside a subagent conversation. Each specialist
+pass is performed inline by this orchestrator, reading that specialist's
+`.claude/agents/<id>.md` for its domain rules. Every decision and write approval
+is asked here with `AskUserQuestion`; nothing is forwarded to a parent. If this
+skill is somehow invoked inside a subagent, stop and tell the caller to load the
+team skill in the main chat. See `.claude/docs/in-chat-teams.md`.
 
 ## Phase 0: Resolve Config
 
@@ -41,41 +43,41 @@ a story without a test is then WAIVED, not missing its evidence. The UI and
 Visual/Feel screenshots are required at every level.
 
 `review_mode` sets director-gate depth, and this pipeline has no director gate:
-no phase below spawns CD-, TD-, PR- or AD-PHASE-GATE, at any `review_mode`. Its
+no phase below runs CD-, TD-, PR- or AD-PHASE-GATE, at any `review_mode`. Its
 phase gates are the pipeline's own decision points (defined under `team.size`
-below), and the agents that work at them are team members, not director gates.
+below), and the roles that work at them are team members, not director gates.
 
 `automation` drives the Decision Points note above. See the Decision Points note above and
 `.claude/docs/automation-modes.md` for how each mode changes pipeline behavior.
 
-**`team.size`**: which agents are active (orthogonal to review_mode gate-depth and workflow docs).
+**`team.size`**: which specialist roles are active (orthogonal to review_mode gate-depth and workflow docs).
 - **`individual`** (default): `qa-tester` only; `qa-lead` invoked at phase gates only.
 - **`small`**: `qa-lead` + `qa-tester` pipeline (as documented).
-- **`studio`**: `qa-lead` + per-story `qa-tester` spawn + sign-off.
-A non-core agent needed at `individual` routes through the nearest active core agent with an informational note. **"Phase gate" means any phase that ends in an `AskUserQuestion` decision point this pipeline itself lists** — a transition under Decision Points above, or a **Gate** step written into the pipeline below — **whatever the `automation` mode**: in `guided` or `autonomous`, where that question is skipped or logged, the phase is still a gate. Not every phase is one. Apply the test literally: if the phase below lists no decision point, it is not a gate, and an agent restricted to "phase gates only" is not spawned for it. This active-set scoping applies throughout the pipeline below: any phase that names an agent outside the active set routes through the nearest core agent rather than spawning it.
+- **`studio`**: `qa-lead` + per-story `qa-tester` pass + sign-off.
+A non-core role needed at `individual` is folded into the nearest active core role with an informational note. **"Phase gate" means any phase that ends in an `AskUserQuestion` decision point this pipeline itself lists** — a transition under Decision Points above, or a **Gate** step written into the pipeline below — **whatever the `automation` mode**: in `guided` or `autonomous`, where that question is skipped or logged, the phase is still a gate. Not every phase is one. Apply the test literally: if the phase below lists no decision point, it is not a gate, and a role restricted to "phase gates only" is not performed for it. This active-set scoping applies throughout the pipeline below: any phase that names a role outside the active set is folded into the nearest core role rather than performed as a separate pass.
 
 **Announce the active set before Phase 1 — never let the collapse be silent.**
-Before spawning anything, state in one line which agents this run will actually
-spawn, and which the pipeline below names but will **not** spawn at the resolved
-`team.size`. For example:
+Before starting Phase 1, state in one line which specialist roles this run will
+perform inline, and which the pipeline below names but will **not** perform at
+the resolved `team.size`. For example:
 
-> `Active set (team.size: <resolved>): <the agents listed for that size above>.`
-> `Not spawned this run: <every other agent this pipeline names> — consulted`
-> `through <nearest active core agent>. Raise team.size (or modes.rigor) to widen.`
+> `Active roles (team.size: <resolved>): <the roles listed for that size above>.`
+> `Not performed this run: <every other role this pipeline names> — folded into`
+> `the nearest active core role. Raise team.size (or modes.rigor) to widen.`
 
-Fill it from the `team.size` list directly above and the agents this file's own
+Fill it from the `team.size` list directly above and the roles this file's own
 pipeline names — not from an example. Both sets differ per orchestrator.
-An agent the resolved size spawns only at phase gates (`qa-lead` at
-`individual`) goes in the active set with that qualifier — it is spawned, not
-consulted through another agent.
+A role the resolved size performs only at phase gates (`qa-lead` at
+`individual`) goes in the active set with that qualifier — it is performed, not
+folded into another role.
 
-The pipeline below reads as a multi-agent fan-out and at the shipped default it
-is one or two agents — `team-release` names ten and runs one, `team-narrative`
-names six across five phases and runs `writer` alone. **The collapse is correct**:
+The pipeline below reads as a multi-role sequence and at the shipped default it
+is one or two roles — `team-release` names ten and performs one, `team-narrative`
+names six across five phases and performs `writer` alone. **The collapse is correct**:
 `team.size` is rigor-fronted and the narrow default is the token lever.
 Without saying so, a reader cannot
-distinguish a correctly-collapsed run from a broken pipeline, and the per-agent
-"routes through the nearest core agent with an informational note" rule above
+distinguish a correctly-collapsed run from a broken pipeline, and the per-role
+"folded into the nearest core role with an informational note" rule above
 fires at routing time and never states the shape of the run as a whole.
 
 This is the same rule as the skipped-check reporting elsewhere in this file: **a constraint that is enforced but never surfaced is
@@ -87,19 +89,30 @@ enforced.**
 - **qa-lead** — QA strategy, test plan generation, story classification, sign-off report
 - **qa-tester** — Test case writing, bug report writing, manual QA documentation
 
-## How to Delegate
+## How to Run Inline
 
-Use the `Agent` tool to spawn each team member as a subagent:
-- `subagent_type: qa-lead` — Strategy, planning, classification, sign-off
-- `subagent_type: qa-tester` — Test case writing and bug report writing
+Run each specialist pass inline in this chat. Read the role's
+`.claude/agents/<id>.md` for its domain rules, then perform the work here. Never
+call `Agent` / `subagent` for a team or for a specialist:
+- **qa-lead** — Strategy, planning, classification, sign-off
+- **qa-tester** — Test case writing and bug report writing
 
-**Brief each agent — do not dump context.** Read the shared inputs **once** and pass a distilled brief inline: the lines each agent actually needs, never a file path for a document you have already read (an agent handed a path re-reads the whole file). Pass a path only for a document you have not read and only that agent needs.
+**Use context once — do not re-read.** Read the shared inputs **once** in this
+chat and keep only the sections each pass actually needs. Never re-open a whole
+document you already hold; a role performed inline has the same context you do.
 
-**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is your write authorisation under the bounded exception below, so write it without a separate approval prompt. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session.
+**Present each pass compactly.** In the chat, give the artifact path, ≤5
+bullets of decisions, and any BLOCKED/CONCERNS items, one line each. Do not
+restate the documents you read. Every write still follows the ask-first protocol
+in this same chat (File Write Protocol below).
 
-> **Why this does not violate the Collaboration Protocol.** `CLAUDE.md` requires an agent to ask "May I write this to [filepath]?" before Write/Edit. A subagent spawned here writes **without** asking, and that is a deliberate, bounded exception rather than an oversight — the same call already made for `consistency-check` appending to `active.md`. The exception holds only when all three are true: (1) the path is one **you** named in the prompt, so the user approved the destination when they approved the phase; (2) it is a new artifact under `production/`, `docs/` or `tests/`, never an edit to existing source or config; (3) the phase that produced it is a phase gate as defined above — one the pipeline lists as ending in an `AskUserQuestion` before it advances, whatever the automation mode. Outside those three, the agent must ask. **Do not "fix" this by asking per subagent** — a prompt per agent per phase makes an orchestrator unusable, which is why the exception exists.
+> **Why no bounded exception is needed.** `CLAUDE.md` requires "May I write this
+> to [filepath]?" before Write/Edit. Because the orchestrator performs every pass
+> itself in the user's chat, that normal rule applies to every artifact: show the
+> draft or file set, ask, wait for yes, then write. There is no per-pass write
+> authority to hand out and no question for a parent to answer.
 
-At `team.size: studio`, Phase 4 spawns one qa-tester per story, in parallel; below that, one spawn covers the whole group.
+At `team.size: studio`, Phase 4 runs one qa-tester pass per story; below that, one pass covers the whole group.
 
 ## Pipeline
 
@@ -121,7 +134,7 @@ Before doing anything else, gather the full scope:
 
 ### Phase 2: QA Strategy (qa-lead)
 
-Spawn `qa-lead` via `Agent` to review all in-scope stories and produce a QA strategy.
+Run the `qa-lead` pass inline to review all in-scope stories and produce a QA strategy.
 
 Pass the qa-lead the **Open bugs in scope** from Phase 1 (ID, severity, story or system), then prompt it to:
 - Read each story file
@@ -182,7 +195,7 @@ Write only after receiving approval.
 
 For each story requiring manual QA (Visual/Feel, UI, Integration without automated tests — and, at `qa.level: minimal`, where tests are waived, every Logic, Integration and Config/Data story without a test: its cases walk its acceptance criteria):
 
-Spawn `qa-tester` via `Agent` — one per story, in parallel, at `team.size: studio`; one spawn covering the whole group at `small` and `individual` — providing, for each story:
+Run the `qa-tester` pass inline — one pass per story at `team.size: studio`; one pass covering the whole group at `small` and `individual` — providing, for each story:
 - The story file path
 - The relevant section of the QA plan for that story
 - The GDD acceptance criteria for the system being tested (if available)
@@ -190,12 +203,11 @@ Spawn `qa-tester` via `Agent` — one per story, in parallel, at `team.size: stu
 - **The output path: `production/qa/test-cases/[story-slug]-cases.md`.** Name it
   explicitly in the prompt, one per story.
 
-> **Why the path is stated here rather than left to the orchestrator.** The
-> bounded write exception above holds only when "the path is one **you** named in
-> the prompt". This is the phase that spawns agents *in parallel*, so it is where
-> an unnamed destination does the most damage: each agent improvises its own, and
-> two runs file the same artifact in two places. The phase reads correctly right
-> up until two agents need somewhere to put their output.
+> **Why the path is stated here rather than left to the orchestrator.** Every
+> write in this chat needs an approval naming its destination, so naming the path
+> in this phase is what makes the ask concrete. This is the phase that runs passes
+> in sequence, so an unnamed destination does the most damage: each pass would
+> improvise its own, and two runs file the same artifact in two places.
 
 Each test case set should include:
 - **Preconditions**: game state required before testing begins
@@ -234,7 +246,7 @@ options:
   - "BLOCKED — cannot test yet (reason)"
 ```
 
-After each FAIL result: use `AskUserQuestion` to collect the failure description, then spawn `qa-tester` via `Agent` to write a formal bug report in `production/qa/bugs/`, in `/bug-report`'s format — its Severity and Priority labels exactly as that template lists them (`S2-High`, `P1-Fix this sprint`, …), because `/bug-triage` parses them.
+After each FAIL result: use `AskUserQuestion` to collect the failure description, then run the `qa-tester` pass inline to write a formal bug report in `production/qa/bugs/`, in `/bug-report`'s format — its Severity and Priority labels exactly as that template lists them (`S2-High`, `P1-Fix this sprint`, …), because `/bug-triage` parses them.
 
 **After each PASS or PASS WITH NOTES on a Visual/Feel or UI story, record its
 evidence in `production/qa/evidence/`.** The retained screenshot is the
@@ -276,7 +288,7 @@ After collecting all results, summarize:
 
 ### Phase 6: QA Sign-Off Report
 
-Spawn `qa-lead` via `Agent` to draft the sign-off report using all results from Phases 2–5. **Here the return contract is the report text in its reply, not a file:** the orchestrator writes the sign-off after the ask at the end of this phase, so the qa-lead writes nothing.
+Run the `qa-lead` pass inline to draft the sign-off report using all results from Phases 2–5. **Here the result is the report text in this chat, not a file:** you write the sign-off after the ask at the end of this phase, so the pass writes nothing.
 
 **Brief the qa-lead with the evidence and the verdict rules below — never a verdict.** Pass the strategy table, the smoke check verdict and its source, each story's result, the bugs filed in Phase 5 and the **Open bugs in scope** from Phase 1, and the verdict rules below, verbatim. Do not name a verdict, pre-fill the `### Verdict:` line, or say which fact decides it: the qa-lead applies the rules to the evidence. Then check its verdict against the same rules before asking to write; if they disagree, show both and ask — never silently substitute your own.
 
@@ -357,17 +369,25 @@ Ask: "May I write this QA sign-off report to `production/qa/qa-signoff-[sprint]-
 
 Write only after receiving approval.
 
+## File Write Protocol
+
+All artifacts in this cycle are written by this orchestrator in the current chat.
+Before each write — QA plan, test cases, bug reports, evidence or sign-off
+report — show the draft or file set and ask "May I write this
+to [path]?"; wait for approval. There is no subagent exception — no `Agent` /
+`subagent` writes anything.
+
 ## Error Recovery Protocol
 
-**First, verify the artifact.** If the return contract named a path, check the
+**First, verify the artifact.** If the pass named a path, check the
 path exists before treating the phase as done — **a named artifact that is not
-on disk is a failed phase, however fluent the response reads.** An agent can
-burn a full phase and return a plausible preamble having written nothing, which
+on disk is a failed phase, however fluent the response reads.** A pass can
+burn a full phase and produce a plausible preamble having written nothing, which
 is neither BLOCKED nor an error nor "cannot complete", so the trigger below
-never fires. Resume it naming the unmet contract; the context is
+never fires. Resume the pass naming the unmet contract; the context is
 usually still there.
 
-If any spawned agent returns BLOCKED, errors, or cannot complete: **surface it
+If any pass returns BLOCKED, errors, or cannot complete: **surface it
 immediately, don't proceed past a dependency it blocks, and always produce a
 partial report.** Full procedure: `.claude/docs/error-recovery-protocol.md`.
 

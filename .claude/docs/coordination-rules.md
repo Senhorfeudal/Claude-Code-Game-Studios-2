@@ -31,15 +31,27 @@ pin in auto mode. Started by Claude through the Skill tool: no. Never tell a
 user a `haiku` skill saves money; an `opus` skill typed in a Sonnet session
 costs more. The agent-side `model:` is a different mechanism, and is applied.
 
-## Subagents vs Agent Teams
+## Subagents vs in-chat teams vs Agent Teams
 
-This project uses two distinct multi-agent patterns:
+This project uses three distinct patterns. Pick the right one before planning work:
 
-### Subagents (current, always active)
-Spawned via the `Agent` tool within a single Claude Code session. Used by all
-`team-*` skills and orchestration skills. Subagents share the session's
-permission context, run sequentially or in parallel within the session, and
-return results to the parent.
+### In-chat teams (all `/team-*` skills)
+A team is an orchestrator running in the conversation the user opened. It loads
+each specialist's role rules and performs the phase inline; it never calls
+`Agent` / `subagent` for itself or for a specialist. All decisions and write
+approvals use the question widget in that same chat. This matters on OpenCode
+Mobile: a team forwarded into a subagent conversation loses the widget and can
+only return a pending decision to a parent, leaving the user in a running
+session with no visible question. Full rule: `.claude/docs/in-chat-teams.md`.
+`/next-step` loads a chosen team in the current chat; it never routes a team to
+a crew.
+
+### Subagents (non-team orchestration only)
+Spawned via the `Agent` tool (OpenCode: `subagent`) within a single session for
+non-team orchestration such as `/review-all-gdds`. Subagents share the session's
+permission context and return results to the parent. A subagent asked for a
+decision must return it to the orchestrating conversation — it must never draft
+a question in its own output, where nobody can answer it.
 
 **When to spawn in parallel**: If two subagents' inputs are independent (neither
 needs the other's output to begin), spawn both `Agent` calls simultaneously
@@ -51,12 +63,17 @@ must NOT be parallelised.
 ### Agent Teams (experimental — opt-in)
 Multiple independent Claude Code *sessions* coordinated via a shared task list.
 Opt-in only — read `.claude/docs/agent-teams.md` on demand before proposing one.
+Not used by `/team-*` skills.
 
 ## Parallel Task Protocol
 
-When an orchestration skill spawns multiple independent agents:
+For non-team orchestration that spawns multiple independent agents:
 
 1. Issue all independent `Agent` calls before waiting for any result
 2. Collect all results before proceeding to dependent phases
 3. If any agent is BLOCKED, surface it immediately — do not silently skip
 4. Always produce a partial report if some agents complete and others block
+
+For teams, the equivalent is a sequence of inline passes in the user's chat:
+keep each pass's artifact path, decision bullets and BLOCKED/CONCERNS distinct,
+and ask every approval there.

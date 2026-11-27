@@ -1,8 +1,12 @@
 # Agent routing for `/next-step`
 
-Used only **after** the user chooses an action in Step 7b. This maps an action
-to a starting crew and is not a task brief. The orchestrator still writes a brief
-with the chosen action, the state report and the crew roles.
+Used only **after** the user chooses a **non-team** action in Step 7b. This maps
+an action to a starting crew and is not a task brief. The orchestrator still
+writes a brief with the chosen action, the state report and the crew roles.
+
+`/team-*` actions are **not routed here**: a team is an in-chat orchestrator,
+never a crew and never an `Agent` / `subagent` target. Step 7b loads the chosen
+team skill in the current conversation instead. See `.claude/docs/in-chat-teams.md`.
 
 ## Rules
 
