@@ -337,23 +337,25 @@ Glob finds no `prototypes/*/index.html`, check `engine.name` in `project.yaml`:
   available" that `/prototype --path html` is the fast option: a browser sketch
   of the core game, thrown away when the engine build starts.
 
-### External research (`gamer`)
+### External scan (`@gamer`)
 
-When the user asks what similar projects do, or the next step depends on
-benchmarking a mechanic or structure, offer external research under
-`~ Also available` in Step 7. The user may pick it in Step 7b; only an approved
-crew may then spawn `gamer`, once, with a narrow brief: the engine and stage
-from `project.yaml`, the feature in scope, and the decision to inform. Keep the
-one next step first — research is an optional input, not a new compulsory
-phase.
+Read `design/external-scan.md` first; its `proposed` rows feed Step 7's one next
+step. Follow `.claude/docs/external-scan.md`. When the user asks what similar
+projects do, or a decision needs evidence the scan lacks, offer a new scan under
+`~ Also available` in Step 7. The user may pick it in Step 7b; only then may a
+crew spawn `gamer` once with a narrow brief: project kind, engine and stage from
+`project.yaml`, sector, feature in scope, and decision to inform. Keep the one
+next step first — a re-scan is an optional input, not a new compulsory phase.
+Never spawn it for a `/team-*` action: those run in this chat.
 
 Return contract for the crew brief: "Return only (1) the sourced research
-brief, (2) 3-6 bullets of local comparison, (3) typed suggestions with owner
-skills/agents, and (4) one question with 2-4 options and a recommendation.
-Write no files." This skill asks that question through the question widget, not
-the agent, after the user approves the crew. If the research returns
-`NOT ASSESSED — NO DATA`, keep the step from the catalog and say no external
-reference was found.
+brief, (2) 3-6 bullets of local comparison, (3) typed suggestions with a
+reapplication and owner skills/agents, and (4) one question with 2-4 options
+and a recommendation. Write no files." This skill asks that question through
+the question widget, not the agent, after the user approves the crew. Hand the scan to the skill that owns the write for its approval step; this
+skill writes no files, and applying a proposal needs its own approval. If the
+research returns `NOT ASSESSED — NO DATA`, keep the step from the catalog and
+say no external reference was found.
 
 ---
 

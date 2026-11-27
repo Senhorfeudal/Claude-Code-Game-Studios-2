@@ -94,20 +94,23 @@ folder — with the question widget (free-text answer; plain text only if no wid
 an answer with no game in it gets the A-or-B question. If no option fits, let the user
 describe their situation and route from that.
 
-### External references (`gamer`)
+### External scan (`@gamer`)
 
-If the user asks for similar games, benchmarks or "what do other projects do",
-or has no idea and wants references, spawn `gamer` once with a narrow brief: the
-engine and platform from `project-state.sh`, the idea or mechanic in scope, and
-the decision to inform. Ask only when the answer would change the route or the
-next step, not on every onboarding.
+Read `design/external-scan.md` if it exists and use its `proposed` rows as
+inputs to the route. Follow `.claude/docs/external-scan.md`. If the scan is
+missing or stale, the sector is unclear, or the user asks what other projects
+do, offer one `gamer` scan with a narrow brief: project kind, engine/platform
+from `project-state.sh`, sector (game genre or app category), idea or mechanic,
+and the decision to inform. Never research on every onboarding, and never let
+research replace the one next step.
 
 Return contract: "Return only (1) the sourced research brief, (2) 3-6 bullets of
-local comparison, (3) typed suggestions with owner skills/agents, and (4) one
-question with 2-4 options and a recommendation. Write no files." Put that
-question to the user widget-first, then route their answer with Phase 3. Do not
-let research replace the one next step. `NOT ASSESSED — NO DATA` means route
-from what the user said.
+local comparison, (3) typed suggestions with a reapplication and owner
+skills/agents, and (4) one question with 2-4 options and a recommendation.
+Write no files." Put that question to the user widget-first, then route their
+answer with Phase 3. Write or update `design/external-scan.md` only after
+"May I write this to `design/external-scan.md`?"; applying a proposal needs its
+own approval. `NOT ASSESSED — NO DATA` means route from what the user said.
 
 ## Phase 3: Route
 

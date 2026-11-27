@@ -4,6 +4,20 @@ Use this file **only** after the project-kind gate returns *aplicativo/ferrament
 Never load `full-concept.md`, the game director gates, or the game brief template
 in this branch. The deliverable is `design/software-brief.md`.
 
+## 0. External scan (mandatory)
+
+Before the shape question, run one scan of the app/tool sector with `@gamer`,
+following `.claude/docs/external-scan.md`. Brief it with the project kind,
+engine/platform/stage from `project.yaml`, the app category if the user named
+one, and the decision the scan must inform. Use repositories and source trees,
+official docs, changelogs, developer write-ups, product sites and app-store
+listings; do not read game director gates. Feed its reapplication proposals into
+the shape and role questions, and record the sources in the scan file. Write
+`design/external-scan.md` with the brief's approval (name both paths); never
+let the agent write it or ask the question itself. Reuse a matching scan from
+this session instead of spawning a second gamer. If it returns
+`NOT ASSESSED — NO DATA`, say so and continue from the user's words.
+
 ## 1. Pick the software shape
 
 Ask one question with 2-4 options. Recommend from the user's words; never guess:
@@ -47,8 +61,9 @@ Do not use game-only skills (`art-bible`, `balance-check`, `playtest-report`,
 ## 4. Brief flow
 
 `workflow: minimal`: capture the fields in one exchange, show the filled brief,
-then ask once: "Brief is ready. May I write it to `design/software-brief.md`?"
-Write only on an explicit yes. Do not add architecture docs at this tier.
+then ask once: "Brief is ready. May I write it to `design/software-brief.md`?
+The external scan goes to `design/external-scan.md` in the same approval."
+Write both only on an explicit yes. Do not add architecture docs at this tier.
 
 `standard` or `full`: use `.claude/docs/templates/software-brief.md`, fill every
 field, mark guesses *(guessed)*, show the whole brief, and ask the same write

@@ -77,7 +77,7 @@ runtimes após rodar o gerador.
 | Plugins carregados | `/api/plugin` | `ccgs-bridge` e `question-watchdog` `active` |
 | Ativação de skill em sessão | `/api/experimental/session/{id}/skill` | HTTP `204`, incluindo aliases ocultos (`changelog`, `story-done`) |
 | Linter estático das skills | `bash .claude/scripts/skill-lint.sh all --root .` | 80 skills × 7 checks processados, sem falha dura |
-| Suíte original Python | `python3 -m unittest discover -s tests -p 'test_*.py'` (venv com `tests/requirements.txt`) | **105 testes OK** |
+| Suíte original Python | `python3 -m unittest discover -s tests -p 'test_*.py'` (venv com `tests/requirements.txt`) | **109 testes OK** |
 | Sintaxe dos hooks | `find .claude -name '*.sh' -print0 \| xargs -0 -n 1 bash -n` | OK |
 | Smoke dos validators | payloads de exemplo para `validate-commit.sh` e `validate-write.sh` | exit `0` |
 | Verificação de agents | `bash .claude/scripts/agent-check.sh .` | concluído sem erro |
@@ -124,7 +124,7 @@ usa crews para ações não-team. O gerador emite essa regra nos 9 wrappers.
 
 Evidências: `tests/test_in_chat_teams.py` (novo), atualizações em
 `tests/test_next_step_routing.py`, specs em `studio-tests/skills/team/` e
-`studio-tests/skills/utility/next-step.md`; suíte Python 105 testes OK.
+`studio-tests/skills/utility/next-step.md`; suíte Python 109 testes OK.
 
 ### 5c. Branch software no `/brainstorm`
 
@@ -138,6 +138,17 @@ demais agents, elevando o total para 89. Evidências: 38 specs em
 `studio-tests/agents/software/`, `studio-tests/skills/utility/brainstorm.md` e
 `docs/software-agents.md`/`.json`; `verify-port.py` conta os agents de forma
 dinâmica.
+
+### 5d. Scan externo compartilhado
+
+`@gamer` passou a espião de setor (jogos e software). `/brainstorm` roda um scan
+obrigatório nos dois ramos e grava `design/external-scan.md` na mesma aprovação
+do brief; `/prototype`, `/start`, `/next-step`, `/map-systems` e `/design-system`
+leem o arquivo e só pedem um novo scan quando ele está ausente/desatualizado ou
+quando uma decisão precisa de evidência nova. Cada proposta de reaplicação passa
+pelo "May I write" do documento dono; o agente permanece read-only e sem
+ferramenta de pergunta. Protocolo em `.claude/docs/external-scan.md`; guardrails
+em `tests/test_gamer_agent.py` e nos specs de gamer/brainstorm/downstream.
 
 ## 6. Lacunas conhecidas
 

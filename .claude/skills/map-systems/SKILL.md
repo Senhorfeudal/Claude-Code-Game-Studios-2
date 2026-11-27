@@ -89,6 +89,11 @@ limit.
 - Read `design/gdd/systems-index.md` — if exists, **resume** from where it left off
   (update, don't recreate from scratch)
 - Glob `design/gdd/*.md` — check which system GDDs already exist
+- Read `design/external-scan.md` if it exists — `proposed` rows about system
+  boundaries, dependencies or priority are inputs to Phases 2-4. Follow
+  `.claude/docs/external-scan.md`: mark a row `applied` or `declined` only in an
+  approved scan update, and offer `/gamer` as an option (never spawn it
+  unasked) when the file is missing and a decision needs external evidence.
 
 **If the systems index already exists:**
 - Read it and present current status to the user

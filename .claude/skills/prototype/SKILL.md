@@ -31,19 +31,24 @@ not an answer: ask again in plain text. Every ask follows
 `.claude/docs/automation-modes.md` (collaborative asks always · guided major-only · autonomous
 logs and proceeds; `automation_always_ask` categories always prompt).
 
-### External research (`gamer`)
+### External scan (`@gamer`)
 
-If the user asks for similar games, or a mechanic choice would be better
-informed by what other projects shipped, spawn `gamer` once with a narrow brief:
-the engine and platform, the mechanic in scope, and the decision to inform. Do
-not research on every run, and do not use it to add a route question — "Ask no
-question to choose the route" still holds. Its suggestions become inputs to the
-question the chosen route already asks, never a second research dump.
+Read `design/external-scan.md` before choosing a route or a mechanic; its
+`proposed` rows are inputs, not a new question. Follow `.claude/docs/external-scan.md`.
+Spawn `gamer` once only when the scan is missing or stale, the sector changed,
+or a choice needs fresh evidence — offer it as an option, never as an unasked
+detour, and never to add a route question ("Ask no question to choose the route"
+still holds). A narrow brief names the project kind, engine/platform, sector,
+mechanic and decision.
 
 Return contract: "Return only (1) the sourced research brief, (2) 3-6 bullets of
-local comparison, (3) typed suggestions with owner skills/agents, and (4) one
-question with 2-4 options and a recommendation. Write no files." If it returns
-`NOT ASSESSED — NO DATA`, pick the route from the user's words and the engine.
+local comparison, (3) typed suggestions with a reapplication and owner
+skills/agents, and (4) one question with 2-4 options and a recommendation.
+Write no files." The orchestrator asks that question and writes or updates
+`design/external-scan.md` only after "May I write this to
+`design/external-scan.md`?"; applying a proposal to a brief or code needs its
+own approval. If it returns `NOT ASSESSED — NO DATA`, pick the route from the
+user's words and the engine.
 
 ## Choose the route
 

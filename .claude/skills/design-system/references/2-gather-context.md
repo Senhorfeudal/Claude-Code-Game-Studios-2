@@ -108,6 +108,12 @@ registry first; the section grep fills what it does not hold.
 
 ### 2c: Optional Reads
 
+- **External scan**: Read `design/external-scan.md` if it exists. `proposed`
+  rows for this system are inputs to the section design; an applied row names
+  the file that implemented it. Follow `.claude/docs/external-scan.md`: never
+  apply or mark a row without its own write approval, and offer `/gamer` as an
+  option — never spawn it unasked — when the scan is missing and a section
+  needs external evidence.
 - **Game pillars**: Read `design/gdd/game-pillars.md` if it exists
 - **Existing GDD**: Read `design/gdd/[system-name].md` if it exists (resume, don't
   restart from scratch)

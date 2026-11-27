@@ -30,6 +30,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] Contains "May I write" collaborative protocol language (for `design/gdd/systems-index.md`)
 - [ ] Has a next-step handoff at the end (`/design-system`)
 - [ ] Documents three gates at their phases: TD-SYSTEM-BOUNDARY (Phase 3), PR-SCOPE (Phase 4), CD-SYSTEMS (Phase 5, after the write)
+- [ ] Phase 1 reads `design/external-scan.md` when present; `proposed` rows feed phases 2-4 and status changes need approval
 
 ---
 

@@ -36,6 +36,8 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] Has a next-step handoff at the end (`/map-systems` in the full flow's design-first steps; in the Lean Brief flow `/prototype` with no engine set, `/create-stories` with one)
 - [ ] Documents 4 director gates in full mode: CD-PILLARS, AD-CONCEPT-VISUAL, TD-FEASIBILITY, PR-SCOPE
 - [ ] Documents a named skip note for each gate in lean and solo modes
+- [ ] Runs one mandatory `@gamer` sector scan after the project-kind gate and before any concept question, in both game and app/tool branches (`.claude/docs/external-scan.md`)
+- [ ] Offers `design/external-scan.md` in the same write approval as the brief; no proposal is applied without its own approval
 
 ---
 
@@ -292,6 +294,37 @@ Fixture defaults.
 - [ ] No number about the market appears without a source
 - [ ] Phase 8's first prototype-first step is `/prototype`, before `/setup-engine`
 - [ ] Variant — the user names Godot: Phase 8 adds one line naming `/prototype --path html` as a browser sketch, not recommended
+
+---
+
+### Case 9: Mandatory external scan in both branches
+
+**Fixture:**
+- `modes.rigor: minimal`, no `design/external-scan.md` yet
+- Variant A: project kind *jogo*; variant B: *aplicativo/ferramenta*
+
+**Input:** `/brainstorm [a short hint]`
+
+**Expected behavior:**
+1. Project-kind gate is asked first, then one `gamer` scan runs before the
+   concept or shape question, with a brief naming engine/platform/stage, sector
+   and decision
+2. Variant A reads no software reference; variant B reads no game director gate
+   and scans repositories, docs, changelogs and app-store listings
+3. The scan's reapplication proposals feed the next question as evidence; the
+   full research table is not pasted before the question
+4. The brief write question names both `design/game-brief.md` (or
+   `design/software-brief.md`) and `design/external-scan.md`; both are written
+   only on explicit yes
+5. `NOT ASSESSED — NO DATA` is recorded in the scan and the skill continues from
+   the user's words without invented sources
+
+**Assertions:**
+- [ ] Exactly one gamer scan is spawned; a matching scan from this session is reused
+- [ ] A reapplication proposal appears in a concept/shape question
+- [ ] Both paths are named in the write approval and neither is written before it
+- [ ] No proposal is applied to the brief without a separate approval
+- [ ] Variant B uses software sources and never loads `full-concept.md`
 
 ---
 

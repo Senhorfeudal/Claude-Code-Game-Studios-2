@@ -1,7 +1,7 @@
 # Agent Test Spec: gamer
 
 ## Agent Summary
-Domain: external scouting — finding similar games, repositories, forums and resources on the web, studying their structure, and returning sourced improvement/implementation/fix suggestions plus a question for the orchestrator.
+Domain: external sector scouting — finding what is new and different in a game or software sector on the web, forums, app stores and GitHub, studying it, and returning sourced improvement/implementation/fix suggestions with a concrete reapplication plus a question for the orchestrator. The orchestrator records the scan in `design/external-scan.md`.
 Does NOT own: the user question itself (orchestrator + `question-widget-specialist`), design or architecture decisions (`creative-director`, `game-designer`, `lead-programmer`), implementation, or any file write.
 No gate IDs assigned.
 
@@ -15,6 +15,8 @@ No gate IDs assigned.
 - [ ] The body states that the orchestrator owns the question widget and that the agent has no question tool
 - [ ] The body maps `WebSearch`/`WebFetch` to `websearch`/`webfetch` for other runtimes and keeps the read-only boundary
 - [ ] The body defines `IMPROVEMENT`, `IMPLEMENTATION` and `FIX` with `High`/`Medium`/`Low` confidence
+- [ ] The body covers both sectors (games and app/tool) and asks for a named sector in the brief
+- [ ] Every suggestion carries a reapplication and an owner skill/agent; the shared protocol is `.claude/docs/external-scan.md`
 
 ---
 
@@ -64,6 +66,18 @@ No gate IDs assigned.
 - Hands implementation to `gameplay-programmer` (or `/dev-story`) and the GDD section to `/design-system`
 - Restates the suggestion as an owner-tagged row and returns the question for the user to choose
 
+### Case 7: Software sector scan for an app/tool brief
+
+**Input:** `/brainstorm` picks *aplicativo/ferramenta*; brief: "data/internal
+tool, Web, decide whether to build on an existing open-source dashboard".
+**Expected behavior:**
+- Searches repositories and source trees, official docs, changelogs, product
+  sites and app-store listings for what that sector is doing differently
+- Reports recency and licence per source; cross-platform findings are context, not recommendations
+- Returns typed proposals with a concrete reapplication and owner such as
+  `/create-architecture` or a `sw-*` role, plus one question for the orchestrator
+- Writes no file; the orchestrator offers `design/external-scan.md` for approval
+
 ---
 
 ## Protocol Compliance
@@ -74,6 +88,7 @@ No gate IDs assigned.
 - [ ] Suggestions are typed `IMPROVEMENT` / `IMPLEMENTATION` / `FIX` with a confidence level
 - [ ] Every suggestion names an owner skill or agent, never the gamer itself
 - [ ] Output contains exactly the four contracted parts: brief, comparison, suggestions, question
+- [ ] Suggestions include a reapplication that the orchestrator can put to the user; the agent never applies one
 - [ ] The question is for the orchestrator's widget, with 2-4 short options and a recommendation
 - [ ] Engine and platform mismatches are flagged before a source becomes a recommendation
 - [ ] Domain-specific findings (accessibility, security, performance) are handed to their owning agents

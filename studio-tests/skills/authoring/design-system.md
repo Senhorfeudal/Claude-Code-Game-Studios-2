@@ -42,6 +42,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] Documents skeleton-first approach (file created with headers before content, after approval)
 - [ ] Documents CD-GDD-ALIGN gate: runs in full mode only; skipped in lean and solo with a named note
 - [ ] Documents retrofit mode for existing GDD files
+- [ ] Phase 2c reads `design/external-scan.md` when present; proposals inform section design and are never applied or marked without approval
 
 ---
 

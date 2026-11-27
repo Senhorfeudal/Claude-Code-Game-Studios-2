@@ -47,6 +47,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] `allowed-tools` includes `AskUserQuestion` and `Agent`, but no `Write` or `Edit`
 - [ ] Has a Step 7b that asks which action to take: `/team-*` actions load the team in this chat with no `Agent` call; other actions route through `references/agent-routing.md` and require "Start this crew" before any `Agent` call
 - [ ] States that a skipped question is not an answer and that the skill writes no files
+- [ ] Reads `design/external-scan.md` before Step 7; a new `@gamer` scan is offered under `~ Also available`, never spawned for a `/team-*` action, and its proposals are not applied here
 - [ ] States that a delegated subagent returns its questions to this conversation instead of asking in its own output
 
 ---

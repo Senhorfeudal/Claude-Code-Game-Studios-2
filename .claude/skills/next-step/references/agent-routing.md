@@ -18,8 +18,11 @@ team skill in the current conversation instead. See `.claude/docs/in-chat-teams.
   with `godot-specialist`, `unity-specialist` or `unreal-specialist` (or the
   named sub-specialist when the action targets shaders, UI, GAS, replication or
   addressables). For Web, keep `engine-programmer`.
-- `gamer` and `question-widget-specialist` are **read-only**. They may research
-  or review question wording; they never implement or write files.
+- `gamer` and `question-widget-specialist` are **read-only**. `gamer` owns the
+  sector scan in `design/external-scan.md` (`.claude/docs/external-scan.md`):
+  it researches game and software sectors and returns reapplication proposals;
+  the orchestrator writes the scan and applies proposals after approval. Neither
+  agent implements or writes files.
 - Every agent with `Write`/`Edit` follows the ask-first protocol in `CLAUDE.md`.
   Ask before writing, show the draft, wait for approval.
 - If no row matches, say `NOT ASSESSED — NO ROUTE` and ask the user to name the
@@ -30,7 +33,7 @@ team skill in the current conversation instead. See `.claude/docs/in-chat-teams.
 | Step id / action | Command | Crew (owner first) | Why |
 |------------------|---------|--------------------|-----|
 | `engine-setup` | `/setup-engine` | `technical-director`, `engine-programmer` | Pin the engine version and its project conventions |
-| `game-brief` | `/brainstorm` | `creative-director`, `game-designer`, `gamer` | Shape the pitch and scope; `gamer` only when references are wanted |
+| `game-brief` | `/brainstorm` | `creative-director`, `game-designer`, `gamer` | Shape the pitch and scope; `gamer` always scans the sector first |
 | `game-concept` | `/brainstorm` | `creative-director`, `game-designer`, `world-builder` | Pillars, mechanics and the world the concept needs |
 | `create-stories` | `/create-stories` | `producer`, `game-designer`, `qa-lead` | Break the brief into build order with testable acceptance criteria |
 | `dev-story` | `/dev-story` | `gameplay-programmer`, `qa-tester` | Implement the story and cover its acceptance criteria |

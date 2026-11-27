@@ -9,6 +9,8 @@ import unittest
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 AGENT = ROOT / '.claude/agents/gamer.md'
 SPEC = ROOT / 'studio-tests/agents/specialists/gamer.md'
+SCAN_DOC = ROOT / '.claude/docs/external-scan.md'
+SOFTWARE_REF = ROOT / '.claude/skills/brainstorm/references/software-concept.md'
 SKILLS = ('brainstorm', 'prototype', 'start', 'next-step')
 
 
@@ -55,6 +57,37 @@ class GamerAgentTests(unittest.TestCase):
         for name in ('start', 'next-step'):
             text = (ROOT / '.claude/skills' / name / 'SKILL.md').read_text(encoding='utf-8')
             self.assertIn('Agent', text.split('allowed-tools:', 1)[1].split('\n', 1)[0])
+
+    def test_gamer_is_a_sector_scout_with_reapplication(self):
+        text = AGENT.read_text(encoding='utf-8')
+        self.assertIn('game or app/tool', text)
+        self.assertIn('sector', text)
+        self.assertIn('reapplication', text)
+        self.assertIn('external-scan.md', text)
+
+    def test_external_scan_protocol_is_shared(self):
+        text = SCAN_DOC.read_text(encoding='utf-8')
+        for phrase in ('design/external-scan.md', '## When to scan',
+                       '## Sector scope', '## Approval boundary',
+                       'proposed', 'applied', 'declined',
+                       'NOT ASSESSED — NO DATA'):
+            self.assertIn(phrase, text, f'external-scan.md lacks {phrase}')
+
+    def test_brainstorm_scans_both_branches(self):
+        text = (ROOT / '.claude/skills/brainstorm/SKILL.md').read_text(encoding='utf-8')
+        self.assertIn('mandatory, both branches', text)
+        self.assertIn('before any concept question', text)
+        self.assertIn('design/external-scan.md', text)
+        software = SOFTWARE_REF.read_text(encoding='utf-8')
+        self.assertIn('External scan (mandatory)', software)
+        self.assertIn('design/external-scan.md', software)
+
+    def test_downstream_skills_consume_the_scan(self):
+        for name in SKILLS + ('map-systems',):
+            text = (ROOT / '.claude/skills' / name / 'SKILL.md').read_text(encoding='utf-8')
+            self.assertIn('external-scan.md', text, f'{name} does not read the scan')
+        design_ref = (ROOT / '.claude/skills/design-system/references/2-gather-context.md')
+        self.assertIn('external-scan.md', design_ref.read_text(encoding='utf-8'))
 
     def test_agent_count_is_consistent(self):
         count = len(list((ROOT / '.claude/agents').glob('*.md')))

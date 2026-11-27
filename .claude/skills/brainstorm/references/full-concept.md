@@ -157,8 +157,9 @@ one-line visual rule, 2-3 supporting principles with design tests, and the colou
 The Core Identity table's Estimated Scope matches the full-vision timeline in Scope Tiers: write
 "Large (X–Y months, solo)" or "Large (X–Y months, team of N)", not "Large".
 
-Ask, as its own question: "Game concept is ready. May I write it to `design/gdd/game-concept.md`?"
-`Yes — write it` / `Not yet — revise a section first`. Write only on an explicit yes to this
+Ask, as its own question: "Game concept is ready. May I write it to `design/gdd/game-concept.md`?
+The external scan goes to `design/external-scan.md` in the same approval."
+`Yes — write both` / `Not yet — revise a section first`. Write only on an explicit yes to this
 question. A revision: ask which section (`Elevator Pitch` / `Core Fantasy & Unique Hook` /
 `Pillars` / `Core Loop` / `MVP Definition` / `Scope Tiers` / `Risks` / `Something else — I'll
 describe`), show it before and after, then ask "Ready to write the updated concept document?"

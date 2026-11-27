@@ -1,6 +1,6 @@
 ---
 name: "gamer"
-description: "External scout — finds similar games and repositories on the web, forums and GitHub, studies their structure, and returns sourced suggestion options to the orchestrator. Use when research outside the repo would change a decision."
+description: "External sector scout — scans the web, forums, app stores and GitHub for what is new and different in a game or software sector, and returns sourced learnings reapplyable to this project. Use when research outside the repo would change a decision."
 metadata:
   opencode/autoinvoke: true
 ---
