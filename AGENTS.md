@@ -1,6 +1,6 @@
 # Senhorfeudal Game Studios — OpenCode edition
 
-Indie game development managed through 51 specialist subagents and 80 skills.
+Indie game and software development managed through 89 specialist subagents (51 game + 38 software) and 80 skills.
 Each agent owns a domain, enforcing separation of concerns and quality. This
 folder is the OpenCode port of the Claude Code template; `CLAUDE.md` is kept as
 the upstream source for Claude Code sessions.

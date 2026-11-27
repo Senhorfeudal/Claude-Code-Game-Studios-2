@@ -1,5 +1,5 @@
 ---
-description: "Guides the user through finding and choosing a game concept. Use when the user wants game ideas, a new concept, a game jam idea, or to explore other directions, including dropping the current idea and starting over."
+description: "Decides game vs app/tool first, then guides the user to a written concept and the right agents/skills. Use for game ideas, app/tool ideas, new concepts, or exploring other directions."
 ---
 
 Load the `brainstorm` skill with the `skill` tool, read `.claude/skills/brainstorm/SKILL.md` in full, and execute it to completion.

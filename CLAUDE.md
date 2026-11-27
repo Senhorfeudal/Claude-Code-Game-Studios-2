@@ -1,6 +1,6 @@
 # Senhorfeudal Game Studios -- Game Studio Agent Architecture
 
-Indie game development managed through 51 coordinated Claude Code subagents.
+Indie game and software development managed through 89 coordinated Claude Code subagents (51 game + 38 software).
 Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack

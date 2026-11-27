@@ -72,9 +72,9 @@ class QuestionWidgetAgentTests(unittest.TestCase):
         self.assertIn('tools: Read, Glob, Grep', text)
         self.assertNotIn('Write', text.split('\n## ')[0])
         count = len(list((ROOT / '.claude/agents').glob('*.md')))
-        self.assertEqual(count, 51, 'agent count drifted from the docs')
+        self.assertEqual(count, 89, 'agent count drifted from the docs')
         claude = (ROOT / 'CLAUDE.md').read_text(encoding='utf-8')
-        self.assertIn('51 coordinated Claude Code subagents', claude)
+        self.assertIn('89 coordinated Claude Code subagents', claude)
 
 
 class SubagentQuestionBoundaryTests(unittest.TestCase):
@@ -94,7 +94,7 @@ class SubagentQuestionBoundaryTests(unittest.TestCase):
 
     def test_every_agent_declares_the_unified_question_clause(self):
         paths = sorted((ROOT / '.claude/agents').glob('*.md'))
-        self.assertEqual(len(paths), 51, 'agent count drifted from the docs')
+        self.assertEqual(len(paths), 89, 'agent count drifted from the docs')
         offenders = []
         for path in paths:
             text = path.read_text(encoding='utf-8')
@@ -108,7 +108,7 @@ class SubagentQuestionBoundaryTests(unittest.TestCase):
 
     def test_every_agent_spec_requires_the_subagent_boundary(self):
         paths = sorted((ROOT / 'studio-tests/agents').rglob('*.md'))
-        self.assertEqual(len(paths), 51, 'agent spec count drifted from the catalog')
+        self.assertEqual(len(paths), 89, 'agent spec count drifted from the catalog')
         offenders = []
         for path in paths:
             text = path.read_text(encoding='utf-8')

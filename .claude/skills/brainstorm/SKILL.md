@@ -1,7 +1,7 @@
 ---
 name: brainstorm
-description: "Guides the user through finding and choosing a game concept. Use when the user wants game ideas, a new concept, a game jam idea, or to explore other directions, including dropping the current idea and starting over."
-argument-hint: "[genre or theme hint, or 'open'] [--review full|lean|solo]"
+description: "Decides game vs app/tool first, then guides the user to a written concept and the right agents/skills. Use for game ideas, app/tool ideas, new concepts, or exploring other directions."
+argument-hint: "[idea, 'open', or 'app/tool'] [--review full|lean|solo]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, WebSearch, Agent, AskUserQuestion, Bash(bash "*/.claude/skills/brainstorm/../../hooks/yaml-helper.sh" resolve_config *)
 model: sonnet
@@ -13,20 +13,42 @@ Resolved above; use as-is. No block → the defaults in `.claude/docs/config-res
 (`workflow: minimal`, `review_mode: solo`, `automation: collaborative`, `docs.density: terse`), and
 say that the settings were not read.
 
+## 0. Project-kind gate — always first
+
+Before any concept question, ask with the question tool:
+
+> What are we creating?
+> 1. **Jogo** — a game with rules, player goals and playtesting.
+> 2. **Aplicativo ou ferramenta** — software, a web/mobile app, CLI, internal tool or library.
+
+The question is the last thing in the reply; wait for the answer. A skipped or
+dismissed question is not an answer.
+
+- **Jogo:** continue with the game flow below. Never read the software reference.
+- **Aplicativo ou ferramenta:** read `.claude/skills/brainstorm/references/software-concept.md`
+  and follow it. It writes `design/software-brief.md`, chooses one `sw-*` agent and
+  routes to generic software skills. Do **not** load `references/full-concept.md`,
+  game director gates or the game brief template in this branch. Say the chosen
+  agent and skills in the reply so the user can override them.
+
+The 38 `sw-*` agents and the routing table live in `docs/software-agents.md`.
+
 # Brainstorm
 
-Turns no idea, or a rough one, into a written design the next step builds from. How much it writes
-depends on `workflow`:
+Turns no idea, or a rough one, into a written design the next step builds from. The project-kind
+gate above decides which branch you are in. How much it writes depends on `workflow`:
 
-- **`minimal`:** the Lean Brief flow below: a one-page `design/game-brief.md`, then stop. No
+- **`minimal`, game:** the Lean Brief flow below: a one-page `design/game-brief.md`, then stop. No
   discovery questions, pillars, director gates or `game-concept.md`, and do not load
   `references/full-concept.md`.
-- **`standard` or `full`:** read `references/full-concept.md` and follow it. It writes
+- **`standard` or `full`, game:** read `references/full-concept.md` and follow it. It writes
   `design/gdd/game-concept.md` from `.claude/docs/templates/game-concept.md`. Its gates follow
   `.claude/docs/director-gates.md`; each director agent is given its own gate file,
   `.claude/docs/director-gates/<gate-id in lower case>.md` (`cd-pillars.md`,
   `ad-concept-visual.md`, `td-feasibility.md`, `pr-scope.md`), and you do not read those files
   yourself.
+- **app/tool:** use `references/software-concept.md` instead; it writes
+  `design/software-brief.md` and selects one `sw-*` agent plus generic software skills.
 
 `--review` in the text typed after the skill name overrides `review_mode` for this run.
 `docs.density` sets each section's depth: `terse` = bullets; `balanced` = with brief rationale;
@@ -38,7 +60,7 @@ Ask with the question tool. Without one, list the options numbered and end your 
 question is the last thing in the reply: no advice or lean after it. A skipped or dismissed
 question is not an answer: ask again in plain text.
 
-### External research (`gamer`)
+### External research (`gamer`) — game branch only
 
 When the concept is vague, the user asks for similar games or references, or a
 choice would be better informed by what other projects did, spawn `gamer` once
@@ -53,7 +75,7 @@ Use its question as the next question to the user, widget-first, with the
 trade-offs in the option descriptions. If it returns `NOT ASSESSED — NO DATA`,
 continue from the user's words without inventing references.
 
-## Lean Brief flow (`workflow: minimal`)
+## Lean Brief flow (`workflow: minimal`, game branch)
 
 A few exchanges, not fifteen: capture the thinking that carries the game on one page, then get to
 a playable game. Write from the template `.claude/docs/templates/game-brief.md` (six required

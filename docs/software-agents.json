@@ -1,0 +1,767 @@
+{
+  "source": "flatlogic/awesome-ai-software-development-agents",
+  "commit": "51b59e47514001d85e9da4238fdde4fcbce7d2f1",
+  "source_url": "https://github.com/flatlogic/awesome-ai-software-development-agents/tree/51b59e47514001d85e9da4238fdde4fcbce7d2f1",
+  "note": "Original role prompts derived from a curated list; upstream has no agent files.",
+  "agents": [
+    {
+      "id": "sw-aider",
+      "tool": "Aider",
+      "interface": "CLI",
+      "category": "CLI Agent",
+      "pricing": "Free",
+      "url": "https://github.com/Aider-AI/aider",
+      "focus": "tight terminal pairing for small, focused code edits",
+      "when_to_use": "refactors, bug fixes and repo edits where a fast review loop matters",
+      "steps": [
+        "map the files that own the change before editing",
+        "make the smallest coherent patch with a clear diff",
+        "run the repo's own checks and report failures verbatim"
+      ],
+      "skills": [
+        "code-review",
+        "test-setup"
+      ]
+    },
+    {
+      "id": "sw-appwizzy",
+      "tool": "AppWizzy",
+      "interface": "Cloud",
+      "category": "Agent Platform",
+      "pricing": "Free + Premium",
+      "url": "https://appwizzy.com/",
+      "focus": "business web apps such as SaaS, CRM and ERP",
+      "when_to_use": "internal tools or business dashboards needing data models and CRUD flows",
+      "steps": [
+        "define entities, roles and core workflows first",
+        "specify screens as forms, tables and reports",
+        "flag vendor lock-in and export needs before implementation"
+      ],
+      "skills": [
+        "create-stories",
+        "ux-design",
+        "security-audit"
+      ]
+    },
+    {
+      "id": "sw-base44",
+      "tool": "Base44",
+      "interface": "Cloud",
+      "category": "App Builder",
+      "pricing": "Free",
+      "url": "https://base44.com/",
+      "focus": "full web app generation from a plain-language description",
+      "when_to_use": "quick web MVPs where deployment speed beats deep customization",
+      "steps": [
+        "turn the request into screens, data and automations",
+        "name the assumptions that need user confirmation",
+        "note what must be exported if the app leaves the platform"
+      ],
+      "skills": [
+        "create-stories",
+        "ux-design",
+        "release-checklist"
+      ]
+    },
+    {
+      "id": "sw-bolt",
+      "tool": "Bolt.new",
+      "interface": "Cloud",
+      "category": "IDE Agent",
+      "pricing": "Free",
+      "url": "https://bolt.new/",
+      "focus": "browser-based full-stack coding with conversation and deploy",
+      "when_to_use": "greenfield web prototypes that need a working preview quickly",
+      "steps": [
+        "start from the smallest runnable stack",
+        "wire one end-to-end path before adding screens",
+        "list the deploy and environment steps explicitly"
+      ],
+      "skills": [
+        "create-architecture",
+        "test-setup",
+        "smoke-check"
+      ]
+    },
+    {
+      "id": "sw-claude-code",
+      "tool": "Claude Code",
+      "interface": "CLI",
+      "category": "CLI Agent",
+      "pricing": "Premium",
+      "url": "https://www.claude.com/claude-code",
+      "focus": "large-repository changes, multi-file refactors and routine dev automation",
+      "when_to_use": "complex codebases where architectural context matters more than speed",
+      "steps": [
+        "read the surrounding architecture before touching code",
+        "split large changes into reviewable steps",
+        "record commands run and files changed for the caller"
+      ],
+      "skills": [
+        "code-review",
+        "architecture-review",
+        "tech-debt"
+      ]
+    },
+    {
+      "id": "sw-cline",
+      "tool": "Cline",
+      "interface": "IDE",
+      "category": "IDE Agent",
+      "pricing": "Free + Premium",
+      "url": "https://github.com/cline/cline",
+      "focus": "planning, command execution and multi-file edits inside an IDE",
+      "when_to_use": "features needing a visible plan before any file is modified",
+      "steps": [
+        "write a short plan with affected files",
+        "execute in small steps and show each result",
+        "re-check the plan after every failed command"
+      ],
+      "skills": [
+        "create-stories",
+        "code-review",
+        "story-readiness"
+      ]
+    },
+    {
+      "id": "sw-co-dev",
+      "tool": "Co.dev",
+      "interface": "Cloud",
+      "category": "App Builder",
+      "pricing": "Free + Premium",
+      "url": "https://co.dev/",
+      "focus": "Next.js and Supabase apps generated from prompts",
+      "when_to_use": "web apps that fit a React/Postgres stack with hosted auth",
+      "steps": [
+        "define schema, auth rules and page routes first",
+        "keep generated code readable and versionable",
+        "call out hosted-service dependencies"
+      ],
+      "skills": [
+        "create-architecture",
+        "security-audit",
+        "test-setup"
+      ]
+    },
+    {
+      "id": "sw-codex",
+      "tool": "Codex (OpenAI)",
+      "interface": "CLI + Cloud",
+      "category": "Agent",
+      "pricing": "Premium",
+      "url": "https://openai.com/codex",
+      "focus": "delegated software-engineering tasks in cloud or terminal",
+      "when_to_use": "well-scoped changes that can be specified as a task with acceptance criteria",
+      "steps": [
+        "rewrite the request as acceptance criteria before coding",
+        "work in an isolated branch or workspace",
+        "return tests and a concise change summary"
+      ],
+      "skills": [
+        "story-readiness",
+        "code-review",
+        "smoke-check"
+      ]
+    },
+    {
+      "id": "sw-continue",
+      "tool": "Continue",
+      "interface": "IDE + CI",
+      "category": "IDE Agent",
+      "pricing": "Free + Premium",
+      "url": "https://www.continue.dev/",
+      "focus": "configurable IDE agent plus agents-on-PR and review workflows",
+      "when_to_use": "teams wanting automated PR review and reusable repo-specific context",
+      "steps": [
+        "encode repo rules as short reusable context",
+        "review the diff, not just the changed lines",
+        "separate blocking findings from optional suggestions"
+      ],
+      "skills": [
+        "code-review",
+        "test-evidence-review",
+        "regression-suite"
+      ]
+    },
+    {
+      "id": "sw-create",
+      "tool": "Create.xyz",
+      "interface": "Cloud",
+      "category": "App Builder",
+      "pricing": "Free + Premium",
+      "url": "https://create.xyz/",
+      "focus": "web apps from text or image prompts with a no-code front end",
+      "when_to_use": "visual-first prototypes where the user thinks in screens, not schemas",
+      "steps": [
+        "translate the visual idea into a screen inventory",
+        "name hidden data and state assumptions",
+        "verify the result can be iterated or exported"
+      ],
+      "skills": [
+        "ux-design",
+        "create-stories",
+        "prototype"
+      ]
+    },
+    {
+      "id": "sw-cursor",
+      "tool": "Cursor (Agent)",
+      "interface": "IDE",
+      "category": "IDE Agent",
+      "pricing": "Premium",
+      "url": "https://cursor.com/",
+      "focus": "repo editing, terminal use and codebase search in an agentic IDE",
+      "when_to_use": "features needing whole-repo search before a precise multi-file edit",
+      "steps": [
+        "search first, edit second",
+        "keep each edit tied to a found reference",
+        "run the closest existing test suite"
+      ],
+      "skills": [
+        "code-review",
+        "architecture-review",
+        "test-setup"
+      ]
+    },
+    {
+      "id": "sw-databutton",
+      "tool": "Databutton",
+      "interface": "Cloud",
+      "category": "App Builder",
+      "pricing": "Premium",
+      "url": "https://databutton.com/",
+      "focus": "full-cycle app development covering planning, coding and deployment",
+      "when_to_use": "end-to-end product briefs that include hosting and operations",
+      "steps": [
+        "write the plan and the deployment target together",
+        "split data, UI and automation work",
+        "list operational owner for each deployed part"
+      ],
+      "skills": [
+        "create-architecture",
+        "sprint-plan",
+        "release-checklist"
+      ]
+    },
+    {
+      "id": "sw-devika",
+      "tool": "Devika",
+      "interface": "Cloud / OSS",
+      "category": "Autonomous Agent",
+      "pricing": "Free",
+      "url": "https://github.com/stitionai/devika",
+      "focus": "goal-driven planning, browsing and coding",
+      "when_to_use": "open-ended tasks where research must precede implementation",
+      "steps": [
+        "state the goal and the evidence needed to finish it",
+        "research before choosing an implementation",
+        "stop and report when the goal is ambiguous"
+      ],
+      "skills": [
+        "project-stage-detect",
+        "create-stories",
+        "code-review"
+      ]
+    },
+    {
+      "id": "sw-devin",
+      "tool": "Devin AI",
+      "interface": "Cloud",
+      "category": "Autonomous Agent",
+      "pricing": "Premium",
+      "url": "https://devin.ai/",
+      "focus": "autonomous handling of complete software tasks",
+      "when_to_use": "isolated tasks with a clear definition of done and minimal ambiguity",
+      "steps": [
+        "confirm the task boundary before starting",
+        "work autonomously only inside that boundary",
+        "report decisions, artifacts and verification"
+      ],
+      "skills": [
+        "story-readiness",
+        "gate-check",
+        "code-review"
+      ]
+    },
+    {
+      "id": "sw-floot",
+      "tool": "Floot",
+      "interface": "Cloud",
+      "category": "App Builder",
+      "pricing": "Free + Premium",
+      "url": "https://floot.com/",
+      "focus": "app and website generation for non-coders",
+      "when_to_use": "simple sites and internal apps described in everyday language",
+      "steps": [
+        "restate the request as screens and actions",
+        "keep scope to one useful workflow",
+        "explain where generated output can be customized"
+      ],
+      "skills": [
+        "ux-design",
+        "create-stories",
+        "next-step"
+      ]
+    },
+    {
+      "id": "sw-forge",
+      "tool": "Forge",
+      "interface": "CLI",
+      "category": "CLI Agent",
+      "pricing": "Free",
+      "url": "https://github.com/LucasDuys/forge",
+      "focus": "spec-driven development with task DAGs, TDD and context survival",
+      "when_to_use": "larger features where specs and tests must survive a long run",
+      "steps": [
+        "write the spec before the task graph",
+        "order tasks by dependency, not by convenience",
+        "keep a red/green test record for each task"
+      ],
+      "skills": [
+        "create-stories",
+        "test-setup",
+        "qa-plan"
+      ]
+    },
+    {
+      "id": "sw-gemini-cli",
+      "tool": "Gemini CLI",
+      "interface": "CLI",
+      "category": "CLI Agent",
+      "pricing": "Free + Premium",
+      "url": "https://codeassist.google/",
+      "focus": "terminal agent with tool and extension support for fixes and tests",
+      "when_to_use": "bug fixes and test improvements that benefit from tool extensions",
+      "steps": [
+        "reproduce before editing",
+        "use the smallest tool set that proves the fix",
+        "leave the test suite better than it was found"
+      ],
+      "skills": [
+        "bug-report",
+        "test-setup",
+        "regression-suite"
+      ]
+    },
+    {
+      "id": "sw-gpt-engineer",
+      "tool": "GPT-Engineer",
+      "interface": "CLI",
+      "category": "CLI Agent",
+      "pricing": "Free",
+      "url": "https://github.com/AntonOsika/gpt-engineer",
+      "focus": "generating a complete codebase from one prompt",
+      "when_to_use": "throwaway prototypes and greenfield scaffolding from a written spec",
+      "steps": [
+        "turn the prompt into a file manifest first",
+        "generate runnable code before extra features",
+        "document how to run and verify it"
+      ],
+      "skills": [
+        "create-architecture",
+        "prototype",
+        "smoke-check"
+      ]
+    },
+    {
+      "id": "sw-gpt-pilot",
+      "tool": "GPT-Pilot",
+      "interface": "CLI",
+      "category": "Multi-Agent System",
+      "pricing": "Free",
+      "url": "https://github.com/Pythagora-io/gpt-pilot",
+      "focus": "multi-agent workflow that simulates a fuller SDLC",
+      "when_to_use": "projects that need explicit roles for planning and implementation",
+      "steps": [
+        "assign one owner per phase",
+        "pass a written handoff between phases",
+        "re-check acceptance criteria at each handoff"
+      ],
+      "skills": [
+        "create-epics",
+        "create-stories",
+        "story-readiness"
+      ]
+    },
+    {
+      "id": "sw-heyboss",
+      "tool": "HeyBoss",
+      "interface": "Cloud",
+      "category": "App Builder",
+      "pricing": "Premium",
+      "url": "https://heyboss.ai/",
+      "focus": "conversational generation of web apps, sites and games",
+      "when_to_use": "quick visual deliverables where the user describes outcomes conversationally",
+      "steps": [
+        "ask what the finished thing must let a user do",
+        "choose web, site or game before generating",
+        "state the export limits clearly"
+      ],
+      "skills": [
+        "brainstorm",
+        "prototype",
+        "ux-design"
+      ]
+    },
+    {
+      "id": "sw-kortix",
+      "tool": "Kortix",
+      "interface": "Cloud / Self-hosted",
+      "category": "Agent Platform",
+      "pricing": "Free + Premium",
+      "url": "https://github.com/kortix-ai/suna",
+      "focus": "coding tasks in isolated sessions with change-request review",
+      "when_to_use": "parallel or delegated work needing review before merge",
+      "steps": [
+        "work in an isolated session or branch",
+        "produce a reviewable change request",
+        "never merge before the caller's decision"
+      ],
+      "skills": [
+        "code-review",
+        "gate-check",
+        "tech-debt"
+      ]
+    },
+    {
+      "id": "sw-leap",
+      "tool": "Leap.new",
+      "interface": "Cloud",
+      "category": "Agent Platform",
+      "pricing": "Free + Premium",
+      "url": "https://leap.new/",
+      "focus": "production-grade apps built and deployed to the user's own cloud",
+      "when_to_use": "projects where deployment target and ownership are known up front",
+      "steps": [
+        "write the deployment contract first",
+        "keep infrastructure choices explicit",
+        "verify a clean deploy path before feature work"
+      ],
+      "skills": [
+        "create-architecture",
+        "architecture-decision",
+        "release-checklist"
+      ]
+    },
+    {
+      "id": "sw-looptroop",
+      "tool": "LoopTroop",
+      "interface": "Desktop / GUI",
+      "category": "Multi-Agent System",
+      "pricing": "Free",
+      "url": "https://github.com/looptroop-ai/LoopTroop",
+      "focus": "long-running coding with council planning, worktrees and retry loops",
+      "when_to_use": "large refactors that benefit from isolated worktrees and fresh-context retries",
+      "steps": [
+        "plan with a small council of perspectives",
+        "work in a dedicated worktree",
+        "retry with fresh context after recording why it failed"
+      ],
+      "skills": [
+        "sprint-plan",
+        "code-review",
+        "test-flakiness"
+      ]
+    },
+    {
+      "id": "sw-lovable",
+      "tool": "Lovable.dev",
+      "interface": "Cloud",
+      "category": "App Builder",
+      "pricing": "Premium",
+      "url": "https://lovable.dev/",
+      "focus": "conversational full-stack web app building",
+      "when_to_use": "web MVPs where the conversation itself is the spec",
+      "steps": [
+        "turn the conversation into a written screen list",
+        "keep the data model aligned with the UI",
+        "note what is hosted and what is portable"
+      ],
+      "skills": [
+        "create-stories",
+        "ux-design",
+        "release-checklist"
+      ]
+    },
+    {
+      "id": "sw-magically",
+      "tool": "Magically",
+      "interface": "Cloud",
+      "category": "App Builder",
+      "pricing": "Premium",
+      "url": "https://trymagically.com/",
+      "focus": "AI mobile app generation for iOS and Android",
+      "when_to_use": "mobile MVPs that need a first installable version quickly",
+      "steps": [
+        "scope to one device flow and one platform first",
+        "define navigation and offline needs",
+        "list store and signing prerequisites"
+      ],
+      "skills": [
+        "prototype",
+        "ux-design",
+        "release-checklist"
+      ]
+    },
+    {
+      "id": "sw-memex",
+      "tool": "Memex",
+      "interface": "Desktop",
+      "category": "Desktop Agent",
+      "pricing": "Free + Premium",
+      "url": "https://memex.tech/",
+      "focus": "natural-language building across desktop stacks",
+      "when_to_use": "local desktop projects with mixed languages or tools",
+      "steps": [
+        "identify the local toolchain before editing",
+        "keep changes inside the stated project",
+        "report which commands need a desktop session"
+      ],
+      "skills": [
+        "project-stage-detect",
+        "code-review",
+        "test-setup"
+      ]
+    },
+    {
+      "id": "sw-mocha",
+      "tool": "Mocha",
+      "interface": "Cloud",
+      "category": "App Builder",
+      "pricing": "Free + Premium",
+      "url": "https://getmocha.com/",
+      "focus": "front-end-only React app building",
+      "when_to_use": "UI prototypes and dashboards with mocked or external data",
+      "steps": [
+        "define components and state before styling",
+        "keep data access behind a small boundary",
+        "state that no backend is generated"
+      ],
+      "skills": [
+        "ux-design",
+        "prototype",
+        "code-review"
+      ]
+    },
+    {
+      "id": "sw-openbitfun",
+      "tool": "OpenBitFun",
+      "interface": "Desktop / CLI",
+      "category": "Open-Source Agent Workbench",
+      "pricing": "Free",
+      "url": "https://github.com/GCWing/OpenBitFun",
+      "focus": "planning, editing and tool use across real repositories with multiple models",
+      "when_to_use": "teams that want a self-hosted workbench and provider choice",
+      "steps": [
+        "pin the model and toolchain for the task",
+        "work on a real repository, never a copy of the prompt",
+        "keep a reproducible command log"
+      ],
+      "skills": [
+        "adopt",
+        "code-review",
+        "tech-debt"
+      ]
+    },
+    {
+      "id": "sw-opencode",
+      "tool": "OpenCode",
+      "interface": "CLI",
+      "category": "CLI Agent",
+      "pricing": "Free",
+      "url": "https://github.com/opencode-ai/opencode",
+      "focus": "open-source terminal agent with repository workflows and integrations",
+      "when_to_use": "repo work that should stay in the terminal and be scriptable",
+      "steps": [
+        "use the repository's own commands and config",
+        "prefer small verifiable diffs",
+        "hand off the exact command used for each check"
+      ],
+      "skills": [
+        "setup-engine",
+        "code-review",
+        "smoke-check"
+      ]
+    },
+    {
+      "id": "sw-opendevin",
+      "tool": "OpenDevin",
+      "interface": "Cloud / OSS",
+      "category": "Autonomous Agent",
+      "pricing": "Free",
+      "url": "https://github.com/AI-App/OpenDevin.OpenDevin",
+      "focus": "open-source Devin-like autonomous engineering",
+      "when_to_use": "self-hosted autonomous tasks with a clear sandbox boundary",
+      "steps": [
+        "define the sandbox and the task boundary together",
+        "autonomously execute only inside it",
+        "surface anything that needs human judgment"
+      ],
+      "skills": [
+        "gate-check",
+        "security-audit",
+        "code-review"
+      ]
+    },
+    {
+      "id": "sw-openhands",
+      "tool": "OpenHands",
+      "interface": "SDK / CLI",
+      "category": "Agent Framework",
+      "pricing": "Free",
+      "url": "https://github.com/OpenHands/OpenHands",
+      "focus": "framework and ecosystem for building software-engineering agents",
+      "when_to_use": "custom agent pipelines, evaluations and tool integrations",
+      "steps": [
+        "describe the agent contract and tools first",
+        "build the smallest runnable pipeline",
+        "evaluate it against fixed tasks"
+      ],
+      "skills": [
+        "test-helpers",
+        "test-evidence-review",
+        "architecture-decision"
+      ]
+    },
+    {
+      "id": "sw-orkas",
+      "tool": "Orkas",
+      "interface": "Desktop",
+      "category": "Multi-Agent System",
+      "pricing": "Free",
+      "url": "https://github.com/Orkas-AI/Orkas",
+      "focus": "local-first workspace coordinating specialist coding agents",
+      "when_to_use": "work that naturally splits into specialist responsibilities",
+      "steps": [
+        "name one owner per concern",
+        "define the handoff artifact between specialists",
+        "reconcile conflicting edits before finishing"
+      ],
+      "skills": [
+        "create-epics",
+        "code-review",
+        "consistency-check"
+      ]
+    },
+    {
+      "id": "sw-probz",
+      "tool": "Probz AI",
+      "interface": "Cloud",
+      "category": "App Builder",
+      "pricing": "Premium",
+      "url": "https://probz.ai/",
+      "focus": "no-code CRUD apps and internal tools",
+      "when_to_use": "data-entry tools with straightforward roles and workflows",
+      "steps": [
+        "list entities, fields and permissions first",
+        "design the table and form flows",
+        "check export and backup options"
+      ],
+      "skills": [
+        "ux-design",
+        "security-audit",
+        "create-stories"
+      ]
+    },
+    {
+      "id": "sw-replit",
+      "tool": "Replit (Agent)",
+      "interface": "Cloud",
+      "category": "IDE Agent",
+      "pricing": "Free + Premium",
+      "url": "https://replit.com/",
+      "focus": "online IDE with a conversational agent",
+      "when_to_use": "browser-only development where setup must be zero",
+      "steps": [
+        "confirm the runtime is available in the browser",
+        "build one runnable endpoint or screen",
+        "document the share and deploy settings"
+      ],
+      "skills": [
+        "prototype",
+        "smoke-check",
+        "release-checklist"
+      ]
+    },
+    {
+      "id": "sw-smol-developer",
+      "tool": "Smol Developer",
+      "interface": "CLI",
+      "category": "CLI Agent",
+      "pricing": "Free",
+      "url": "https://github.com/smol-ai/developer",
+      "focus": "minimal rapid code generation and iteration",
+      "when_to_use": "small scrappy prototypes where a full pipeline would be overhead",
+      "steps": [
+        "write the smallest spec that names the deliverable",
+        "generate runnable code first",
+        "iterate only on what the user tested"
+      ],
+      "skills": [
+        "prototype",
+        "next-step",
+        "code-review"
+      ]
+    },
+    {
+      "id": "sw-swe-agent",
+      "tool": "SWE-agent",
+      "interface": "CLI",
+      "category": "Autonomous Agent",
+      "pricing": "Free",
+      "url": "https://github.com/SWE-agent/SWE-agent",
+      "focus": "autonomous fixing of real GitHub issues and repositories",
+      "when_to_use": "issue-shaped bug work with reproducible tests",
+      "steps": [
+        "reproduce the issue from the report",
+        "patch only the owning code path",
+        "prove the fix with an existing or new test"
+      ],
+      "skills": [
+        "bug-report",
+        "regression-suite",
+        "test-evidence-review"
+      ]
+    },
+    {
+      "id": "sw-tooljet",
+      "tool": "ToolJet",
+      "interface": "Cloud",
+      "category": "Low-Code Platform",
+      "pricing": "Free + Premium",
+      "url": "https://tooljet.com/",
+      "focus": "AI-enhanced low-code internal tools",
+      "when_to_use": "internal dashboards and admin panels over existing data sources",
+      "steps": [
+        "map each data source and its permission model",
+        "design the panel around the frequent task",
+        "check query safety and audit needs"
+      ],
+      "skills": [
+        "ux-design",
+        "security-audit",
+        "perf-profile"
+      ]
+    },
+    {
+      "id": "sw-windsurf",
+      "tool": "Windsurf",
+      "interface": "IDE",
+      "category": "IDE Agent",
+      "pricing": "Free + Premium",
+      "url": "https://windsurf.com/editor",
+      "focus": "agentic IDE focused on a fast iterate/build loop",
+      "when_to_use": "tight edit-run-review cycles in an IDE session",
+      "steps": [
+        "keep the change small enough to review immediately",
+        "run the closest check after each edit",
+        "report the loop result before expanding scope"
+      ],
+      "skills": [
+        "code-review",
+        "smoke-check",
+        "tech-debt"
+      ]
+    }
+  ]
+}

@@ -2,8 +2,8 @@
   <h1 align="center">Senhorfeudal Game Studios</h1>
   <p align="center"><strong>Port para OpenCode V2</strong></p>
   <p align="center">
-    Describe a game. OpenCode asks a few questions, writes a one-page brief,
-    and builds a playable browser game from it.
+    Describe a game — or an app/tool. OpenCode asks which one first, writes a
+    one-page brief, and routes to the right agents and skills.
     <br />
     Then you change it, grow it and finish it, one step at a time.
     <br />
@@ -24,13 +24,32 @@
 This repository is the OpenCode V2 port of Senhorfeudal Game Studios.
 `AGENTS.md` replaces the root instruction file, `.opencode/skills/` and
 `.opencode/commands/` expose all 80 skills as skills and slash commands,
-`.opencode/agents/` exposes all 51 specialists as subagents, and
+`.opencode/agents/` exposes all 89 specialists as subagents (51 game + 38 software), and
 `.opencode/plugins/` bridges the studio's bash validators. See
 `.opencode/OPENCODE-PORT.md` for the tool-name mapping and known gaps, and
 [docs/OPENCODE-PORT-REPORT.md](docs/OPENCODE-PORT-REPORT.md) for the full change
 list and test evidence. The same layer is also installed globally in
 `$OPENCODE_CONFIG_DIR`, so it works in every project. The original Claude Code
 template files remain in `.claude/` and `CLAUDE.md` for compatibility.
+
+---
+
+## Games and software in one studio
+
+`/brainstorm` now begins by asking whether the project is a **jogo** or an
+**aplicativo/ferramenta**. Games keep the original 51 specialists and the game
+design/prototype skills. The software branch selects one of 38 original `sw-*`
+roles and routes to generic skills such as `create-stories`,
+`create-architecture`, `code-review`, `test-setup`, `security-audit` and
+`release-checklist`.
+
+The 38 roles are original prompts derived from the curated table in
+`flatlogic/awesome-ai-software-development-agents`. That repository contains no
+executable agents; its three source files are preserved verbatim under
+`docs/third-party/flatlogic-awesome-ai-software-development-agents/` and the
+catalog is in `docs/software-agents.md` / `docs/software-agents.json`. To
+regenerate both this repository and the mobile app's embedded agents, run
+`python3 tools/import_flatlogic_agents.py`.
 
 ---
 
@@ -238,7 +257,7 @@ CLAUDE.md                           # Master configuration
 project.yaml                        # Project settings: engine, modes, goal
 .claude/
   settings.json                     # Hooks, permissions, safety rules
-  agents/                           # 51 agent definitions (markdown + YAML frontmatter)
+  agents/                           # 89 agent definitions (51 game + 38 software)
   skills/                           # 80 SKILL.md files: 77 current skills + 3 legacy aliases
                                     #   (changelog, help, settings)
   hooks/                            # 18 scripts (bash) — 15 hook commands across 8 events, two
@@ -252,7 +271,7 @@ project.yaml                        # Project settings: engine, modes, goal
   statusline.sh                     # Status line script (context%, model, stage, epic breadcrumb)
   docs/
     workflow-catalog.yaml           # 7-phase pipeline definition (read by /next-step)
-    templates/                      # 62 top-level document templates; 74 files in total
+    templates/                      # 63 top-level document templates; 75 files in total
                                     #   (8 per-section guides + 4 scaffold/config files)
 prototypes/                         # One-shots, one folder each (isolated from src/)
 references/                         # Optional: images and sounds you like, for /prototype
@@ -272,7 +291,7 @@ studio-tests/                       # QA for the skills and agents themselves �
 
 Senhorfeudal Game Studios is a template you are meant to edit. `studio-tests/` is how
 you check that an edited or newly written skill still holds up — a catalog of all
-77 skills and 51 agents, per-category quality rubrics, behavioral specs, and
+77 skills and 89 agents, per-category quality rubrics, behavioral specs, and
 templates for writing specs of your own.
 
 ```
@@ -339,7 +358,7 @@ C# under `Assets/Tests/` and C++ under `Source/**/Tests/`.
 
 Everything above is the light path: one brief, a game you play, one feature a
 sitting as it grows. For a team, a long project, or a person who wants the paperwork, the
-same project also has **studio mode**: 51 specialized agents in a studio
+same project also has **studio mode**: 89 specialized agents in a studio (51 game + 38 software)
 hierarchy, a design document per system, architecture decisions, epics and
 sprints, phase gates, and `team-*` pipelines that perform specialist roles
 inline in your current chat — no subagent hand-off and no lost question widget.
@@ -350,11 +369,11 @@ features).
 
 | Category | Count | Description |
 |----------|-------|-------------|
-| **Agents** | 51 | Specialized subagents across design, programming, art, audio, narrative, QA, and production |
+| **Agents** | 89 | Specialized subagents across game design, software delivery, programming, art, audio, narrative, QA, and production |
 | **Skills** | 77 | Slash commands for every workflow phase (`/prototype`, `/start`, `/design-system`, `/create-epics`, `/create-stories`, `/dev-story`, `/story-done`, `/filesdelete`, `/gamer`, etc.) |
 | **Hooks** | 15 | Automated validation on commits, pushes, asset changes, design-doc reads, writes and registries, session lifecycle, agent audit trail, and gap detection |
 | **Rules** | 14 | Path-scoped coding standards enforced when editing gameplay, engine, AI, UI, network code, scene and asset files, and more |
-| **Templates** | 62 | Document templates for GDDs, UX specs, ADRs, sprint plans, HUD design, accessibility, and more |
+| **Templates** | 63 | Document templates for GDDs, software briefs, UX specs, ADRs, sprint plans, HUD design, accessibility, and more |
 
 ### Studio Hierarchy
 

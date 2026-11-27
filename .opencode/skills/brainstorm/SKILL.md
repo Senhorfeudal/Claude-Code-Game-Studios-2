@@ -1,6 +1,6 @@
 ---
 name: "brainstorm"
-description: "Guides the user through finding and choosing a game concept. Use when the user wants game ideas, a new concept, a game jam idea, or to explore other directions, including dropping the current idea and starting over."
+description: "Decides game vs app/tool first, then guides the user to a written concept and the right agents/skills. Use for game ideas, app/tool ideas, new concepts, or exploring other directions."
 metadata:
   opencode/autoinvoke: true
 ---
@@ -9,7 +9,7 @@ metadata:
 
 Load the complete upstream skill at `.claude/skills/brainstorm/SKILL.md` with the `read` tool and follow it in full. Read any `references/` or scripts it names from that same directory, not from this wrapper.
 
-Expected arguments: [genre or theme hint, or 'open'] [--review full|lean|solo]
+Expected arguments: [idea, 'open', or 'app/tool'] [--review full|lean|solo]
 
 ## Tool-name mapping (Claude Code → OpenCode)
 
