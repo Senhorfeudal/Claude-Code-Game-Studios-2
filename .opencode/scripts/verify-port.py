@@ -103,7 +103,7 @@ def check_files() -> None:
     upstream_agents = sorted(p.stem for p in (ROOT / ".claude/agents").glob("*.md"))
     ported_agents = sorted(p.stem for p in (ROOT / ".opencode/agents").glob("*.md"))
     if upstream_agents != ported_agents:
-        record("files: 51 agents", "FAIL", f"upstream={len(upstream_agents)} ported={len(ported_agents)}")
+        record(f"files: {len(upstream_agents)} agents", "FAIL", f"upstream={len(upstream_agents)} ported={len(ported_agents)}")
     else:
         deprecated = {"name", "tools", "maxTurns", "memory", "disallowedTools", "skills", "isolation", "model"}
         bad = []
@@ -116,7 +116,7 @@ def check_files() -> None:
             overlap = deprecated & meta.keys()
             if overlap:
                 bad.append(f"{agent_id}:{','.join(sorted(overlap))}")
-        record("files: 51 agents", "PASS" if not bad else "FAIL", ", ".join(bad[:8]))
+        record(f"files: {len(ported_agents)} agents", "PASS" if not bad else "FAIL", ", ".join(bad[:8]))
 
 
 def check_api() -> None:

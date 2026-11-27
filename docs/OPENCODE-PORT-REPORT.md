@@ -24,7 +24,7 @@ faz a ponte dos validators bash existentes. O `CLAUDE.md` original foi mantido;
 | Configuração | `.opencode/opencode.jsonc` | `instructions`, plugins, watcher e permissões traduzidas de `.claude/settings.json` (bloqueios de `rm -rf`, force push, `.env`, assets binários etc.). |
 | Skills | `.opencode/skills/<id>/SKILL.md` (80) | Wrappers que preservam `name`/`description`/`autoinvoke` e instruem o modelo a ler o `SKILL.md` original e seus `references/`. |
 | Comandos | `.opencode/commands/<id>.md` (80) | `/prototype`, `/start`, `/skill-test`, … — cada comando carrega a skill correspondente e repassa `$ARGUMENTS`. |
-| Agents | `.opencode/agents/<id>.md` (51) | `mode: subagent`, `steps` a partir de `maxTurns`, permissões derivadas de `tools`/`disallowedTools` e nota sobre o tier original. |
+| Agents | `.opencode/agents/<id>.md` (89: 51 jogo + 38 software) | `mode: subagent`, `steps` a partir de `maxTurns`, permissões derivadas de `tools`/`disallowedTools` e nota sobre o tier original. |
 | Hooks | `.opencode/plugins/ccgs-bridge/index.js` | Encaminha `validate-commit.sh`, `validate-push.sh`, `validate-write.sh`, `validate-registry.sh`, `validate-assets.sh` e `validate-skill-change.sh` para os hooks de ferramenta do OpenCode, com fail-open. |
 | Question fallback | `plugins/question-watchdog/index.ts` | Plugin já existente no upstream, agora ativado pela config do projeto. |
 | Ferramentas | `.opencode/scripts/generate-opencode-layer.py`, `.opencode/scripts/verify-port.py` | Regeneração determinística da camada e verificação de arquivos + API + ativação de skill. |
@@ -72,12 +72,12 @@ runtimes após rodar o gerador.
 | Verificação | Comando | Resultado |
 | --- | --- | --- |
 | Port end-to-end | `python3 .opencode/scripts/verify-port.py` | **10/10 PASS** |
-| Descoberta via API | incluído no verificador | 80/80 skills, 80/80 commands, 51/51 agents |
+| Descoberta via API | incluído no verificador | 80/80 skills, 80/80 commands, 89/89 agents |
 | Wrapper prevalece sobre o fallback `.claude/skills` | incluído no verificador | `PASS` para `skill-test` |
 | Plugins carregados | `/api/plugin` | `ccgs-bridge` e `question-watchdog` `active` |
 | Ativação de skill em sessão | `/api/experimental/session/{id}/skill` | HTTP `204`, incluindo aliases ocultos (`changelog`, `story-done`) |
 | Linter estático das skills | `bash .claude/scripts/skill-lint.sh all --root .` | 80 skills × 7 checks processados, sem falha dura |
-| Suíte original Python | `python3 -m unittest discover -s tests -p 'test_*.py'` (venv com `tests/requirements.txt`) | **95 testes OK, 2 skipped** |
+| Suíte original Python | `python3 -m unittest discover -s tests -p 'test_*.py'` (venv com `tests/requirements.txt`) | **105 testes OK** |
 | Sintaxe dos hooks | `find .claude -name '*.sh' -print0 \| xargs -0 -n 1 bash -n` | OK |
 | Smoke dos validators | payloads de exemplo para `validate-commit.sh` e `validate-write.sh` | exit `0` |
 | Verificação de agents | `bash .claude/scripts/agent-check.sh .` | concluído sem erro |
@@ -126,6 +126,19 @@ Evidências: `tests/test_in_chat_teams.py` (novo), atualizações em
 `tests/test_next_step_routing.py`, specs em `studio-tests/skills/team/` e
 `studio-tests/skills/utility/next-step.md`; suíte Python 105 testes OK.
 
+### 5c. Branch software no `/brainstorm`
+
+O commit `96d0252` separou o fluxo em dois caminhos. `/brainstorm` pergunta
+primeiro se a ideia é um **jogo** ou um **aplicativo/ferramenta**. No ramo
+software, ele carrega `.claude/skills/brainstorm/references/software-concept.md`,
+escreve `design/software-brief.md`, escolhe um dos 38 papéis `sw-*` listados em
+`docs/software-agents.md` e usa skills genéricas de software — sem gates de
+diretor de jogo nem `game-concept.md`. Os 38 papéis foram portados como os
+demais agents, elevando o total para 89. Evidências: 38 specs em
+`studio-tests/agents/software/`, `studio-tests/skills/utility/brainstorm.md` e
+`docs/software-agents.md`/`.json`; `verify-port.py` conta os agents de forma
+dinâmica.
+
 ## 6. Lacunas conhecidas
 
 1. Hooks de ciclo de vida do Claude Code (`session-start`, `detect-gaps`,
@@ -172,15 +185,17 @@ traduzidos.
 
 O histórico Git upstream foi preservado a partir de `43e1952`; o remote
 `origin` aponta para `https://github.com/Senhorfeudal/Claude-Code-Game-Studios-2.git`.
-As mudanças deste port foram adicionadas como um commit único sobre esse
-histórico, mantendo `CLAUDE.md`, `.claude/` e os testes originais intactos.
+As mudanças deste port foram adicionadas em commits sobre esse histórico,
+mantendo `CLAUDE.md`, `.claude/` e os testes originais intactos. O commit
+`1528ac7` converteu os nove teams para execução no chat do usuário e o
+`96d0252` uniu os 38 agentes de software (89 no total).
 A descrição e os topics do GitHub também foram atualizados para destacar o port
 (`opencode`, `opencode-v2`), mantendo `claude-code` como compatibilidade.
 
 A camada também foi instalada de forma global em `$OPENCODE_CONFIG_DIR`
 (`/root/.oc-opencode2/config/opencode/`): 80 skills completas (com `references/`),
-80 commands, 51 agents, plugins, instruções e permissões, todos copiados do
+80 commands, 89 agents, plugins, instruções e permissões, todos copiados do
 repositório (sem symlink). A verificação em `/tmp/opencode/global-check`
-confirmou 80/80 skills, 80/80 commands, 51/51 agents, 2/2 plugins ativos e
+confirmou 80/80 skills, 80/80 commands, 89/89 agents, 2/2 plugins ativos e
 ativação de `skill-test` com HTTP 204. Dentro deste repositório, a camada local
 `.opencode/` continua tendo precedência sobre a cópia global.
