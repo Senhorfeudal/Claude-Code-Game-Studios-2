@@ -92,7 +92,7 @@ limit.
 - Read `design/external-scan.md` if it exists — `proposed` rows about system
   boundaries, dependencies or priority are inputs to Phases 2-4. Follow
   `.claude/docs/external-scan.md`: mark a row `applied` or `declined` only in an
-  approved scan update, and offer `/gamer` as an option (never spawn it
+  approved scan update, and offer `/spy` as an option (never spawn it
   unasked) when the file is missing and a decision needs external evidence.
 
 **If the systems index already exists:**

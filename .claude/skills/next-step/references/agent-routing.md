@@ -18,7 +18,7 @@ team skill in the current conversation instead. See `.claude/docs/in-chat-teams.
   with `godot-specialist`, `unity-specialist` or `unreal-specialist` (or the
   named sub-specialist when the action targets shaders, UI, GAS, replication or
   addressables). For Web, keep `engine-programmer`.
-- `gamer` and `question-widget-specialist` are **read-only**. `gamer` owns the
+- `spy` and `question-widget-specialist` are **read-only**. `spy` owns the
   sector scan in `design/external-scan.md` (`.claude/docs/external-scan.md`):
   it researches game and software sectors and returns reapplication proposals;
   the orchestrator writes the scan and applies proposals after approval. Neither
@@ -33,7 +33,7 @@ team skill in the current conversation instead. See `.claude/docs/in-chat-teams.
 | Step id / action | Command | Crew (owner first) | Why |
 |------------------|---------|--------------------|-----|
 | `engine-setup` | `/setup-engine` | `technical-director`, `engine-programmer` | Pin the engine version and its project conventions |
-| `game-brief` | `/brainstorm` | `creative-director`, `game-designer`, `gamer` | Shape the pitch and scope; `gamer` always scans the sector first |
+| `game-brief` | `/brainstorm` | `creative-director`, `game-designer`, `spy` | Shape the pitch and scope; `spy` always scans the sector first |
 | `game-concept` | `/brainstorm` | `creative-director`, `game-designer`, `world-builder` | Pillars, mechanics and the world the concept needs |
 | `create-stories` | `/create-stories` | `producer`, `game-designer`, `qa-lead` | Break the brief into build order with testable acceptance criteria |
 | `dev-story` | `/dev-story` | `gameplay-programmer`, `qa-tester` | Implement the story and cover its acceptance criteria |
@@ -54,5 +54,5 @@ team skill in the current conversation instead. See `.claude/docs/in-chat-teams.
 | `localize` | `/localize` | `localization-lead`, `writer` | String tables, cultural review and voice scope |
 | `release-checklist` | `/release-checklist` | `release-manager`, `devops-engineer`, `qa-lead` | Build, certification, store metadata and sign-off |
 | `cut` | `/cut` | `producer`, `creative-director` | What to cut and the polish list that finishes it |
-| external research | `/next-step` | `gamer`, `creative-director` | Research first, then decide what it means for the project |
+| external research | `/next-step` | `spy`, `creative-director` | Research first, then decide what it means for the project |
 | stuck / unclear | `/next-step` | `producer`, `creative-director` | Re-orient and reduce to one action |

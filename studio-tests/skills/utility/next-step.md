@@ -47,7 +47,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] `allowed-tools` includes `AskUserQuestion` and `Agent`, but no `Write` or `Edit`
 - [ ] Has a Step 7b that asks which action to take: `/team-*` actions load the team in this chat with no `Agent` call; other actions route through `references/agent-routing.md` and require "Start this crew" before any `Agent` call
 - [ ] States that a skipped question is not an answer and that the skill writes no files
-- [ ] Reads `design/external-scan.md` before Step 7; a new `@gamer` scan is offered under `~ Also available`, never spawned for a `/team-*` action, and its proposals are not applied here
+- [ ] Reads `design/external-scan.md` before Step 7; a new `@spy` scan is offered under `~ Also available`, never spawned for a `/team-*` action, and its proposals are not applied here
 - [ ] States that a delegated subagent returns its questions to this conversation instead of asking in its own output
 
 ---
@@ -394,7 +394,7 @@ Fixture defaults.
 3. No agent is spawned while the first question is open; a skipped or dismissed
    question is re-asked once, then asked in plain text
 4. The action is routed through `references/agent-routing.md` to
-   `creative-director` (owner), `game-designer` and `gamer` (read-only, only if
+   `creative-director` (owner), `game-designer` and `spy` (read-only, only if
    references are wanted)
 5. The crew is shown with one line of why per agent, then a second question asks
    for approval, with `Start this crew`, `Change the agents` and `Do it myself`
@@ -407,7 +407,7 @@ Fixture defaults.
 - [ ] The chosen action, not the default first blocker, drives the route
 - [ ] The crew has at most three agents, first owns the result, and every name exists in `.claude/agents/`
 - [ ] No `Agent` call before the second question is answered "Start this crew"
-- [ ] `gamer` is marked read-only and cannot implement the brief
+- [ ] `spy` is marked read-only and cannot implement the brief
 - [ ] No files written by the skill
 
 ### Case 12: The user picks a team action from the widget

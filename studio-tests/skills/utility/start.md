@@ -55,7 +55,7 @@ Checked against the SKILL.md by `/skill-test spec`, no fixture needed.
 - [ ] States the write rule for every write: the stage, an inferred rigor and a guessed goal only after an explicit yes to the save question that names `project.yaml` and `production/stage.txt`; `modes.automation` from the user's pick, and never when the save was declined
 - [ ] Has a next-step handoff at the end (Phase 7: "Type `[skill]` to begin.")
 - [ ] `allowed-tools` includes `Skill`, used only by Phase 1's game-already-asked-for step
-- [ ] Reads `design/external-scan.md` if present and offers one `@gamer` scan only when evidence is missing; research never replaces the one next step
+- [ ] Reads `design/external-scan.md` if present and offers one `@spy` scan only when evidence is missing; research never replaces the one next step
 
 ---
 

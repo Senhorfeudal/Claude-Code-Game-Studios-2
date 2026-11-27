@@ -1,4 +1,4 @@
-# Agent Test Spec: gamer
+# Agent Test Spec: spy
 
 ## Agent Summary
 Domain: external sector scouting — finding what is new and different in a game or software sector on the web, forums, app stores and GitHub, studying it, and returning sourced improvement/implementation/fix suggestions with a concrete reapplication plus a question for the orchestrator. The orchestrator records the scan in `design/external-scan.md`.
@@ -86,7 +86,7 @@ tool, Web, decide whether to build on an existing open-source dashboard".
 - [ ] Read-only: no Write/Edit tool use and no claim that a file was written
 - [ ] Every source has a URL, recency and licence/evidence label; no invented citations
 - [ ] Suggestions are typed `IMPROVEMENT` / `IMPLEMENTATION` / `FIX` with a confidence level
-- [ ] Every suggestion names an owner skill or agent, never the gamer itself
+- [ ] Every suggestion names an owner skill or agent, never the spy itself
 - [ ] Output contains exactly the four contracted parts: brief, comparison, suggestions, question
 - [ ] Suggestions include a reapplication that the orchestrator can put to the user; the agent never applies one
 - [ ] The question is for the orchestrator's widget, with 2-4 short options and a recommendation

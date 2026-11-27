@@ -36,7 +36,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] Has a next-step handoff at the end (`/map-systems` in the full flow's design-first steps; in the Lean Brief flow `/prototype` with no engine set, `/create-stories` with one)
 - [ ] Documents 4 director gates in full mode: CD-PILLARS, AD-CONCEPT-VISUAL, TD-FEASIBILITY, PR-SCOPE
 - [ ] Documents a named skip note for each gate in lean and solo modes
-- [ ] Runs one mandatory `@gamer` sector scan after the project-kind gate and before any concept question, in both game and app/tool branches (`.claude/docs/external-scan.md`)
+- [ ] Runs one mandatory `@spy` sector scan after the project-kind gate and before any concept question, in both game and app/tool branches (`.claude/docs/external-scan.md`)
 - [ ] Offers `design/external-scan.md` in the same write approval as the brief; no proposal is applied without its own approval
 
 ---
@@ -306,7 +306,7 @@ Fixture defaults.
 **Input:** `/brainstorm [a short hint]`
 
 **Expected behavior:**
-1. Project-kind gate is asked first, then one `gamer` scan runs before the
+1. Project-kind gate is asked first, then one `spy` scan runs before the
    concept or shape question, with a brief naming engine/platform/stage, sector
    and decision
 2. Variant A reads no software reference; variant B reads no game director gate
@@ -320,7 +320,7 @@ Fixture defaults.
    the user's words without invented sources
 
 **Assertions:**
-- [ ] Exactly one gamer scan is spawned; a matching scan from this session is reused
+- [ ] Exactly one spy scan is spawned; a matching scan from this session is reused
 - [ ] A reapplication proposal appears in a concept/shape question
 - [ ] Both paths are named in the write approval and neither is written before it
 - [ ] No proposal is applied to the brief without a separate approval

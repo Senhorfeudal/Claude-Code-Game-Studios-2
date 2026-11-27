@@ -1,11 +1,11 @@
-# Skill Test Spec: /gamer
+# Skill Test Spec: /spy
 
 ## Skill Summary
 
-`/gamer` is a read-only utility skill that exposes the existing `gamer` agent
+`/spy` is a read-only utility skill that exposes the existing `spy` agent
 through the slash-command list. It builds a narrow research brief from the
 invocation and local project context, asks for the brief through the runtime
-question widget when it is missing, and delegates to exactly one `gamer`
+question widget when it is missing, and delegates to exactly one `spy`
 subagent. The agent performs the web/forum/GitHub research and returns a
 question with 2-4 options; the skill asks that question verbatim through its
 own widget and reports only the chosen decision with the necessary sources.
@@ -23,7 +23,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] Frontmatter has all required fields (`name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`)
 - [ ] `allowed-tools` has `Agent` and `AskUserQuestion`, and no `Write` or `Edit`
 - [ ] Contains verdict keywords: COMPLETE, NOT ASSESSED
-- [ ] Delegates to the `gamer` agent with one `Agent` call
+- [ ] Delegates to the `spy` agent with one `Agent` call
 - [ ] Says the subagent has no question widget and must not ask the user
 - [ ] Says the agent's question is used verbatim in one widget call
 - [ ] Has a next-step handoff (`/next-step`)
@@ -52,12 +52,12 @@ widget in the runtime.
 
 **Fixture:**
 - `project.yaml` declares Web / TypeScript
-- Input: "gamer research parry timing for a Web melee prototype; decide whether to copy the window or the telegraph"
-- The `gamer` agent returns 3 options with trade-offs
+- Input: "spy research parry timing for a Web melee prototype; decide whether to copy the window or the telegraph"
+- The `spy` agent returns 3 options with trade-offs
 
 **Expected behavior:**
 1. The skill reads the local context, makes no write, and does not ask for another brief
-2. It spawns one `gamer` agent with engine, platform, feature, decision and local file names
+2. It spawns one `spy` agent with engine, platform, feature, decision and local file names
 3. The agent's question is passed verbatim to the widget with its 3 options
 4. The user's answer is reported with the sources that justify it
 5. Verdict is `COMPLETE — research delivered`
@@ -71,7 +71,7 @@ widget in the runtime.
 ### Case 2: Missing brief is asked through the widget
 
 **Fixture:**
-- Input: `/gamer` with no argument
+- Input: `/spy` with no argument
 
 **Expected behavior:**
 1. The skill calls the question tool with the four brief options and a free-text affordance
@@ -86,7 +86,7 @@ widget in the runtime.
 ### Case 3: Agent has no data
 
 **Fixture:**
-- The `gamer` agent returns `NOT ASSESSED — NO DATA` with the fallback question
+- The `spy` agent returns `NOT ASSESSED — NO DATA` with the fallback question
 
 **Expected behavior:**
 1. The skill keeps the agent's verdict instead of inventing sources
@@ -104,7 +104,7 @@ widget in the runtime.
 
 **Expected behavior:**
 1. The skill answers `NOT ASSESSED — NO AGENT TOOL`
-2. It names the `gamer` agent for direct invocation
+2. It names the `spy` agent for direct invocation
 3. It makes no research claim
 
 **Assertions:**

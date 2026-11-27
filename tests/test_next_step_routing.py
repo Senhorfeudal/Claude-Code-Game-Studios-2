@@ -88,9 +88,9 @@ class AgentRoutingTests(unittest.TestCase):
                     self.assertIn(agent, known, f'{action} routes to unknown agent {agent}')
 
     def test_read_only_agents_are_scoped_to_research_routes(self):
-        gaming = [action for action, _, crew, _ in self.rows if 'gamer' in crew]
+        gaming = [action for action, _, crew, _ in self.rows if 'spy' in crew]
         self.assertEqual(set(gaming), {'game-brief', 'external research'},
-                         'gamer must only advise on concept and external research')
+                         'spy must only advise on concept and external research')
         self.assertTrue(all('question-widget-specialist' not in crew
                             for _, _, crew, _ in self.rows),
                         'the question auditor has no action to implement')
@@ -120,7 +120,7 @@ class NextStepSpecTests(unittest.TestCase):
         self.assertIn('### Case 11: The user picks an action from the widget', text)
         self.assertIn('Two question-tool calls', text)
         self.assertIn('No `Agent` call before the second question', text)
-        self.assertIn('`gamer` is marked read-only', text)
+        self.assertIn('`spy` is marked read-only', text)
         self.assertIn('allowed-tools` includes `AskUserQuestion` and `Agent`', text)
 
 class QuestionDeliveryGuardTests(unittest.TestCase):

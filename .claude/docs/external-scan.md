@@ -1,14 +1,14 @@
 # External scan — shared protocol
 
-Used by `/gamer`, `/brainstorm` and every skill that consumes a concept or brief.
-`@gamer` is the read-only sector scout. The orchestrating skill owns the question
+Used by `/spy`, `/brainstorm` and every skill that consumes a concept or brief.
+`@spy` is the read-only sector scout. The orchestrating skill owns the question
 widget, every file write, and the decision to apply a learning.
 
 ## Artifact
 
 `design/external-scan.md` — one scan per project, created by `/brainstorm` on
 every run, in both the game and the app/tool branch. Downstream skills read it
-instead of re-researching. They spawn `@gamer` again only when the file is
+instead of re-researching. They spawn `@spy` again only when the file is
 missing, the sector changed, or a pending decision needs fresh evidence.
 
 ```markdown
@@ -43,7 +43,7 @@ drop-in: describe the pattern and name where it lives.
   before any concept question. Brief: engine/platform/stage, sector, and the
   decision to inform. The game branch reads no software reference; the app/tool
   branch reads no game director gate.
-- **`/gamer`** — direct invocation uses the same protocol and writes nothing.
+- **`/spy`** — direct invocation uses the same protocol and writes nothing.
 - **Downstream skills** (`/prototype`, `/start`, `/next-step`, `/map-systems`,
   `/design-system`, `/create-architecture`, `/quick-design`) — read
   `design/external-scan.md` before deciding; use `proposed` rows as inputs. A
@@ -65,7 +65,7 @@ drop-in: describe the pattern and name where it lives.
 
 ## Approval boundary
 
-1. `@gamer` returns four parts only: sourced brief, local comparison, typed
+1. `@spy` returns four parts only: sourced brief, local comparison, typed
    reapplication proposals, and one question with 2-4 options for the
    orchestrator. It writes no file and calls no question tool.
 2. The orchestrator asks that question through the widget. Only then does it
@@ -82,6 +82,6 @@ drop-in: describe the pattern and name where it lives.
 
 ## Handoff
 
-`@gamer` output → `design/external-scan.md` → concept/brief questions →
+`@spy` output → `design/external-scan.md` → concept/brief questions →
 downstream skills read proposals → user approves each application → status is
 recorded. The scan is evidence, never a decision made on the user's behalf.

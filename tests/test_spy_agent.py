@@ -1,26 +1,26 @@
-"""Guardrails for the @gamer external-scout agent and its skill integration.
+"""Guardrails for the @spy external-scout agent and its skill integration.
 
-Run: python3 -m unittest discover -s tests -p test_gamer_agent.py -v
+Run: python3 -m unittest discover -s tests -p test_spy_agent.py -v
 """
 import pathlib
 import subprocess
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-AGENT = ROOT / '.claude/agents/gamer.md'
-SPEC = ROOT / 'studio-tests/agents/specialists/gamer.md'
+AGENT = ROOT / '.claude/agents/spy.md'
+SPEC = ROOT / 'studio-tests/agents/specialists/spy.md'
 SCAN_DOC = ROOT / '.claude/docs/external-scan.md'
 SOFTWARE_REF = ROOT / '.claude/skills/brainstorm/references/software-concept.md'
 SKILLS = ('brainstorm', 'prototype', 'start', 'next-step')
 
 
-class GamerAgentTests(unittest.TestCase):
+class SpyAgentTests(unittest.TestCase):
     def test_agent_is_registered(self):
-        self.assertTrue(AGENT.is_file(), 'gamer agent definition missing')
-        self.assertTrue(SPEC.is_file(), 'gamer test spec missing')
+        self.assertTrue(AGENT.is_file(), 'spy agent definition missing')
+        self.assertTrue(SPEC.is_file(), 'spy test spec missing')
         catalog = (ROOT / 'studio-tests/catalog.yaml').read_text(encoding='utf-8')
-        self.assertIn('name: gamer', catalog)
-        self.assertIn('spec: studio-tests/agents/specialists/gamer.md', catalog)
+        self.assertIn('name: spy', catalog)
+        self.assertIn('spec: studio-tests/agents/specialists/spy.md', catalog)
 
     def test_agent_is_read_only_and_web_enabled(self):
         text = AGENT.read_text(encoding='utf-8')
@@ -48,17 +48,17 @@ class GamerAgentTests(unittest.TestCase):
         self.assertIn('Suggestions', text)
         self.assertIn('Question for the orchestrator', text)
 
-    def test_four_skills_trigger_gamer(self):
+    def test_four_skills_trigger_spy(self):
         for name in SKILLS:
             text = (ROOT / '.claude/skills' / name / 'SKILL.md').read_text(encoding='utf-8')
-            self.assertIn('gamer', text, f'{name} does not mention gamer')
+            self.assertIn('spy', text, f'{name} does not mention spy')
             self.assertIn('Write no files', text, f'{name} lacks the read-only return contract')
         # start and next-step had no Agent tool before this integration.
         for name in ('start', 'next-step'):
             text = (ROOT / '.claude/skills' / name / 'SKILL.md').read_text(encoding='utf-8')
             self.assertIn('Agent', text.split('allowed-tools:', 1)[1].split('\n', 1)[0])
 
-    def test_gamer_is_a_sector_scout_with_reapplication(self):
+    def test_spy_is_a_sector_scout_with_reapplication(self):
         text = AGENT.read_text(encoding='utf-8')
         self.assertIn('game or app/tool', text)
         self.assertIn('sector', text)
@@ -106,7 +106,7 @@ class AgentCheckNotesTests(unittest.TestCase):
         return [line for line in result.stdout.splitlines() if 'asks-user' in line]
 
     def test_tool_mentions_are_not_reported_as_asks_user(self):
-        for agent in ('gamer', 'question-widget-specialist'):
+        for agent in ('spy', 'question-widget-specialist'):
             self.assertEqual(self.notes(agent), [], f'{agent} has asks-user noise')
 
     def test_real_ask_instructions_are_still_reported(self):

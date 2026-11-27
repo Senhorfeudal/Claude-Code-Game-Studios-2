@@ -370,7 +370,7 @@ features).
 | Category | Count | Description |
 |----------|-------|-------------|
 | **Agents** | 89 | Specialized subagents across game design, software delivery, programming, art, audio, narrative, QA, and production |
-| **Skills** | 77 | Slash commands for every workflow phase (`/prototype`, `/start`, `/design-system`, `/create-epics`, `/create-stories`, `/dev-story`, `/story-done`, `/filesdelete`, `/gamer`, etc.) |
+| **Skills** | 77 | Slash commands for every workflow phase (`/prototype`, `/start`, `/design-system`, `/create-epics`, `/create-stories`, `/dev-story`, `/story-done`, `/filesdelete`, `/spy`, etc.) |
 | **Hooks** | 15 | Automated validation on commits, pushes, asset changes, design-doc reads, writes and registries, session lifecycle, agent audit trail, and gap detection |
 | **Rules** | 14 | Path-scoped coding standards enforced when editing gameplay, engine, AI, UI, network code, scene and asset files, and more |
 | **Templates** | 63 | Document templates for GDDs, software briefs, UX specs, ADRs, sprint plans, HUD design, accessibility, and more |
@@ -397,7 +397,7 @@ Tier 3 — Specialists
   performance-analyst  devops-engineer       analytics-engineer
   security-engineer    qa-tester             accessibility-specialist
   live-ops-designer    community-manager    question-widget-specialist
-  gamer
+  spy
 ```
 
 Each agent declares a model in its frontmatter: the three directors ask for

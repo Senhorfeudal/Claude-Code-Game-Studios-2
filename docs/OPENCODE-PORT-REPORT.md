@@ -141,14 +141,14 @@ dinâmica.
 
 ### 5d. Scan externo compartilhado
 
-`@gamer` passou a espião de setor (jogos e software). `/brainstorm` roda um scan
+`@spy` passou a espião de setor (jogos e software). `/brainstorm` roda um scan
 obrigatório nos dois ramos e grava `design/external-scan.md` na mesma aprovação
 do brief; `/prototype`, `/start`, `/next-step`, `/map-systems` e `/design-system`
 leem o arquivo e só pedem um novo scan quando ele está ausente/desatualizado ou
 quando uma decisão precisa de evidência nova. Cada proposta de reaplicação passa
 pelo "May I write" do documento dono; o agente permanece read-only e sem
 ferramenta de pergunta. Protocolo em `.claude/docs/external-scan.md`; guardrails
-em `tests/test_gamer_agent.py` e nos specs de gamer/brainstorm/downstream.
+em `tests/test_spy_agent.py` e nos specs de spy/brainstorm/downstream.
 
 ## 6. Lacunas conhecidas
 

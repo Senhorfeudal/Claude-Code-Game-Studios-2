@@ -6,7 +6,7 @@ in this branch. The deliverable is `design/software-brief.md`.
 
 ## 0. External scan (mandatory)
 
-Before the shape question, run one scan of the app/tool sector with `@gamer`,
+Before the shape question, run one scan of the app/tool sector with `@spy`,
 following `.claude/docs/external-scan.md`. Brief it with the project kind,
 engine/platform/stage from `project.yaml`, the app category if the user named
 one, and the decision the scan must inform. Use repositories and source trees,
@@ -15,7 +15,7 @@ listings; do not read game director gates. Feed its reapplication proposals into
 the shape and role questions, and record the sources in the scan file. Write
 `design/external-scan.md` with the brief's approval (name both paths); never
 let the agent write it or ask the question itself. Reuse a matching scan from
-this session instead of spawning a second gamer. If it returns
+this session instead of spawning a second spy. If it returns
 `NOT ASSESSED — NO DATA`, say so and continue from the user's words.
 
 ## 1. Pick the software shape

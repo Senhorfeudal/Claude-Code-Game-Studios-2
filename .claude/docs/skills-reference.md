@@ -128,7 +128,7 @@
 | `/vertical-slice` | Pre-Production validation — production-quality end-to-end build before committing to Production (Phase 4) |
 | `/onboard` | Generate contextual onboarding document for a new contributor or agent |
 | `/localize` | Localization workflow: string extraction, validation, translation readiness |
-| `/gamer` | Read-only external sector scout: researches what is new and different in games or software and returns sourced reapplication options for a decision |
+| `/spy` | Read-only external sector scout: researches what is new and different in games or software and returns sourced reapplication options for a decision |
 
 ## Team Orchestration
 

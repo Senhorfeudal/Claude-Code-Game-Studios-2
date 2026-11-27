@@ -16,6 +16,9 @@ has been cut for the changes in this section.
 
 **Changed**
 
+- **The external scout is now `@spy` / `/spy`.** The old `@gamer` / `/gamer`
+  names were removed; the shared scan artifact stays at
+  `design/external-scan.md`.
 - **`/next-step` no longer routes to team skills.** The team path in `1.4.1`
   was removed in `37ea5ed`; action routing now uses individual agents only.
 - **Question delivery belongs to the orchestrating conversation.** Subagents

@@ -1,13 +1,13 @@
 ---
-name: "gamer"
+name: "spy"
 description: "External sector scout — scans the web, forums, app stores and GitHub for what is new and different in a game or software sector, and returns sourced learnings reapplyable to this project. Use when research outside the repo would change a decision."
 metadata:
   opencode/autoinvoke: true
 ---
 
-# OpenCode port — `gamer`
+# OpenCode port — `spy`
 
-Load the complete upstream skill at `.claude/skills/gamer/SKILL.md` with the `read` tool and follow it in full. Read any `references/` or scripts it names from that same directory, not from this wrapper.
+Load the complete upstream skill at `.claude/skills/spy/SKILL.md` with the `read` tool and follow it in full. Read any `references/` or scripts it names from that same directory, not from this wrapper.
 
 Expected arguments: [research brief: engine, platform, feature and decision]
 

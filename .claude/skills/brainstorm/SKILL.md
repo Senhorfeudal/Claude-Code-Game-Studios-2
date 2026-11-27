@@ -62,15 +62,15 @@ Ask with the question tool. Without one, list the options numbered and end your 
 question is the last thing in the reply: no advice or lean after it. A skipped or dismissed
 question is not an answer: ask again in plain text.
 
-### External scan (`@gamer`) — mandatory, both branches
+### External scan (`@spy`) — mandatory, both branches
 
 After the project-kind gate and **before any concept question**, run one sector
-scan. Follow `.claude/docs/external-scan.md`. Spawn `gamer` once with a narrow
+scan. Follow `.claude/docs/external-scan.md`. Spawn `spy` once with a narrow
 brief: project kind, engine/platform/stage from `project.yaml`, the sector (game
 genre/theme or app category and shape), and the decision this scan must inform.
 The game branch never reads the software reference; the app/tool branch never
 reads game director gates. Reuse `design/external-scan.md` from this session
-when its sector still matches — never spawn a second gamer for the same sector.
+when its sector still matches — never spawn a second spy for the same sector.
 
 Return contract: "Return only (1) the sourced research brief, (2) 3-6 bullets of
 local comparison, (3) typed suggestions with owner skills/agents and a concrete

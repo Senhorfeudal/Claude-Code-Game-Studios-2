@@ -357,8 +357,8 @@ skills:
     priority: medium
     category: utility
 
-  - name: gamer
-    spec: studio-tests/skills/utility/gamer.md
+  - name: spy
+    spec: studio-tests/skills/utility/spy.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -1261,8 +1261,8 @@ agents:
     last_category_result: ""
     category: specialist
 
-  - name: gamer
-    spec: studio-tests/agents/specialists/gamer.md
+  - name: spy
+    spec: studio-tests/agents/specialists/spy.md
     last_spec: ""
     last_spec_result: ""
     last_category: ""

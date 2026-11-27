@@ -66,7 +66,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 - [ ] Contains verdict keywords: PROCEED, PIVOT, KILL, NOT ASSESSED (a prototype nobody has played)
 - [ ] Contains "May I create" / "May I write" language before creating the prototype directory and the report
 - [ ] Has a next-step handoff per verdict (PROCEED → `/design-review`, `/gate-check`, `/map-systems`, `/design-system`; PIVOT → `/prototype` or `/brainstorm`; KILL → `/brainstorm`)
-- [ ] Reads `design/external-scan.md` before choosing a route; a new `@gamer` scan is offered only when the scan is missing/stale or a choice needs new evidence, and its write needs approval
+- [ ] Reads `design/external-scan.md` before choosing a route; a new `@spy` scan is offered only when the scan is missing/stale or a choice needs new evidence, and its write needs approval
 
 ---
 

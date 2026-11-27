@@ -31,11 +31,11 @@ not an answer: ask again in plain text. Every ask follows
 `.claude/docs/automation-modes.md` (collaborative asks always · guided major-only · autonomous
 logs and proceeds; `automation_always_ask` categories always prompt).
 
-### External scan (`@gamer`)
+### External scan (`@spy`)
 
 Read `design/external-scan.md` before choosing a route or a mechanic; its
 `proposed` rows are inputs, not a new question. Follow `.claude/docs/external-scan.md`.
-Spawn `gamer` once only when the scan is missing or stale, the sector changed,
+Spawn `spy` once only when the scan is missing or stale, the sector changed,
 or a choice needs fresh evidence — offer it as an option, never as an unasked
 detour, and never to add a route question ("Ask no question to choose the route"
 still holds). A narrow brief names the project kind, engine/platform, sector,

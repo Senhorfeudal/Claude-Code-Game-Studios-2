@@ -337,13 +337,13 @@ Glob finds no `prototypes/*/index.html`, check `engine.name` in `project.yaml`:
   available" that `/prototype --path html` is the fast option: a browser sketch
   of the core game, thrown away when the engine build starts.
 
-### External scan (`@gamer`)
+### External scan (`@spy`)
 
 Read `design/external-scan.md` first; its `proposed` rows feed Step 7's one next
 step. Follow `.claude/docs/external-scan.md`. When the user asks what similar
 projects do, or a decision needs evidence the scan lacks, offer a new scan under
 `~ Also available` in Step 7. The user may pick it in Step 7b; only then may a
-crew spawn `gamer` once with a narrow brief: project kind, engine and stage from
+crew spawn `spy` once with a narrow brief: project kind, engine and stage from
 `project.yaml`, sector, feature in scope, and decision to inform. Keep the one
 next step first — a re-scan is an optional input, not a new compulsory phase.
 Never spawn it for a `/team-*` action: those run in this chat.
@@ -485,7 +485,7 @@ and ask the user to name the agents instead of guessing.
 
 A crew is at most three agents. The first owns the result; the others consult.
 Apply the engine override from `project.yaml` and skip an agent whose domain
-clearly does not apply. `gamer` and `question-widget-specialist` are read-only:
+clearly does not apply. `spy` and `question-widget-specialist` are read-only:
 they may research or review question wording, never implement the action.
 
 Present the crew in one short block — the action, each agent with one line of

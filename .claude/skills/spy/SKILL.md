@@ -1,5 +1,5 @@
 ---
-name: gamer
+name: spy
 description: "External sector scout — scans the web, forums, app stores and GitHub for what is new and different in a game or software sector, and returns sourced learnings reapplyable to this project. Use when research outside the repo would change a decision."
 argument-hint: "[research brief: engine, platform, feature and decision]"
 user-invocable: true
@@ -7,9 +7,9 @@ allowed-tools: Read, Glob, Grep, Agent, AskUserQuestion
 model: sonnet
 ---
 
-# Gamer — external sector scout
+# Spy — external sector scout
 
-This skill makes the `gamer` agent reachable from the skill list. It is
+This skill makes the `spy` agent reachable from the skill list. It is
 read-only: it writes no files and changes no code. The agent researches what
 is different out there in a game or software sector; this skill owns the
 question widget and puts the agent's recommendation to the user. The shared
@@ -38,8 +38,8 @@ Only a real choice proceeds. **Decide without external research** ends with
 ## Phase 2 — Delegate to the agent
 
 If the runtime has no `Agent` tool, answer
-`NOT ASSESSED — NO AGENT TOOL` and name the `gamer` agent for direct invocation.
-Otherwise spawn **one** `gamer` subagent with a brief containing:
+`NOT ASSESSED — NO AGENT TOOL` and name the `spy` agent for direct invocation.
+Otherwise spawn **one** `spy` subagent with a brief containing:
 
 - the project kind (game or app/tool), engine, platform and stage from `project.yaml`
 - the sector (game genre/theme or software category and shape), the feature or

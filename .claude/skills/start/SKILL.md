@@ -94,12 +94,12 @@ folder — with the question widget (free-text answer; plain text only if no wid
 an answer with no game in it gets the A-or-B question. If no option fits, let the user
 describe their situation and route from that.
 
-### External scan (`@gamer`)
+### External scan (`@spy`)
 
 Read `design/external-scan.md` if it exists and use its `proposed` rows as
 inputs to the route. Follow `.claude/docs/external-scan.md`. If the scan is
 missing or stale, the sector is unclear, or the user asks what other projects
-do, offer one `gamer` scan with a narrow brief: project kind, engine/platform
+do, offer one `spy` scan with a narrow brief: project kind, engine/platform
 from `project-state.sh`, sector (game genre or app category), idea or mechanic,
 and the decision to inform. Never research on every onboarding, and never let
 research replace the one next step.
