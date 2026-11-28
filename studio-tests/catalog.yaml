@@ -1163,6 +1163,15 @@ agents:
     last_category_result: ""
     category: engine
 
+  # Platform Specialists — Web/Android
+  - name: web-android-specialist
+    spec: studio-tests/agents/engine/web-android-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    last_category: ""
+    last_category_result: ""
+    category: engine
+
   # Operations
   - name: devops-engineer
     spec: studio-tests/agents/operations/devops-engineer.md

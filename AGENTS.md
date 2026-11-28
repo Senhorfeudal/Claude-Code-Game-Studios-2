@@ -1,6 +1,6 @@
 # Senhorfeudal Game Studios — OpenCode edition
 
-Indie game and software development managed through 89 specialist subagents (51 game + 38 software) and 80 skills.
+Indie game and software development managed through 90 specialist subagents (52 game + 38 software) and 80 skills.
 Each agent owns a domain, enforcing separation of concerns and quality. This
 folder is the OpenCode port of the Claude Code template; `CLAUDE.md` is kept as
 the upstream source for Claude Code sessions.
@@ -12,7 +12,8 @@ the upstream source for Claude Code sessions.
 - **Version control**: Git with trunk-based development
 - **Build system / asset pipeline**: [SPECIFY after choosing engine]
 
-Engine-specialist agents exist for Godot, Unity and Unreal; use the matching set
+Engine-specialist agents exist for Godot, Unity, Unreal and `web-android-specialist`
+for browser/Android runtimes; use the matching set
 or the general programmers for a Web project.
 
 ## OpenCode runtime mapping

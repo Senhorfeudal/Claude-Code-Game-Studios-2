@@ -3,7 +3,7 @@
 ## What Is This?
 
 This is a complete Claude Code agent architecture for game development. It
-organizes 89 specialized AI agents (51 game + 38 software) into a studio hierarchy that mirrors
+organizes 90 specialized AI agents (52 game + 38 software) into a studio hierarchy that mirrors
 real game development teams, with defined responsibilities, delegation
 rules, and coordination protocols. It includes engine-specialist agents
 for Godot, Unity, and Unreal — each with dedicated sub-specialists for

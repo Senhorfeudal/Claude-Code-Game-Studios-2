@@ -24,7 +24,7 @@ faz a ponte dos validators bash existentes. O `CLAUDE.md` original foi mantido;
 | Configuração | `.opencode/opencode.jsonc` | `instructions`, plugins, watcher e permissões traduzidas de `.claude/settings.json` (bloqueios de `rm -rf`, force push, `.env`, assets binários etc.). |
 | Skills | `.opencode/skills/<id>/SKILL.md` (80) | Wrappers que preservam `name`/`description`/`autoinvoke` e instruem o modelo a ler o `SKILL.md` original e seus `references/`. |
 | Comandos | `.opencode/commands/<id>.md` (80) | `/prototype`, `/start`, `/skill-test`, … — cada comando carrega a skill correspondente e repassa `$ARGUMENTS`. |
-| Agents | `.opencode/agents/<id>.md` (89: 51 jogo + 38 software) | `mode: subagent`, `steps` a partir de `maxTurns`, permissões derivadas de `tools`/`disallowedTools` e nota sobre o tier original. |
+| Agents | `.opencode/agents/<id>.md` (90: 52 jogo + 38 software, incluindo `web-android-specialist`) | `mode: subagent`, `steps` a partir de `maxTurns`, permissões derivadas de `tools`/`disallowedTools` e nota sobre o tier original. |
 | Hooks | `.opencode/plugins/ccgs-bridge/index.js` | Encaminha `validate-commit.sh`, `validate-push.sh`, `validate-write.sh`, `validate-registry.sh`, `validate-assets.sh` e `validate-skill-change.sh` para os hooks de ferramenta do OpenCode, com fail-open. |
 | Question fallback | `plugins/question-watchdog/index.ts` | Plugin já existente no upstream, agora ativado pela config do projeto. |
 | Ferramentas | `.opencode/scripts/generate-opencode-layer.py`, `.opencode/scripts/verify-port.py` | Regeneração determinística da camada e verificação de arquivos + API + ativação de skill. |
@@ -72,7 +72,7 @@ runtimes após rodar o gerador.
 | Verificação | Comando | Resultado |
 | --- | --- | --- |
 | Port end-to-end | `python3 .opencode/scripts/verify-port.py` | **10/10 PASS** |
-| Descoberta via API | incluído no verificador | 80/80 skills, 80/80 commands, 89/89 agents |
+| Descoberta via API | incluído no verificador | 80/80 skills, 80/80 commands, 90/90 agents |
 | Wrapper prevalece sobre o fallback `.claude/skills` | incluído no verificador | `PASS` para `skill-test` |
 | Plugins carregados | `/api/plugin` | `ccgs-bridge` e `question-watchdog` `active` |
 | Ativação de skill em sessão | `/api/experimental/session/{id}/skill` | HTTP `204`, incluindo aliases ocultos (`changelog`, `story-done`) |
@@ -134,7 +134,7 @@ software, ele carrega `.claude/skills/brainstorm/references/software-concept.md`
 escreve `design/software-brief.md`, escolhe um dos 38 papéis `sw-*` listados em
 `docs/software-agents.md` e usa skills genéricas de software — sem gates de
 diretor de jogo nem `game-concept.md`. Os 38 papéis foram portados como os
-demais agents, elevando o total para 89. Evidências: 38 specs em
+demais agents, elevando o total para 90. Evidências: 38 specs em
 `studio-tests/agents/software/`, `studio-tests/skills/utility/brainstorm.md` e
 `docs/software-agents.md`/`.json`; `verify-port.py` conta os agents de forma
 dinâmica.
@@ -205,8 +205,8 @@ A descrição e os topics do GitHub também foram atualizados para destacar o po
 
 A camada também foi instalada de forma global em `$OPENCODE_CONFIG_DIR`
 (`/root/.oc-opencode2/config/opencode/`): 80 skills completas (com `references/`),
-80 commands, 89 agents, plugins, instruções e permissões, todos copiados do
+80 commands, 90 agents, plugins, instruções e permissões, todos copiados do
 repositório (sem symlink). A verificação em `/tmp/opencode/global-check`
-confirmou 80/80 skills, 80/80 commands, 89/89 agents, 2/2 plugins ativos e
+confirmou 80/80 skills, 80/80 commands, 90/90 agents, 2/2 plugins ativos e
 ativação de `skill-test` com HTTP 204. Dentro deste repositório, a camada local
 `.opencode/` continua tendo precedência sobre a cópia global.

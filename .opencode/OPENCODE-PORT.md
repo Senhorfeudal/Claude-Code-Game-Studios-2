@@ -1,6 +1,6 @@
 # OpenCode port notes
 
-This repository is the Senhorfeudal Game Studios template (89 agents — 51 game + 38 software — and 80 skills)
+This repository is the Senhorfeudal Game Studios template (90 agents — 52 game + 38 software — and 80 skills)
 with a native OpenCode V2 layer. The upstream Claude Code files are kept intact
 under `.claude/`; the generated layer lives under `.opencode/` and is produced by
 `.opencode/scripts/generate-opencode-layer.py`.
@@ -52,8 +52,9 @@ python3 .opencode/scripts/generate-opencode-layer.py
   branch loads `references/software-concept.md`, writes `design/software-brief.md`
   and selects one of the 38 `sw-*` roles from `docs/software-agents.md`; it never
   loads game director gates. Those roles are ported like any other agent.
-- **Agents.** All 89 (51 game + 38 software) are subagents with permissions derived from their original
-  `tools`/`disallowedTools`. Agents with the “Question Delivery (all runtimes)”
+- **Agents.** All 90 (52 game + 38 software) are subagents with permissions derived from their original
+  `tools`/`disallowedTools`. Every agent carries the shared "Error-Prevention Rules"
+  contract (`UNVERIFIED`, `NOT ASSESSED`, no silent guesses, no writes before approval). Agents with the “Question Delivery (all runtimes)”
   clause also get a `question` deny rule. `model: opus|sonnet|haiku` becomes an
   inherited session model; the tier is preserved as a note in each agent body.
   `memory: project`, `isolation: worktree` and preloaded `skills:` are notes,

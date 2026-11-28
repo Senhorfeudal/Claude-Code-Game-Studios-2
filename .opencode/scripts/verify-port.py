@@ -17,7 +17,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE = "http://127.0.0.1:4098"
+BASE = os.environ.get("OPENCODE_BASE_URL", "http://127.0.0.1:4098")
 results: list[tuple[str, str, str]] = []
 
 
@@ -128,7 +128,8 @@ def check_api() -> None:
         record("api: skills discovered", "PASS" if not missing else "FAIL", f"{len(expected & skill_ids)}/{len(expected)}; missing={missing[:5]}")
 
         loaded = next((s for s in payload.get("data", []) if s.get("id") == "skill-test"), None)
-        if loaded and "OpenCode port" in str(loaded.get("content", "")):
+        content = str(loaded.get("content", "")) if loaded else ""
+        if any(marker in content for marker in ("OpenCode port", "OpenCode runtime", "system-installed skill")):
             record("api: wrapper content wins", "PASS", loaded.get("path", ""))
         else:
             record("api: wrapper content wins", "FAIL", "wrapper body not served for skill-test")

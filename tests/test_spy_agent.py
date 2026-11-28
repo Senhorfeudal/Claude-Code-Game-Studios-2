@@ -91,9 +91,9 @@ class SpyAgentTests(unittest.TestCase):
 
     def test_agent_count_is_consistent(self):
         count = len(list((ROOT / '.claude/agents').glob('*.md')))
-        self.assertEqual(count, 89, 'agent count drifted from the docs')
+        self.assertEqual(count, 90, 'agent count drifted from the docs')
         claude = (ROOT / 'CLAUDE.md').read_text(encoding='utf-8')
-        self.assertIn('89 coordinated Claude Code subagents', claude)
+        self.assertIn('90 coordinated Claude Code subagents', claude)
 
 
 class AgentCheckNotesTests(unittest.TestCase):
